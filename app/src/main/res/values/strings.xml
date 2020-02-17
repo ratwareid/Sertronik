@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Sertronik</string>
+    <string name="description_servis_panggilan">Dapatkan kemudahan mencari tukang servis disekitar anda!</string>
+    <string name="servis_panggilan">Servis Panggilan</string>
+    <string name="jemput_barang">Jemput Barang</string>
+    <string name="description_jemput_barang">Dapatkan kemudahan servis barang tanpa mengantarnya ke tempat servis!</string>
+    <string name="servis_terdekat">Servis Terdekat</string>
+    <string name="description_servis_terdekat">Dapatkan kemudahan mencari tukang servis disekitar anda!</string>
+</resources>
