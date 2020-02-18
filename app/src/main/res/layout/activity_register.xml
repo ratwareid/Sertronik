@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/gradient_primary"
+    tools:context=".activity.register.RegisterActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_margin="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:src="@drawable/ic_call"
+                android:layout_width="64dp"
+                android:layout_height="64dp"/>
+
+            <TextView
+                android:textColor="@color/white"
+                android:layout_marginStart="8dp"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:fontFamily="@font/raleway_semibold"
+                android:text="Daftar Akun\nSetronik"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearPhoneNumber"
+            android:layout_marginTop="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:textColor="@color/white"
+                android:layout_marginStart="8dp"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:fontFamily="@font/raleway_semibold"
+                android:text="Kami belum tau\nnomor handphone kamu nih!"/>
+
+
+            <EditText
+                android:inputType="number"
+                android:maxLength="13"
+                android:lines="1"
+                android:maxLines="1"
+                android:layout_marginTop="6dp"
+                android:layout_marginHorizontal="12dp"
+                android:id="@+id/inputNumberPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/roboto"
+                android:hint="Masukkan disini"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white_default" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/linearName"
+            android:layout_marginTop="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:textColor="@color/white"
+                android:layout_marginStart="8dp"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:fontFamily="@font/raleway_semibold"
+                android:text="Jadi, Siapa Nama Kamu?"/>
+
+
+            <EditText
+                android:lines="1"
+                android:maxLines="1"
+                android:layout_marginTop="6dp"
+                android:layout_marginHorizontal="12dp"
+                android:background="@android:color/transparent"
+                android:textColor="@color/white"
+                android:fontFamily="@font/roboto"
+                android:id="@+id/inputName"
+                android:textSize="14sp"
+                android:textColorHint="@color/white_default"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Masukkan disini"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/linearPassword"
+            android:layout_marginTop="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:textColor="@color/white"
+                android:layout_marginStart="8dp"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:fontFamily="@font/raleway_semibold"
+                android:text="Kata sandi akun mu apa nih?\nyang susah ya!!"/>
+
+
+            <EditText
+                android:layout_marginTop="6dp"
+                android:layout_marginHorizontal="12dp"
+                android:background="@android:color/transparent"
+                android:textColor="@color/white"
+                android:fontFamily="@font/roboto"
+                android:lines="1"
+                android:maxLines="1"
+                android:inputType="textPassword"
+                android:id="@+id/inputPassword"
+                android:textSize="14sp"
+                android:textColorHint="@color/white_default"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Masukkan disini"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/linearPasswordAgain"
+            android:layout_marginTop="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:textColor="@color/white"
+                android:layout_marginStart="8dp"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:fontFamily="@font/raleway_semibold"
+                android:text="Masukkin kata sandi mu lagi yuk!\nSesuaikan dengan yang atas ya!"/>
+
+
+            <EditText
+                android:layout_marginTop="6dp"
+                android:layout_marginHorizontal="12dp"
+                android:background="@android:color/transparent"
+                android:textColor="@color/white"
+                android:fontFamily="@font/roboto"
+                android:lines="1"
+                android:maxLines="1"
+                android:inputType="textPassword"
+                android:id="@+id/inputPasswordAgain"
+                android:textSize="14sp"
+                android:textColorHint="@color/white_default"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Masukkan disini"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonSignup"
+            android:visibility="gone"
+            android:layout_marginTop="12dp"
+            android:layout_marginHorizontal="24dp"
+            android:layout_gravity="end"
+            android:textColor="@color/colorPrimaryDark"
+            android:padding="12dp"
+            android:drawablePadding="8dp"
+            android:drawableEnd="@drawable/ic_next"
+            android:text="Daftar"
+            android:background="@drawable/button_oval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:onClick="openLoginPage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Saya Sudah Punya Akun"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_margin="12dp"
+        android:textSize="14sp"
+        android:fontFamily="@font/raleway_semibold"
+        android:textColor="@color/white"/>
+
+</RelativeLayout>

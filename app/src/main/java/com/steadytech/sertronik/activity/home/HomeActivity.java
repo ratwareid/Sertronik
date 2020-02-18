@@ -1,4 +1,4 @@
-package com.steadytech.sertronik.activity.user;
+package com.steadytech.sertronik.activity.home;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +23,7 @@ import com.steadytech.sertronik.model.Category;
 
 import java.util.ArrayList;
 
-public class HomeUserActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
     //Firebase
     DatabaseReference databaseReference;
@@ -37,7 +37,7 @@ public class HomeUserActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_user);
+        setContentView(R.layout.activity_home);
 
         getSupportActionBar().hide();
 
@@ -55,26 +55,26 @@ public class HomeUserActivity extends AppCompatActivity {
 
                     categories.add(category);
                 }
-                adapter = new CategoryAdapter(categories, HomeUserActivity.this);
+                adapter = new CategoryAdapter(categories, HomeActivity.this);
                 recyclerHome.setAdapter(adapter);
 
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(HomeUserActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void openProfilePage(View view){
-        startActivity(new Intent(HomeUserActivity.this, AddNewCategoryActivity.class));
+        startActivity(new Intent(HomeActivity.this, AddNewCategoryActivity.class));
     }
 
     private void initWidgets() {
         recyclerHome = findViewById(R.id.recyclerHome);
         categories = new ArrayList<>();
-        layoutManager = new GridLayoutManager(HomeUserActivity.this, 3, RecyclerView.VERTICAL, false);
+        layoutManager = new GridLayoutManager(HomeActivity.this, 3, RecyclerView.VERTICAL, false);
         recyclerHome.setLayoutManager(layoutManager);
 
         recyclerHome.setHasFixedSize(true);
