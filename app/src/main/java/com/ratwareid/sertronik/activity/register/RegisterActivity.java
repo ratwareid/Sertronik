@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -17,15 +18,15 @@ import com.ratwareid.sertronik.R;
 import com.ratwareid.sertronik.activity.login.LoginActivity;
 import com.ratwareid.sertronik.activity.home.HomeActivity;
 import com.ratwareid.sertronik.helper.UniversalHelper;
+import com.ratwareid.sertronik.helper.UniversalKey;
 
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
-    EditText inputPhoneNumber, inputName, inputPassword, inputPasswordAgain;
-
-    Button buttonSignup;
-
-    LinearLayout linearPhoneNumber, linearName, linearPassword, linearPasswordAgain;
+    private EditText inputPhoneNumber, inputName, inputPassword, inputPasswordAgain;
+    private Button buttonSignup;
+    private LinearLayout linearPhoneNumber, linearName, linearPassword, linearPasswordAgain;
+    private long mBackPressed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,6 +150,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     public void openLoginPage(View v){
         startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+        finish();
     }
 
     @Override
@@ -160,5 +162,17 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private void moveToHomePage() {
         startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
+        finish();
+    }
+
+    @Override
+    public void onBackPressed(){
+        if (mBackPressed + UniversalKey.TIME_INTERVAL > System.currentTimeMillis()){
+            super.onBackPressed();
+            return;
+        }else {
+            Toast.makeText(getBaseContext(), "Tekan Back Sekali lagi untuk Keluar", Toast.LENGTH_SHORT).show();
+        }
+        mBackPressed = System.currentTimeMillis();
     }
 }

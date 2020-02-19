@@ -14,4 +14,7 @@ public class UniversalKey {
 
     public static final String API_KEY = "AIzaSyD2h1qdNbwKJPg3In5Io8RTThO2f5Ngdlo";
     public static final String BASE_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/";
+
+    public static final int RC_SIGN_IN = 9001;
+    public static final int TIME_INTERVAL = 2000;
 }

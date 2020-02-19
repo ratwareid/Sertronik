@@ -6,4 +6,5 @@
     <string name="description_jemput_barang">Dapatkan kemudahan servis barang tanpa mengantarnya ke tempat servis!</string>
     <string name="servis_terdekat">Servis Terdekat</string>
     <string name="description_servis_terdekat">Dapatkan kemudahan mencari tukang servis disekitar anda!</string>
+    <string name="register_disini"><u>Register Disini</u></string>
 </resources>

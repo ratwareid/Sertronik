@@ -37,7 +37,6 @@
         </LinearLayout>
 
         <ImageView
-            android:onClick="openProfilePage"
             android:id="@+id/imageProfile"
             android:padding="4dp"
             android:layout_width="48dp"
@@ -54,4 +53,13 @@
         android:layout_height="wrap_content"
         android:id="@+id/recyclerHome"/>
 
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_oval_primary"
+        android:textColor="@color/white"
+        android:fontFamily="@font/raleway_semibold"
+        android:layout_margin="10dp"
+        android:text="Logout"/>
 </LinearLayout>
