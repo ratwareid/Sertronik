@@ -162,9 +162,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void moveToHomePage() {
-        startActivity(new Intent(RegisterActivity.this, PhoneAuthActivity.class).putExtra("phonenumber",inputPhoneNumber.getText().toString()));
-        /*startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
-        finish();*/
+        startActivity(new Intent(RegisterActivity.this, PhoneAuthActivity.class)
+                .putExtra("phonenumber",inputPhoneNumber.getText().toString())
+                .putExtra("username",inputName.getText().toString())
+                .putExtra("password",inputPassword.getText().toString())
+        );
     }
 
     @Override

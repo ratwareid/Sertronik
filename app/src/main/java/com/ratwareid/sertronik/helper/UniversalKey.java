@@ -4,6 +4,7 @@ public class UniversalKey {
     public static final int PICK_IMAGE_REQUEST = 947;
     public static final String IMAGE_CATEGORY_STORAGE_PATH = "image_category/";
     public static final String IMAGE_CATEGORY_DATABASE_PATH = "image_category_database/";
+    public static final String USERDATA_PATH = "userdata/";
 
     public static final String CATEGORY_CODE_KIPAS_ANGIN = "FAN";
     public static final String CATEGORY_CODE_SMARTPHONE = "SMP";
