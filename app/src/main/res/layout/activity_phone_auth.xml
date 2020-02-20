@@ -9,71 +9,91 @@
     android:gravity="center_horizontal">
 
 
-        <ImageView
-            android:id="@+id/icon"
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/status"
+        android:text="Menunggu Konfirmasi"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <EditText
+            android:id="@+id/fieldPhoneNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher"
-            android:layout_marginTop="20dp"/>
+            android:hint="No. Telephone"
+            android:enabled="false"
+            android:clickable="false"
+            android:inputType="phone"
+            android:padding="20dp"/>
+
+        <EditText
+            android:id="@+id/fieldVerificationCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Kode OTP"
+            android:inputType="number"
+            android:padding="20dp"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonVerifyPhone"
+        android:layout_marginStart="@dimen/button_horizontal_margin"
+        android:layout_marginEnd="@dimen/button_horizontal_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit Verifikasi"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
 
         <TextView
-            android:id="@+id/status"
-            android:text="Menunggu Konfirmasi"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content" />
-
-
-        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="20dp">
+            android:text="Belum menerima kode ? " />
 
-            <EditText
-                android:id="@+id/fieldPhoneNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="No. Telephone"
-                android:enabled="false"
-                android:clickable="false"
-                android:inputType="phone"
-                android:padding="20dp"/>
-
-            <EditText
-                android:id="@+id/fieldVerificationCode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Kode OTP"
-                android:inputType="number"
-                android:padding="20dp"/>
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/buttonVerifyPhone"
-            android:layout_marginStart="@dimen/button_horizontal_margin"
-            android:layout_marginEnd="@dimen/button_horizontal_margin"
+        <TextView
+            android:id="@+id/buttonResend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Submit Verifikasi"/>
+            android:text="Kirim Ulang"
+            android:textStyle="bold|italic"/>
+    </LinearLayout>
 
-        <LinearLayout
+    <LinearLayout
+        android:id="@+id/LLwaiter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="20dp">
+            android:text="Kirim ulang dalam :" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Belum menerima kode ? " />
+        <TextView
+            android:id="@+id/tvCounterTimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00" />
 
-            <TextView
-                android:id="@+id/buttonResend"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Kirim Ulang"
-                android:textStyle="bold|italic"/>
-        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>
