@@ -7,4 +7,11 @@
     <string name="servis_terdekat">Servis Terdekat</string>
     <string name="description_servis_terdekat">Dapatkan kemudahan mencari tukang servis disekitar anda!</string>
     <string name="register_disini"><u>Register Disini</u></string>
+    <string name="status_code_sent">Verifikasi Code terkirim</string>
+    <string name="status_verification_failed">Failed Verifikasi</string>
+    <string name="status_verification_succeeded">Success Verifikasi</string>
+    <string name="instant_validation">Instant Validasi</string>
+    <string name="status_sign_in_failed">Login Gagal</string>
+    <string name="signed_out">Logged out</string>
+    <string name="signed_in">logged in</string>
 </resources>

@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.ratwareid.sertronik.R;
+import com.ratwareid.sertronik.activity.auth.PhoneAuthActivity;
 import com.ratwareid.sertronik.activity.login.LoginActivity;
 import com.ratwareid.sertronik.activity.home.HomeActivity;
 import com.ratwareid.sertronik.helper.UniversalHelper;
@@ -161,8 +162,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void moveToHomePage() {
-        startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
-        finish();
+        startActivity(new Intent(RegisterActivity.this, PhoneAuthActivity.class).putExtra("phonenumber",inputPhoneNumber.getText().toString()));
+        /*startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
+        finish();*/
     }
 
     @Override

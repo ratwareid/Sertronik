@@ -31,9 +31,8 @@
         <activity android:name=".activity.user.order.NearbyServiceActivity" />
         <activity android:name=".activity.user.SelectedCategoryActivity" />
         <activity android:name=".activity.admin.AddNewCategoryActivity" />
-        <activity android:name=".activity.home.HomeActivity">
-
-        </activity>
+        <activity android:name=".activity.home.HomeActivity" />
+        <activity android:name=".activity.auth.PhoneAuthActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

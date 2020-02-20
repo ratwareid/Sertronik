@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "502846312656-85vr749n9b8l75g52vpr8d9ciu7gt30i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ratwareid.sertronik",
+            "certificate_hash": "27ce9d99bbb9f9d438bc57b93baac46fb93c68b6"
+          }
+        },
+        {
           "client_id": "502846312656-veo2nj2qcjh0dqc9705h6ssnieva6tlf.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
