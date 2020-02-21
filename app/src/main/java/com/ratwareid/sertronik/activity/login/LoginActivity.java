@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,20 +26,25 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.ratwareid.sertronik.R;
 import com.ratwareid.sertronik.activity.home.HomeActivity;
 import com.ratwareid.sertronik.activity.register.RegisterActivity;
 import com.ratwareid.sertronik.helper.UniversalHelper;
 import com.ratwareid.sertronik.helper.UniversalKey;
+import com.ratwareid.sertronik.model.Userdata;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button btnGoogle;
+    private Button btnGoogle,buttonSignin;
     private TextView tvRegister;
     private FirebaseAuth mAuth;
+    private DatabaseReference databaseReference;
     private GoogleSignInClient mGoogleSignInClient;
     private static final String TAG = "GoogleActivity";
     private long mBackPressed;
+    private EditText inputPhoneNumber,inputPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,8 +89,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void initWidget(){
+        inputPhoneNumber = findViewById(R.id.inputPhoneNumber);
+        inputPassword = findViewById(R.id.inputPassword);
         btnGoogle = findViewById(R.id.btnGoogle);
         btnGoogle.setOnClickListener(this);
+        buttonSignin = findViewById(R.id.buttonSignin);
+        buttonSignin.setOnClickListener(this);
         tvRegister = findViewById(R.id.tv_register);
         tvRegister.setOnClickListener(this);
         // Configure Google Sign In
@@ -95,6 +105,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         mAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference(UniversalKey.USERDATA_PATH);
     }
 
     @Override
@@ -105,6 +116,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (view.equals(tvRegister)){
             startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             finish();
+        }
+        if (view.equals(buttonSignin)){
+            doLoginUser();
         }
     }
 
@@ -134,8 +148,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void updateUI(FirebaseUser user){
         if (user != null){
-            String email = user.getEmail();
-            String userid = user.getUid();
+            /*Userdata userdata = new Userdata(user.getDisplayName(),user.getPhoneNumber(),user.getEmail(),null);
+            databaseReference.child(user.getPhoneNumber()).setValue(userdata);*/
             startActivity(new Intent(LoginActivity.this, HomeActivity.class));
             finish();
         }
@@ -150,5 +164,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Toast.makeText(getBaseContext(), "Tekan Back Sekali lagi untuk Keluar", Toast.LENGTH_SHORT).show();
         }
         mBackPressed = System.currentTimeMillis();
+    }
+
+    public void doLoginUser(){
+        if (inputPassword.getText().toString().equals("")) inputPassword.setError("Password Required !");
+        if (inputPhoneNumber.getText().toString().equals("")) inputPhoneNumber.setError("Phone Required !");
+
     }
 }

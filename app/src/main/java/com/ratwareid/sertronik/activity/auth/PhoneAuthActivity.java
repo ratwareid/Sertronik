@@ -76,7 +76,6 @@ public class PhoneAuthActivity extends AppCompatActivity implements View.OnClick
     private int TIMEOUT_SMS = 30;
     private DatabaseReference databaseReference;
     private String prevPhoneNumber,prevName,prevPassword;
-    boolean foundUser = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,13 +132,6 @@ public class PhoneAuthActivity extends AppCompatActivity implements View.OnClick
         mPhoneNumberField.setText(prevPhoneNumber);
 
         databaseReference = FirebaseDatabase.getInstance().getReference(UniversalKey.USERDATA_PATH);
-        validateUserRegistered();
-
-        if (!mPhoneNumberField.getText().toString().equalsIgnoreCase("")) {
-            startPhoneNumberVerification(mPhoneNumberField.getText().toString());
-            startTimer();
-        }
-
         // Initialize phone auth callbacks
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
@@ -150,9 +142,6 @@ public class PhoneAuthActivity extends AppCompatActivity implements View.OnClick
                 if (credential != null && credential.getSmsCode() != null) {
                     mVerificationField.setText(credential.getSmsCode());
                     mStatusText.setText(R.string.status_verification_succeeded);
-                } else {
-                    //mVerificationField.setText(R.string.instant_validation);
-                    Toast.makeText(PhoneAuthActivity.this, "Berhasil login ", Toast.LENGTH_SHORT).show();
                 }
                 signInWithPhoneAuthCredential(credential);
             }
@@ -181,14 +170,15 @@ public class PhoneAuthActivity extends AppCompatActivity implements View.OnClick
                 mResendToken = token;
             }
         };
+
+        if (!mPhoneNumberField.getText().toString().equalsIgnoreCase("")) {
+            startPhoneNumberVerification(mPhoneNumberField.getText().toString());
+            startTimer();
+        }
     }
 
     private void startPhoneNumberVerification(String phoneNumber) {
 
-        if (foundUser){
-            Toast.makeText(PhoneAuthActivity.this, "This phone number already registered in database", Toast.LENGTH_SHORT).show();
-            return;
-        }
         if (!validatePhoneNumber()) { return; }
         char[] noTlp = phoneNumber.toCharArray();
         if (noTlp[0] == '0'){
@@ -210,11 +200,6 @@ public class PhoneAuthActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void resendVerificationCode(String phoneNumber,PhoneAuthProvider.ForceResendingToken token) {
-
-        if (foundUser){
-            Toast.makeText(PhoneAuthActivity.this, "This phone number already registered in database", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
         if (!validatePhoneNumber()) { return; }
         char[] noTlp = phoneNumber.toCharArray();
@@ -240,14 +225,9 @@ public class PhoneAuthActivity extends AppCompatActivity implements View.OnClick
                 if (task.isSuccessful()) {
                     //FirebaseUser user = task.getResult().getUser();
                     Userdata userdata = new Userdata(prevName,prevPhoneNumber,null,prevPassword);
-                    databaseReference.push().setValue(userdata);
+                    databaseReference.child(prevPhoneNumber).setValue(userdata);
                     startActivity(new Intent(PhoneAuthActivity.this, HomeActivity.class));
                     finish();
-                } else {
-                    if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                        mVerificationField.setError("Invalid code.");
-                        Toast.makeText(PhoneAuthActivity.this,task.getException().toString() , Toast.LENGTH_SHORT).show();
-                    }
                 }
             }
         });
@@ -294,22 +274,9 @@ public class PhoneAuthActivity extends AppCompatActivity implements View.OnClick
         }.start();
     }
 
-    private void validateUserRegistered() {
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    Userdata userdata = snapshot.getValue(Userdata.class);
-                    if (userdata.getNoTelephone() != null && userdata.getNoTelephone().equalsIgnoreCase(prevPhoneNumber)) {
-                        foundUser = true;
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(PhoneAuthActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+    @Override
+    public void onBackPressed() {
+        /*super.onBackPressed();*/
+        finish();
     }
 }
