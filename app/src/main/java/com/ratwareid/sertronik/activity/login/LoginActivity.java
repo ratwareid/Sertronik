@@ -3,7 +3,6 @@ package com.ratwareid.sertronik.activity.login;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,9 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -21,29 +18,33 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.ratwareid.sertronik.R;
+import com.ratwareid.sertronik.activity.auth.PhoneAuthActivity;
 import com.ratwareid.sertronik.activity.home.HomeActivity;
 import com.ratwareid.sertronik.activity.register.RegisterActivity;
 import com.ratwareid.sertronik.helper.UniversalHelper;
 import com.ratwareid.sertronik.helper.UniversalKey;
+import com.ratwareid.sertronik.model.Userdata;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button btnGoogle,buttonSignin,btnRegister;
     private FirebaseAuth mAuth;
-    private DatabaseReference databaseReference;
     private GoogleSignInClient mGoogleSignInClient;
     private static final String TAG = "GoogleActivity";
     private long mBackPressed;
     private EditText inputPhoneNumber,inputPassword;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +97,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnRegister.setOnClickListener(this);
         inputPhoneNumber = findViewById(R.id.inputPhoneNumber);
         inputPassword = findViewById(R.id.inputPassword);
+        databaseReference = FirebaseDatabase.getInstance().getReference(UniversalKey.USERDATA_PATH);
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -122,12 +124,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void normalSignin() {
-        if (inputPhoneNumber.getText().toString().equals("")) inputPhoneNumber.setError("Nomor telephone wajib diisi!");
-        if (inputPassword.getText().toString().equals("")) inputPassword.setError("Password wajib diisi!");
-        if (validatePhoneNumber(inputPhoneNumber.getText().toString())){
-            String notlp = inputPhoneNumber.getText().toString();
-            String password = inputPassword.getText().toString();
-            startActivity(new Intent(LoginActivity.this,HomeActivity.class));
+        if (validatePhoneNumber(inputPhoneNumber.getText().toString(),inputPassword.getText().toString())){
+            final String notlp = inputPhoneNumber.getText().toString();
+            final String password = inputPassword.getText().toString();
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Userdata data = dataSnapshot.child(notlp).getValue(Userdata.class);
+                    if (data == null){
+                        inputPhoneNumber.setError("Nomor Telephone tidak ditemukan !");
+                        Toast.makeText(LoginActivity.this, "Login Gagal", Toast.LENGTH_SHORT).show();
+                    }else{
+                        if (!data.getPassword().equals(password)){
+                            inputPassword.setError("Password yang anda masukkan salah !");
+                            Toast.makeText(LoginActivity.this, "Login Gagal", Toast.LENGTH_SHORT).show();
+                        }else {
+                            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                            finish();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(LoginActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
@@ -136,9 +158,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         startActivityForResult(signInIntent, UniversalKey.RC_SIGN_IN);
     }
 
-    private boolean validatePhoneNumber(String number) {
+    private boolean validatePhoneNumber(String number,String pass) {
         if (TextUtils.isEmpty(number)) {
-            inputPhoneNumber.setError("Invalid phone number.");
+            inputPhoneNumber.setError("Nomor telephone wajib diisi!");
+            if (TextUtils.isEmpty(pass)) {
+                inputPassword.setError("Password wajib diisi!");
+                return false;
+            }
             return false;
         }
         return true;

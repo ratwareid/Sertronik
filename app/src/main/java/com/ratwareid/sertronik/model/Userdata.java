@@ -46,4 +46,12 @@ public class Userdata {
     public void setGoogleMail(String googleMail) {
         this.googleMail = googleMail;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
