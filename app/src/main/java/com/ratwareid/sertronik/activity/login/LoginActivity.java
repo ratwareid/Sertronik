@@ -6,9 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,12 +35,12 @@ import com.ratwareid.sertronik.helper.UniversalKey;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button btnGoogle;
-    private TextView tvRegister;
+    private Button btnGoogle,buttonSignin,btnRegister;
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private static final String TAG = "GoogleActivity";
     private long mBackPressed;
+    private EditText inputPhoneNumber,inputPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,10 +85,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void initWidget(){
+        buttonSignin = findViewById(R.id.buttonSignin);
+        buttonSignin.setOnClickListener(this);
         btnGoogle = findViewById(R.id.btnGoogle);
         btnGoogle.setOnClickListener(this);
-        tvRegister = findViewById(R.id.tv_register);
-        tvRegister.setOnClickListener(this);
+        btnRegister = findViewById(R.id.btnRegister);
+        btnRegister.setOnClickListener(this);
+        inputPhoneNumber = findViewById(R.id.inputPhoneNumber);
+        inputPassword = findViewById(R.id.inputPassword);
+
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -100,17 +107,38 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         if (view.equals(btnGoogle)){
-            signIn();
+            signInGoogle();
         }
-        if (view.equals(tvRegister)){
+        if (view.equals(btnRegister)){
             startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             finish();
         }
+        if (view.equals(buttonSignin)){
+            normalSignin();
+        }
     }
 
-    private void signIn() {
+    private void normalSignin() {
+        if (inputPhoneNumber.getText().toString().equals("")) inputPhoneNumber.setError("Nomor telephone wajib diisi!");
+        if (inputPassword.getText().toString().equals("")) inputPassword.setError("Password wajib diisi!");
+        if (validatePhoneNumber(inputPhoneNumber.getText().toString())){
+            String notlp = inputPhoneNumber.getText().toString();
+            String password = inputPassword.getText().toString();
+            startActivity(new Intent(LoginActivity.this,HomeActivity.class));
+        }
+    }
+
+    private void signInGoogle() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, UniversalKey.RC_SIGN_IN);
+    }
+
+    private boolean validatePhoneNumber(String number) {
+        if (TextUtils.isEmpty(number)) {
+            inputPhoneNumber.setError("Invalid phone number.");
+            return false;
+        }
+        return true;
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
