@@ -87,31 +87,31 @@ public class AddNewCategoryActivity extends AppCompatActivity implements View.On
             storageReferenceImage.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    if (taskSnapshot.getMetadata() != null){
-                        if (taskSnapshot.getMetadata().getReference() != null){
-                            Task<Uri> result = taskSnapshot.getStorage().getDownloadUrl();
-                            result.addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
+                if (taskSnapshot.getMetadata() != null){
+                    if (taskSnapshot.getMetadata().getReference() != null){
+                        Task<Uri> result = taskSnapshot.getStorage().getDownloadUrl();
+                        result.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
 
-                                    String categoryName = inputNameCategory.getText().toString();
-                                    String categoryCode = inputCodeCategory.getText().toString();
+                                String categoryName = inputNameCategory.getText().toString();
+                                String categoryCode = inputCodeCategory.getText().toString();
 
-                                    // Showing toast message after done uploading.
-                                    Toast.makeText(getApplicationContext(), "Kategori Ditambahkan!", Toast.LENGTH_LONG).show();
+                                // Showing toast message after done uploading.
+                                Toast.makeText(getApplicationContext(), "Kategori Ditambahkan!", Toast.LENGTH_LONG).show();
 
-                                    @SuppressWarnings("VisibleForTests")
-                                    Category category = new Category(categoryName, categoryCode, uri.toString());
+                                @SuppressWarnings("VisibleForTests")
+                                Category category = new Category(categoryName, categoryCode, uri.toString());
 
-                                    // Getting image upload ID.
-                                    String imageUploadId = databaseReference.push().getKey();
+                                // Getting image upload ID.
+                                String imageUploadId = databaseReference.push().getKey();
 
-                                    // Adding image upload id s child element into databaseReference.
-                                    databaseReference.child(imageUploadId).setValue(category);
-                                }
-                            });
-                        }
+                                // Adding image upload id s child element into databaseReference.
+                                databaseReference.child(imageUploadId).setValue(category);
+                            }
+                        });
                     }
+                }
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override

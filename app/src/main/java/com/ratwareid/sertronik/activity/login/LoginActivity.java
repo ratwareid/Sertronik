@@ -27,6 +27,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.ratwareid.sertronik.R;
 import com.ratwareid.sertronik.activity.home.HomeActivity;
 import com.ratwareid.sertronik.activity.register.RegisterActivity;
@@ -37,6 +39,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private Button btnGoogle,buttonSignin,btnRegister;
     private FirebaseAuth mAuth;
+    private DatabaseReference databaseReference;
     private GoogleSignInClient mGoogleSignInClient;
     private static final String TAG = "GoogleActivity";
     private long mBackPressed;

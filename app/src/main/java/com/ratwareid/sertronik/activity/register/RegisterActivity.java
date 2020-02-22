@@ -1,5 +1,6 @@
 package com.ratwareid.sertronik.activity.register;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -14,20 +15,28 @@ import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.firebase.ui.auth.data.model.User;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.ratwareid.sertronik.R;
 import com.ratwareid.sertronik.activity.auth.PhoneAuthActivity;
 import com.ratwareid.sertronik.activity.login.LoginActivity;
 import com.ratwareid.sertronik.activity.home.HomeActivity;
 import com.ratwareid.sertronik.helper.UniversalHelper;
 import com.ratwareid.sertronik.helper.UniversalKey;
+import com.ratwareid.sertronik.model.Userdata;
 
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
+public class RegisterActivity extends AppCompatActivity{
 
     private EditText inputPhoneNumber, inputName, inputPassword, inputPasswordAgain;
     private Button buttonSignup;
     private LinearLayout linearPhoneNumber, linearName, linearPassword, linearPasswordAgain;
     private long mBackPressed;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +48,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         initWidgets();
 
         textWatcherCollection();
-
-        buttonSignup.setOnClickListener(this);
     }
 
     private void textWatcherCollection() {
@@ -147,6 +154,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         inputPasswordAgain = findViewById(R.id.inputPasswordAgain);
 
         buttonSignup = findViewById(R.id.buttonSignup);
+        databaseReference = FirebaseDatabase.getInstance().getReference(UniversalKey.USERDATA_PATH);
     }
 
     public void openLoginPage(View v){
@@ -154,17 +162,30 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         finish();
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v.equals(buttonSignup)){
-            moveToHomePage();
-        }
-    }
+    public void submitRegister(View view) {
 
-    private void moveToHomePage() {
-        startActivity(new Intent(RegisterActivity.this, PhoneAuthActivity.class).putExtra("phonenumber",inputPhoneNumber.getText().toString()));
-        /*startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
-        finish();*/
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String phoneNum = inputPhoneNumber.getText().toString();
+                Userdata data = dataSnapshot.child(phoneNum).getValue(Userdata.class);
+                if (data == null){
+                    startActivity(new Intent(RegisterActivity.this, PhoneAuthActivity.class)
+                            .putExtra("phonenumber",inputPhoneNumber.getText().toString())
+                            .putExtra("username",inputName.getText().toString())
+                            .putExtra("password",inputPassword.getText().toString())
+                    );
+                    finish();
+                }else{
+                    inputPhoneNumber.setError("This Phone Number Already Used");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(RegisterActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

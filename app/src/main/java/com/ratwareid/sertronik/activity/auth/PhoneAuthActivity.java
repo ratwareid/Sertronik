@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.service.autofill.UserData;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.firebase.ui.auth.data.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -28,10 +30,20 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.ratwareid.sertronik.R;
 import com.ratwareid.sertronik.activity.home.HomeActivity;
 import com.ratwareid.sertronik.activity.register.RegisterActivity;
+import com.ratwareid.sertronik.adapter.CategoryAdapter;
+import com.ratwareid.sertronik.helper.UniversalKey;
+import com.ratwareid.sertronik.model.Category;
+import com.ratwareid.sertronik.model.Userdata;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -62,6 +74,8 @@ public class PhoneAuthActivity extends AppCompatActivity implements View.OnClick
     private TextView mFieldCounter;
     private LinearLayout mLayoutTimer;
     private int TIMEOUT_SMS = 30;
+    private DatabaseReference databaseReference;
+    private String prevPhoneNumber,prevName,prevPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +125,13 @@ public class PhoneAuthActivity extends AppCompatActivity implements View.OnClick
 
         mAuth = FirebaseAuth.getInstance();
 
+        // Get Intent Phone Number
+        prevPhoneNumber = getIntent().getStringExtra("phonenumber") == null ? "" : getIntent().getStringExtra("phonenumber");
+        prevName = getIntent().getStringExtra("username") == null ? "" : getIntent().getStringExtra("username");
+        prevPassword = getIntent().getStringExtra("password") == null ? "" : getIntent().getStringExtra("password");
+        mPhoneNumberField.setText(prevPhoneNumber);
+
+        databaseReference = FirebaseDatabase.getInstance().getReference(UniversalKey.USERDATA_PATH);
         // Initialize phone auth callbacks
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
@@ -121,8 +142,6 @@ public class PhoneAuthActivity extends AppCompatActivity implements View.OnClick
                 if (credential != null && credential.getSmsCode() != null) {
                     mVerificationField.setText(credential.getSmsCode());
                     mStatusText.setText(R.string.status_verification_succeeded);
-                }else {
-                    mVerificationField.setText(R.string.instant_validation);
                 }
                 signInWithPhoneAuthCredential(credential);
             }
@@ -152,9 +171,6 @@ public class PhoneAuthActivity extends AppCompatActivity implements View.OnClick
             }
         };
 
-        // Get Intent Phone Number
-        String phoneNumber = getIntent().getStringExtra("phonenumber") == null ? "" : getIntent().getStringExtra("phonenumber");
-        mPhoneNumberField.setText(phoneNumber);
         if (!mPhoneNumberField.getText().toString().equalsIgnoreCase("")) {
             startPhoneNumberVerification(mPhoneNumberField.getText().toString());
             startTimer();
@@ -162,6 +178,7 @@ public class PhoneAuthActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void startPhoneNumberVerification(String phoneNumber) {
+
         if (!validatePhoneNumber()) { return; }
         char[] noTlp = phoneNumber.toCharArray();
         if (noTlp[0] == '0'){
@@ -182,8 +199,8 @@ public class PhoneAuthActivity extends AppCompatActivity implements View.OnClick
         signInWithPhoneAuthCredential(credential);
     }
 
-    private void resendVerificationCode(String phoneNumber,
-                                        PhoneAuthProvider.ForceResendingToken token) {
+    private void resendVerificationCode(String phoneNumber,PhoneAuthProvider.ForceResendingToken token) {
+
         if (!validatePhoneNumber()) { return; }
         char[] noTlp = phoneNumber.toCharArray();
         if (noTlp[0] == '0'){
@@ -201,18 +218,16 @@ public class PhoneAuthActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+
         mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    // FirebaseUser user = task.getResult().getUser();
-                     startActivity(new Intent(PhoneAuthActivity.this, HomeActivity.class));
-                     finish();
-                } else {
-                    if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                        mVerificationField.setError("Invalid code.");
-                        Toast.makeText(PhoneAuthActivity.this,task.getException().toString() , Toast.LENGTH_SHORT).show();
-                    }
+                    //FirebaseUser user = task.getResult().getUser();
+                    Userdata userdata = new Userdata(prevName,prevPhoneNumber,null,prevPassword);
+                    databaseReference.child(prevPhoneNumber).setValue(userdata);
+                    startActivity(new Intent(PhoneAuthActivity.this, HomeActivity.class));
+                    finish();
                 }
             }
         });
@@ -257,5 +272,11 @@ public class PhoneAuthActivity extends AppCompatActivity implements View.OnClick
                 mResendButton.setVisibility(View.VISIBLE);
             }
         }.start();
+    }
+
+    @Override
+    public void onBackPressed() {
+        /*super.onBackPressed();*/
+        finish();
     }
 }
