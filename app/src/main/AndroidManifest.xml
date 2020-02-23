@@ -16,14 +16,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.login.LoginActivity" >
+        <activity android:name=".activity.home.MitraActivity"></activity>
+        <activity android:name=".activity.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.register.RegisterActivity"/>
+        <activity android:name=".activity.register.RegisterActivity" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD2h1qdNbwKJPg3In5Io8RTThO2f5Ngdlo" />

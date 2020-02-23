@@ -75,7 +75,7 @@ public class PhoneAuthActivity extends AppCompatActivity implements View.OnClick
     private LinearLayout mLayoutTimer;
     private int TIMEOUT_SMS = 30;
     private DatabaseReference databaseReference;
-    private String prevPhoneNumber,prevName,prevPassword;
+    private String prevPhoneNumber,prevName,prevPassword,prevMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +126,7 @@ public class PhoneAuthActivity extends AppCompatActivity implements View.OnClick
         mAuth = FirebaseAuth.getInstance();
 
         // Get Intent Phone Number
+        prevMode = getIntent().getStringExtra("mode") == null ? "" : getIntent().getStringExtra("mode");
         prevPhoneNumber = getIntent().getStringExtra("phonenumber") == null ? "" : getIntent().getStringExtra("phonenumber");
         prevName = getIntent().getStringExtra("username") == null ? "" : getIntent().getStringExtra("username");
         prevPassword = getIntent().getStringExtra("password") == null ? "" : getIntent().getStringExtra("password");
@@ -224,8 +225,10 @@ public class PhoneAuthActivity extends AppCompatActivity implements View.OnClick
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     //FirebaseUser user = task.getResult().getUser();
-                    Userdata userdata = new Userdata(prevName,prevPhoneNumber,null,prevPassword);
-                    databaseReference.child(prevPhoneNumber).setValue(userdata);
+                    if (prevMode.equalsIgnoreCase("REGISTER")) {
+                        Userdata userdata = new Userdata(prevName, prevPhoneNumber, null, prevPassword,null);
+                        databaseReference.child(prevPhoneNumber).setValue(userdata);
+                    }
                     startActivity(new Intent(PhoneAuthActivity.this, HomeActivity.class));
                     finish();
                 }

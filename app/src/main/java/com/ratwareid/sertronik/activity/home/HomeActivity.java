@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -29,12 +30,13 @@ import com.ratwareid.sertronik.activity.login.LoginActivity;
 import com.ratwareid.sertronik.adapter.CategoryAdapter;
 import com.ratwareid.sertronik.helper.UniversalKey;
 import com.ratwareid.sertronik.model.Category;
+import com.ratwareid.sertronik.model.Userdata;
 
 import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private DatabaseReference databaseReference;
+    private DatabaseReference databaseImageIcon,databaseCurrentUser;
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private RecyclerView recyclerHome;
@@ -42,8 +44,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private CategoryAdapter adapter;
     private ArrayList<Category> categories;
     private ImageView imageProfile;
-    private Button btnLogout;
+    private Button btnLogout,btnJoinMitra;
     private long mBackPressed;
+    private TextView textGreetingMessage;
+    private Userdata userdata;
+    private String phoneNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +63,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void getDataFromFirebase() {
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseImageIcon.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 categories = new ArrayList<>();
@@ -80,14 +85,23 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void initWidgets() {
+        textGreetingMessage = findViewById(R.id.textGreetingMessage);
+        btnJoinMitra = findViewById(R.id.btnJoinMitra);
+        btnJoinMitra.setOnClickListener(this);
         recyclerHome = findViewById(R.id.recyclerHome);
+        imageProfile = findViewById(R.id.imageProfile);
+        imageProfile.setOnClickListener(this);
+        btnLogout = findViewById(R.id.btnLogout);
+        btnLogout.setOnClickListener(this);
+
         categories = new ArrayList<>();
         layoutManager = new GridLayoutManager(HomeActivity.this, 3, RecyclerView.VERTICAL, false);
         recyclerHome.setLayoutManager(layoutManager);
 
         recyclerHome.setHasFixedSize(true);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference(UniversalKey.IMAGE_CATEGORY_DATABASE_PATH);
+        databaseCurrentUser = FirebaseDatabase.getInstance().getReference(UniversalKey.USERDATA_PATH);
+        databaseImageIcon = FirebaseDatabase.getInstance().getReference(UniversalKey.IMAGE_CATEGORY_DATABASE_PATH);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -96,11 +110,35 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         mAuth = FirebaseAuth.getInstance();
+        phoneNum = getPhoneNumber(mAuth.getCurrentUser().getPhoneNumber());
+        databaseCurrentUser.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                userdata = dataSnapshot.child(phoneNum).getValue(Userdata.class);
+                textGreetingMessage.setText("Hello "+userdata.getFullName()+",");
+                if (userdata.getMitraID() == null){
+                    btnJoinMitra.setVisibility(View.VISIBLE);
+                    btnJoinMitra.setEnabled(true);
+                }else{
+                    btnJoinMitra.setVisibility(View.GONE);
+                }
+            }
 
-        imageProfile = findViewById(R.id.imageProfile);
-        imageProfile.setOnClickListener(this);
-        btnLogout = findViewById(R.id.btnLogout);
-        btnLogout.setOnClickListener(this);
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public String getPhoneNumber(String noTxt){
+        char[] noTlp = noTxt.toCharArray();
+        if (noTlp[0] == '0'){
+            return noTxt;
+        }else if (noTlp[0] == '+'){
+            noTxt = noTxt.replace("+62","0");
+        }
+        return noTxt;
     }
 
     @Override
@@ -121,6 +159,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         finish();
                     }
                 });
+        }
+        if (view.equals(btnJoinMitra)){
+            startActivity(new Intent(HomeActivity.this, MitraActivity.class)
+                    .putExtra("nomortelephone",userdata.getNoTelephone())
+                    .putExtra("fullname",userdata.getFullName())
+                    .putExtra("email",userdata.getGoogleMail())
+            );
         }
     }
 

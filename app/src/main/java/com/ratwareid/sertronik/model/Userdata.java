@@ -1,5 +1,14 @@
 package com.ratwareid.sertronik.model;
 
+import androidx.annotation.NonNull;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.ratwareid.sertronik.helper.UniversalKey;
+
 /**
  * Created by Android Studio.
  * User: Jerry Erlangga
@@ -10,17 +19,33 @@ package com.ratwareid.sertronik.model;
 
 
 public class Userdata {
-    public String fullName,noTelephone,googleMail,password;
+    public String fullName,noTelephone,googleMail,password,mitraID;
+    public Mitradata mitradata;
+
+    {
+        DatabaseReference dbMitra = FirebaseDatabase.getInstance().getReference(UniversalKey.MITRADATA_PATH);
+        dbMitra.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mitradata = dataSnapshot.child(mitraID).getValue(Mitradata.class);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
 
     public Userdata(){
 
     }
 
-    public Userdata(String fullName,String noTelephone,String googleMail,String hashPassword){
+    public Userdata(String fullName,String noTelephone,String googleMail,String hashPassword,String mitraID){
         this.fullName = fullName;
         this.noTelephone = noTelephone;
         this.googleMail = googleMail;
         this.password = hashPassword;
+        this.mitraID = mitraID;
     }
 
     public String getFullName() {
@@ -54,4 +79,14 @@ public class Userdata {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getMitraID() {
+        return mitraID;
+    }
+
+    public void setMitraID(String mitraID) {
+        this.mitraID = mitraID;
+    }
+
+    public Mitradata getMitradata() { return mitradata; }
 }

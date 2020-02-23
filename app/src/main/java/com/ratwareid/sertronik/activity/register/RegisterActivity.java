@@ -163,7 +163,6 @@ public class RegisterActivity extends AppCompatActivity{
     }
 
     public void submitRegister(View view) {
-
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -174,6 +173,7 @@ public class RegisterActivity extends AppCompatActivity{
                             .putExtra("phonenumber",inputPhoneNumber.getText().toString())
                             .putExtra("username",inputName.getText().toString())
                             .putExtra("password",inputPassword.getText().toString())
+                            .putExtra("mode","REGISTER")
                     );
                     finish();
                 }else{

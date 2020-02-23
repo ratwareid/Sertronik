@@ -37,23 +37,22 @@ import com.ratwareid.sertronik.helper.GetNearbyPlacesData;
 import static com.ratwareid.sertronik.helper.UniversalKey.API_KEY;
 import static com.ratwareid.sertronik.helper.UniversalKey.PROXIMITY_RADIUS;
 
-public class NearbyServiceActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, LocationListener, GoogleApiClient.OnConnectionFailedListener {
+public class NearbyServiceActivity extends AppCompatActivity
+        implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, LocationListener,
+        GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
 
     GoogleMap map;
 
     double latitude;
     double longitude;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
-
     String category;
-
-
     GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
     Marker mCurrLocationMarker;
     LocationRequest mLocationRequest;
 
-    Button button;
+    Button btnSearchMitra;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +124,7 @@ public class NearbyServiceActivity extends AppCompatActivity implements OnMapRea
         buildGoogleApiClient();
         mapFragment.getMapAsync(this);
 
-        button = findViewById(R.id.buttonSample);
+        btnSearchMitra = findViewById(R.id.btnSearchMitra);
         mGoogleApiClient.connect();
     }
 
@@ -148,12 +147,7 @@ public class NearbyServiceActivity extends AppCompatActivity implements OnMapRea
             map.setMyLocationEnabled(true);
         }
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchingNearbyLocation();
-            }
-        });
+        btnSearchMitra.setOnClickListener(this);
     }
 
     private String getUrl(double latitude, double longitude, String nearbyPlace) {
@@ -261,6 +255,13 @@ public class NearbyServiceActivity extends AppCompatActivity implements OnMapRea
 
             // other 'case' lines to check for other permissions this app might request.
             // You can add here other case statements according to your requirement.
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.equals(btnSearchMitra)){
+            searchingNearbyLocation();
         }
     }
 }
