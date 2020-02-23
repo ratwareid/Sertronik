@@ -7,11 +7,14 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.service.autofill.UserData;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,6 +32,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -37,9 +41,15 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.maps.android.SphericalUtil;
 import com.ratwareid.sertronik.R;
 import com.ratwareid.sertronik.helper.GetNearbyPlacesData;
+import com.ratwareid.sertronik.helper.UniversalKey;
+import com.ratwareid.sertronik.model.Mitradata;
+
+import java.util.ArrayList;
 
 import static com.ratwareid.sertronik.helper.UniversalKey.API_KEY;
 import static com.ratwareid.sertronik.helper.UniversalKey.PROXIMITY_RADIUS;
@@ -59,9 +69,14 @@ public class NearbyServiceActivity extends AppCompatActivity
     Marker mCurrLocationMarker;
     LocationRequest mLocationRequest;
 
+
+    DatabaseReference databaseReference;
+
     Button btnSearchMitra;
     LinearLayout bottomSheet;
     BottomSheetBehavior bottomSheetBehavior;
+
+    ArrayList<Mitradata> mitradataArrayList;
 
     private DatabaseReference databaseMitra;
     private long maxDistance = 10000;
@@ -114,29 +129,33 @@ public class NearbyServiceActivity extends AppCompatActivity
 
     private void searchingNearbyLocation() {
 
-        String nearbyPlace = "Servis " + category;
+        Toast.makeText(this, String.valueOf(latitude), Toast.LENGTH_SHORT).show();
 
-        map.clear();
+        for (int i = 0; i < mitradataArrayList.size(); i++) {
 
-        Log.d("onClick", "Button is Clicked");
-        if (mCurrLocationMarker != null) {
-            mCurrLocationMarker.remove();
+            LatLng mitraLocation = new LatLng(Double.parseDouble(mitradataArrayList.get(i).getLatitude()), Double.parseDouble(mitradataArrayList.get(i).getLongitude()));
+
+
+            if (SphericalUtil.computeDistanceBetween(mitraLocation, new LatLng(latitude, longitude)) < 5000.0){
+
+                map.addMarker(new MarkerOptions()
+                        .position(mitraLocation))
+                        .setTitle(mitradataArrayList.get(i).getNamaToko());
+            }
+
         }
-        String url = getUrl(latitude, longitude, "school");
-        Object[] DataTransfer = new Object[2];
-        DataTransfer[0] = map;
-        DataTransfer[1] = url;
-        Log.d("onClick", url);
 
-        getNearbyMitra();
-        //GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
-        //getNearbyPlacesData.execute(DataTransfer);
-     }
+    }
 
     private void initWidgets() {
+
+        mitradataArrayList = new ArrayList<>();
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentMap);
         buildGoogleApiClient();
         mapFragment.getMapAsync(this);
+
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         btnSearchMitra = findViewById(R.id.btnSearchMitra);
         mGoogleApiClient.connect();
@@ -145,8 +164,24 @@ public class NearbyServiceActivity extends AppCompatActivity
 
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
 
-        bottomSheetBehavior.setPeekHeight(340);
         bottomSheetBehavior.setHideable(true);
+
+        databaseReference.child("mitradata").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Mitradata mitradata = snapshot.getValue(Mitradata.class);
+
+                    mitradataArrayList.add(mitradata);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -171,12 +206,11 @@ public class NearbyServiceActivity extends AppCompatActivity
         btnSearchMitra.setOnClickListener(this);
     }
 
-    private String getUrl(double latitude, double longitude, String nearbyPlace) {
+    private String getUrl(double latitude, double longitude) {
 
         StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         googlePlacesUrl.append("location=" + latitude + "," + longitude);
         googlePlacesUrl.append("&radius=" + PROXIMITY_RADIUS);
-        googlePlacesUrl.append("&type=" + nearbyPlace);
         googlePlacesUrl.append("&sensor=true");
         googlePlacesUrl.append("&key=" + API_KEY);
         Log.d("getUrl", googlePlacesUrl.toString());
@@ -244,6 +278,7 @@ public class NearbyServiceActivity extends AppCompatActivity
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -281,7 +316,9 @@ public class NearbyServiceActivity extends AppCompatActivity
 
     @Override
     public void onClick(View view) {
-        if (view.equals(btnSearchMitra)){
+        if (view.equals(btnSearchMitra)) {
+
+
             searchingNearbyLocation();
         }
     }
@@ -294,9 +331,13 @@ public class NearbyServiceActivity extends AppCompatActivity
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 TextView namaToko = bottomSheet.findViewById(R.id.namaToko);
-                TextView noTlp = bottomSheet.findViewById(R.id.noTelp);
+                Button noTlp = bottomSheet.findViewById(R.id.buttonCall);
                 TextView alamat = bottomSheet.findViewById(R.id.alamatMitra);
 
+                for (int i = 0; i < mitradataArrayList.size(); i++){
+                    namaToko.setText(marker.getTitle());
+                    alamat.setText(mitradataArrayList.get(i).getAlamatToko());
+                }
             }
 
             @Override
@@ -305,20 +346,5 @@ public class NearbyServiceActivity extends AppCompatActivity
             }
         });
         return false;
-    }
-
-    public void getNearbyMitra(){
-        databaseMitra.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
     }
 }
