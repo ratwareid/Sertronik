@@ -6,6 +6,9 @@ public class UniversalKey {
     public static final String IMAGE_CATEGORY_DATABASE_PATH = "image_category_database/";
     public static final String USERDATA_PATH = "userdata/";
     public static final String MITRADATA_PATH = "mitradata/";
+    public static final String PENDINGORDER_PATH = "pending_order/";
+    public static final String ASSIGNORDER_PATH = "assign_order/";
+    public static final String FINISHORDER_PATH = "finish_order/";
 
     public static final String CATEGORY_CODE_KIPAS_ANGIN = "FAN";
     public static final String CATEGORY_CODE_SMARTPHONE = "SMP";

@@ -95,6 +95,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
+            android:onClick="openPickupSerice"
             android:layout_margin="8dp"
             app:cardElevation="8dp"
             app:cardBackgroundColor="#f0f0f0"

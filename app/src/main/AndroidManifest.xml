@@ -16,7 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.home.MitraActivity"></activity>
+        <activity android:name=".activity.user.order.OrderPickupActivity"></activity>
+        <activity android:name=".activity.user.order.PickupServiceActivity" />
+        <activity android:name=".activity.home.MitraActivity" />
         <activity android:name=".activity.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
