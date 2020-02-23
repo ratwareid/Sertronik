@@ -15,6 +15,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -31,6 +33,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.api.Places;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.ratwareid.sertronik.R;
 import com.ratwareid.sertronik.helper.GetNearbyPlacesData;
 
@@ -39,7 +46,7 @@ import static com.ratwareid.sertronik.helper.UniversalKey.PROXIMITY_RADIUS;
 
 public class NearbyServiceActivity extends AppCompatActivity
         implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, LocationListener,
-        GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
+        GoogleApiClient.OnConnectionFailedListener, View.OnClickListener, GoogleMap.OnMarkerClickListener {
 
     GoogleMap map;
 
@@ -53,6 +60,11 @@ public class NearbyServiceActivity extends AppCompatActivity
     LocationRequest mLocationRequest;
 
     Button btnSearchMitra;
+    LinearLayout bottomSheet;
+    BottomSheetBehavior bottomSheetBehavior;
+
+    private DatabaseReference databaseMitra;
+    private long maxDistance = 10000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,8 +127,10 @@ public class NearbyServiceActivity extends AppCompatActivity
         DataTransfer[0] = map;
         DataTransfer[1] = url;
         Log.d("onClick", url);
-        GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
-        getNearbyPlacesData.execute(DataTransfer);
+
+        getNearbyMitra();
+        //GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
+        //getNearbyPlacesData.execute(DataTransfer);
      }
 
     private void initWidgets() {
@@ -126,6 +140,13 @@ public class NearbyServiceActivity extends AppCompatActivity
 
         btnSearchMitra = findViewById(R.id.btnSearchMitra);
         mGoogleApiClient.connect();
+        bottomSheet = findViewById(R.id.bottomSheet);
+
+
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+
+        bottomSheetBehavior.setPeekHeight(340);
+        bottomSheetBehavior.setHideable(true);
     }
 
     @Override
@@ -146,7 +167,7 @@ public class NearbyServiceActivity extends AppCompatActivity
         } else {
             map.setMyLocationEnabled(true);
         }
-
+        map.setOnMarkerClickListener(this);
         btnSearchMitra.setOnClickListener(this);
     }
 
@@ -263,5 +284,41 @@ public class NearbyServiceActivity extends AppCompatActivity
         if (view.equals(btnSearchMitra)){
             searchingNearbyLocation();
         }
+    }
+
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                TextView namaToko = bottomSheet.findViewById(R.id.namaToko);
+                TextView noTlp = bottomSheet.findViewById(R.id.noTelp);
+                TextView alamat = bottomSheet.findViewById(R.id.alamatMitra);
+
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
+        return false;
+    }
+
+    public void getNearbyMitra(){
+        databaseMitra.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
