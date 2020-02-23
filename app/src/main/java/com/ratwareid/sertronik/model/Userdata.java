@@ -22,20 +22,6 @@ public class Userdata {
     public String fullName,noTelephone,googleMail,password,mitraID;
     public Mitradata mitradata;
 
-    {
-        DatabaseReference dbMitra = FirebaseDatabase.getInstance().getReference(UniversalKey.MITRADATA_PATH);
-        dbMitra.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mitradata = dataSnapshot.child(mitraID).getValue(Mitradata.class);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-    }
-
     public Userdata(){
 
     }
