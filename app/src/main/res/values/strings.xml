@@ -14,4 +14,10 @@
     <string name="status_sign_in_failed">Login Gagal</string>
     <string name="signed_out">Logged out</string>
     <string name="signed_in">logged in</string>
+
+    <string-array name="jenis_service">
+        <item>Elektronik</item>
+        <item>Kendaraan</item>
+    </string-array>
+
 </resources>

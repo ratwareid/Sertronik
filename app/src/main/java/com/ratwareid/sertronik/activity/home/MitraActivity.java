@@ -14,8 +14,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -41,6 +45,7 @@ import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -61,7 +66,7 @@ import java.util.Locale;
 
 public class MitraActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, LocationListener, GoogleApiClient.OnConnectionFailedListener,
-        View.OnClickListener, GoogleMap.OnMyLocationButtonClickListener {
+        View.OnClickListener, GoogleMap.OnMyLocationButtonClickListener, AdapterView.OnItemSelectedListener {
 
     private SupportMapFragment mapFragment;
     private GoogleApiClient mGoogleApiClient;
@@ -78,6 +83,10 @@ public class MitraActivity extends AppCompatActivity implements OnMapReadyCallba
     private Button btnSimpan;
     private DatabaseReference databaseMitra;
     private DatabaseReference databaseUser;
+    private FirebaseAuth currentUser;
+    private CheckBox spTV,spKulkas,spMesinCuci,spKipas,spPenanakNasi,spKamera,spOven,spMotor,spMobil,spSepeda;
+    private Spinner spnJenis;
+    private LinearLayout formSPElektronik,formSPKendaraan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,9 +110,25 @@ public class MitraActivity extends AppCompatActivity implements OnMapReadyCallba
         inputNoTelephone = findViewById(R.id.inputPhoneNumber);
         btnSimpan = findViewById(R.id.btnSimpan);
         btnSimpan.setOnClickListener(this);
+        spTV = findViewById(R.id.spTV);
+        spKulkas = findViewById(R.id.spKulkas);
+        spMesinCuci = findViewById(R.id.spMesinCuci);
+        spKipas = findViewById(R.id.spKipas);
+        spPenanakNasi = findViewById(R.id.spPenanakNasi);
+        spKamera = findViewById(R.id.spKamera);
+        spOven = findViewById(R.id.spOven);
+        spMotor = findViewById(R.id.spMotor);
+        spMobil = findViewById(R.id.spMobil);
+        spSepeda = findViewById(R.id.spSepeda);
+        spnJenis = findViewById(R.id.spnJenis);
+        spnJenis.setOnItemSelectedListener(this);
+        formSPElektronik = findViewById(R.id.formSPElektronik);
+        formSPKendaraan = findViewById(R.id.formSPKendaraan);
+
         Places.initialize(getApplicationContext(), UniversalKey.API_KEY);
         databaseUser = FirebaseDatabase.getInstance().getReference(UniversalKey.USERDATA_PATH);
         databaseMitra = FirebaseDatabase.getInstance().getReference(UniversalKey.MITRADATA_PATH);
+        currentUser = FirebaseAuth.getInstance();
     }
 
     private void getAllData(){
@@ -267,10 +292,50 @@ public class MitraActivity extends AppCompatActivity implements OnMapReadyCallba
 
     private void daftarMitra(){
         Mitradata mitra = new Mitradata(inputNamaToko.getText().toString(),inputAlamatToko.getText().toString(),
-                inputLatitude.getText().toString(),inputLongitude.getText().toString());
+                inputLatitude.getText().toString(),inputLongitude.getText().toString(),currentUser.getCurrentUser().getPhoneNumber(),getSpecialist());
         String mitraID = databaseMitra.push().getKey();
         databaseUser.child(prevPhone).child("mitraID").setValue(mitraID);
         databaseMitra.child(mitraID).setValue(mitra);
         finish();
+    }
+
+    private String getSpecialist(){
+        StringBuilder sp = new StringBuilder();
+        String jenis = (String) spnJenis.getSelectedItem();
+        if (jenis.equalsIgnoreCase("ELEKTRONIK")){
+            if (spTV.isChecked()) sp.append("TV,");
+            if (spKulkas.isChecked()) sp.append("Kulkas,");
+            if (spMesinCuci.isChecked()) sp.append("Mesin Cuci,");
+            if (spKipas.isChecked()) sp.append("Kipas,");
+            if (spPenanakNasi.isChecked()) sp.append("Penanak Nasi,");
+            if (spKamera.isChecked()) sp.append("Kamera,");
+            if (spOven.isChecked()) sp.append("Oven,");
+        }
+        if (jenis.equalsIgnoreCase("Kendaraan")){
+            if (spMotor.isChecked()) sp.append("Motor,");
+            if (spMobil.isChecked()) sp.append("Mobil,");
+            if (spSepeda.isChecked()) sp.append("Sepeda,");
+        }
+        if (sp.length() > 0) { sp.setLength(sp.length() - 1); }
+        return sp.toString();
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+        String jenis = (String) spnJenis.getSelectedItem();
+        if (jenis.equalsIgnoreCase("ELEKTRONIK")){
+            formSPElektronik.setVisibility(View.VISIBLE);
+            formSPKendaraan.setVisibility(View.GONE);
+        }
+        if (jenis.equalsIgnoreCase("Kendaraan")){
+            formSPKendaraan.setVisibility(View.VISIBLE);
+            formSPElektronik.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+        formSPElektronik.setVisibility(View.GONE);
+        formSPKendaraan.setVisibility(View.GONE);
     }
 }

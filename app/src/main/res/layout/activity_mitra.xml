@@ -95,6 +95,111 @@
                 android:hint="Koordinat Longitude Toko"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Specialist"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="5dp"
+            android:textSize="14sp"
+            android:layout_marginBottom="10dp"/>
+
+        <Spinner
+            android:id="@+id/spnJenis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/jenis_service"
+            android:layout_marginBottom="10dp"/>
+
+        <LinearLayout
+            android:id="@+id/formSPElektronik"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="20dp"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <CheckBox
+                    android:id="@+id/spTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TV"/>
+                <CheckBox
+                    android:id="@+id/spKulkas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kulkas"/>
+                <CheckBox
+                    android:id="@+id/spMesinCuci"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mesin Cuci"/>
+                <CheckBox
+                    android:id="@+id/spKipas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kipas Angin"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <CheckBox
+                    android:id="@+id/spKamera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Penanak Nasi"/>
+                <CheckBox
+                    android:id="@+id/spPenanakNasi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kamera"/>
+                <CheckBox
+                    android:id="@+id/spOven"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Oven"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/formSPKendaraan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="20dp"
+            android:visibility="gone">
+
+            <CheckBox
+                android:id="@+id/spMotor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Motor"/>
+            <CheckBox
+                android:id="@+id/spMobil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mobil"/>
+            <CheckBox
+                android:id="@+id/spSepeda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sepeda"/>
+
+        </LinearLayout>
+
         <fragment
             android:id="@+id/fragmentMap"
             android:name="com.google.android.gms.maps.SupportMapFragment"
