@@ -2,7 +2,9 @@ package com.ratwareid.sertronik.activity.home;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -40,7 +42,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private DatabaseReference databaseImageIcon,databaseCurrentUser;
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
-    private RecyclerView recyclerHome;
+    private RecyclerView recyclerHome,recyclerOrder;
     private GridLayoutManager layoutManager;
     private CategoryAdapter adapter;
     private ArrayList<Category> categories;
@@ -90,6 +92,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         btnJoinMitra = findViewById(R.id.btnJoinMitra);
         btnJoinMitra.setOnClickListener(this);
         recyclerHome = findViewById(R.id.recyclerHome);
+        recyclerOrder = findViewById(R.id.recyclerOrder);
         imageProfile = findViewById(R.id.imageProfile);
         imageProfile.setOnClickListener(this);
         btnLogout = findViewById(R.id.btnLogout);
@@ -98,8 +101,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         categories = new ArrayList<>();
         layoutManager = new GridLayoutManager(HomeActivity.this, 3, RecyclerView.VERTICAL, false);
         recyclerHome.setLayoutManager(layoutManager);
-
         recyclerHome.setHasFixedSize(true);
+        recyclerOrder.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerOrder.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
 
         databaseCurrentUser = FirebaseDatabase.getInstance().getReference(UniversalKey.USERDATA_PATH);
         databaseImageIcon = FirebaseDatabase.getInstance().getReference(UniversalKey.IMAGE_CATEGORY_DATABASE_PATH);
@@ -122,6 +126,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     btnJoinMitra.setEnabled(true);
                 }else{
                     btnJoinMitra.setVisibility(View.GONE);
+                    //recyclerHome.setVisibility(View.GONE);
                 }
             }
 

@@ -64,6 +64,12 @@
         android:layout_height="wrap_content"
         android:id="@+id/recyclerHome"/>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginHorizontal="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/recyclerOrder"/>
+
     <Button
         android:id="@+id/btnLogout"
         android:layout_width="wrap_content"

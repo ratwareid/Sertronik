@@ -34,15 +34,19 @@ public class DetailPickupActivity extends AppCompatActivity {
     }
 
     private void setDataToWidget() {
-
-        String specialist = mitraSpecialist.replace(",", "\n\u2022  ");
+        String[] sptext = mitraSpecialist.split(",");
+        StringBuilder sb = new StringBuilder();
+        for (int x=0; x<sptext.length;x++){
+            sb.append("\n\u2022").append(sptext[x]);
+        }
+        //String specialist = mitraSpecialist.replace(",", "\n\u2022  ");
 
         imageThumbnail.setImageDrawable(TextDrawable.builder().buildRect(StringUtils.upperCase(UniversalHelper.textAvatar(mitraName)), getResources().getColor(R.color.colorPrimaryDark)));
 
         textMitraName.setText(mitraName);
         textMitraPhoneNumber.setText(mitraPhoneNumber);
         textMitraLocation.setText(mitraLocation);
-        textSpecialist.setText(specialist);
+        textSpecialist.setText(sb);
     }
 
     private void initWidgets() {
