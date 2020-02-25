@@ -27,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.ratwareid.sertronik.R;
 import com.ratwareid.sertronik.activity.admin.AddNewCategoryActivity;
 import com.ratwareid.sertronik.activity.login.LoginActivity;
+import com.ratwareid.sertronik.activity.user.profile.UserProfileActivity;
 import com.ratwareid.sertronik.adapter.CategoryAdapter;
 import com.ratwareid.sertronik.helper.UniversalKey;
 import com.ratwareid.sertronik.model.Category;
@@ -144,7 +145,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (view.equals(imageProfile)){
-            startActivity(new Intent(HomeActivity.this, AddNewCategoryActivity.class));
+            if (userdata.getRoleAkses() != null) {
+                if (userdata.getRoleAkses().equalsIgnoreCase("ADMIN")) {
+                    startActivity(new Intent(HomeActivity.this, AddNewCategoryActivity.class));
+                }
+                if (userdata.getRoleAkses().equalsIgnoreCase("USER")){
+                    startActivity(new Intent(HomeActivity.this, UserProfileActivity.class)
+                            .putExtra("phonenumber",userdata.getNoTelephone())
+                            .putExtra("fullname",userdata.getFullName())
+                            .putExtra("email",userdata.getGoogleMail())
+                            .putExtra("mitraID",userdata.getMitraID())
+                    );
+                }
+            }
         }
         if (view.equals(btnLogout)){
             // Firebase sign out

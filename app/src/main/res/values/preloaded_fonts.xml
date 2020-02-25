@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="preloaded_fonts" translatable="false">
+        <item>@font/cormorant_garamond_light</item>
+        <item>@font/happy_monkey</item>
         <item>@font/metrophobic</item>
         <item>@font/montserrat</item>
         <item>@font/raleway</item>

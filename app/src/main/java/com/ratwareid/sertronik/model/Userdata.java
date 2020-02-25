@@ -19,7 +19,7 @@ import com.ratwareid.sertronik.helper.UniversalKey;
 
 
 public class Userdata {
-    public String fullName,noTelephone,googleMail,password,mitraID;
+    public String fullName,noTelephone,googleMail,password,mitraID,roleAkses;
     public Mitradata mitradata;
 
     {
@@ -42,12 +42,13 @@ public class Userdata {
 
     }
 
-    public Userdata(String fullName,String noTelephone,String googleMail,String hashPassword,String mitraID){
+    public Userdata(String fullName,String noTelephone,String googleMail,String hashPassword,String mitraID,String roleAkses){
         this.fullName = fullName;
         this.noTelephone = noTelephone;
         this.googleMail = googleMail;
         this.password = hashPassword;
         this.mitraID = mitraID;
+        this.roleAkses = roleAkses;
     }
 
     public String getFullName() {
@@ -91,4 +92,12 @@ public class Userdata {
     }
 
     public Mitradata getMitradata() { return mitradata; }
+
+    public String getRoleAkses() {
+        return roleAkses;
+    }
+
+    public void setRoleAkses(String roleAkses) {
+        this.roleAkses = roleAkses;
+    }
 }

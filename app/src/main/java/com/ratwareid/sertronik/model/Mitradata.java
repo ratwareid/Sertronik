@@ -10,16 +10,17 @@ public class Mitradata {
 
     public Mitradata(){}
 
-    public Mitradata(String namaToko,String alamatToko,String latitude,String longitude,String noTlp,String specialist){
+    public Mitradata(String namaToko,String alamatToko,String latitude,String longitude,String noTlp,String specialist,String jenisService){
         this.namaToko = namaToko;
         this.alamatToko = alamatToko;
         this.latitude = latitude;
         this.longitude = longitude;
         this.noTlp = noTlp;
+        this.jenisService = jenisService;
         this.specialist = specialist;
     }
 
-    private String namaToko,alamatToko,latitude,longitude,noTlp,specialist;
+    private String namaToko,alamatToko,latitude,longitude,noTlp,jenisService,specialist;
 
     public String getNamaToko() {
         return namaToko;
@@ -67,5 +68,13 @@ public class Mitradata {
 
     public void setSpecialist(String specialist) {
         this.specialist = specialist;
+    }
+
+    public String getJenisService() {
+        return jenisService;
+    }
+
+    public void setJenisService(String jenisService) {
+        this.jenisService = jenisService;
     }
 }

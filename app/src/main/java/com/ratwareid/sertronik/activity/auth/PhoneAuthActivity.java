@@ -226,7 +226,7 @@ public class PhoneAuthActivity extends AppCompatActivity implements View.OnClick
                 if (task.isSuccessful()) {
                     //FirebaseUser user = task.getResult().getUser();
                     if (prevMode.equalsIgnoreCase("REGISTER")) {
-                        Userdata userdata = new Userdata(prevName, prevPhoneNumber, null, prevPassword,null);
+                        Userdata userdata = new Userdata(prevName, prevPhoneNumber, null, prevPassword,null,"USER");
                         databaseReference.child(prevPhoneNumber).setValue(userdata);
                     }
                     startActivity(new Intent(PhoneAuthActivity.this, HomeActivity.class));
