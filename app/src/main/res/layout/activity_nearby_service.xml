@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.user.order.NearbyServiceActivity">
+    tools:context=".activity.user.order.nearby.NearbyServiceActivity">
 
     <fragment
         android:id="@+id/fragmentMap"

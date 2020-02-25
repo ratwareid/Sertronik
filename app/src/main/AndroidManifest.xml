@@ -20,6 +20,9 @@
         <activity android:name=".activity.user.profile.UserProfileActivity" />
         <activity android:name=".activity.user.order.ChooseTeknisiActivity" />
         <activity android:name=".activity.user.order.PickupServiceActivity" />
+        <activity android:name=".activity.user.order.SelectMitraActivity"/>
+        <activity android:name=".activity.user.order.pickup.DetailPickupActivity"/>
+        <activity android:name=".activity.user.order.nearby.NearbyServiceActivity"/>
         <activity android:name=".activity.home.MitraActivity" />
         <activity android:name=".activity.login.LoginActivity">
             <intent-filter>
@@ -34,7 +37,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD2h1qdNbwKJPg3In5Io8RTThO2f5Ngdlo" />
 
-        <activity android:name=".activity.user.order.NearbyServiceActivity" />
         <activity android:name=".activity.user.SelectedCategoryActivity" />
         <activity android:name=".activity.admin.AddNewCategoryActivity" />
         <activity android:name=".activity.home.HomeActivity" />

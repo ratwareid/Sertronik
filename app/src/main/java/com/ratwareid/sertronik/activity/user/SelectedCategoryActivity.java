@@ -8,9 +8,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.ratwareid.sertronik.R;
-import com.ratwareid.sertronik.activity.user.order.NearbyServiceActivity;
 import com.ratwareid.sertronik.activity.user.order.PickupServiceActivity;
-
+import com.ratwareid.sertronik.activity.user.order.nearby.NearbyServiceActivity;
 public class SelectedCategoryActivity extends AppCompatActivity {
 
     String category;

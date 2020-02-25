@@ -6,42 +6,42 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical"
-    android:padding="10dp"
     app:behavior_hideable="true"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <LinearLayout
+        android:padding="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+        <com.ratwareid.sertronik.custom_ui.ImageViewRounded
+            android:id="@+id/imageThumbnail"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:src="@color/black" />
 
         <LinearLayout
+            android:layout_marginStart="8dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/namaToko"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:fontFamily="@font/montserrat"
                 android:text="Nama Toko Mitra"
                 android:textColor="@color/default_text_color"
                 android:textSize="16sp" />
 
             <TextView
+                android:scrollbars="vertical"
+                android:layout_marginTop="4dp"
                 android:id="@+id/alamatMitra"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:fontFamily="@font/metrophobic"
                 android:text="Alamat :"
                 android:textColor="@color/black"
@@ -51,10 +51,49 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/buttonCall"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Hubungi Toko" />
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_margin="12dp"
+            android:id="@+id/linearAction"
+            android:layout_marginTop="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:padding="8dp"
+                android:drawableStart="@drawable/ic_call_normal_white"
+                android:layout_marginEnd="4dp"
+                android:fontFamily="@font/raleway"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:background="@drawable/button_call_rounded"
+                android:layout_weight="1"
+                android:id="@+id/buttonCall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hubungi Toko" />
+
+            <Button
+                android:padding="8dp"
+                android:drawableStart="@drawable/ic_directions"
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/raleway"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:background="@drawable/button_direction_rounded"
+                android:layout_weight="1"
+                android:id="@+id/buttonDirection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Arahkan Saya" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
 
 </LinearLayout>
