@@ -184,5 +184,6 @@
         android:src="@drawable/ic_pick_up_white"
         android:layout_margin="16dp"
         app:backgroundTint="@color/colorPrimaryDark"
-        app:rippleColor="@color/colorPrimaryDark" />
+        app:rippleColor="@color/colorPrimaryDark"
+        android:onClick="sendOrderTask"/>
 </RelativeLayout>

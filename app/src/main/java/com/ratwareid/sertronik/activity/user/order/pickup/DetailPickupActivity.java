@@ -3,6 +3,7 @@ package com.ratwareid.sertronik.activity.user.order.pickup;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -62,5 +63,9 @@ public class DetailPickupActivity extends AppCompatActivity {
         mitraSpecialist = getIntent().getStringExtra("mitraSpecialist");
         mitraLocation = getIntent().getStringExtra("mitraLocation");
         mitraPhoneNumber = getIntent().getStringExtra("mitraPhoneNumber");
+    }
+
+    public void sendOrderTask(View view) {
+
     }
 }
