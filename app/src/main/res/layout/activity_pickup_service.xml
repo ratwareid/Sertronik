@@ -1,120 +1,197 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.user.order.PickupServiceActivity">
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".activity.user.order.pickup.PickupServiceActivity">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp" >
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Penjemputan Service"
-        android:textAlignment="center"
-        android:textSize="22dp"
-        android:layout_margin="20dp"/>
+        android:layout_height="match_parent">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputNamaBarang"
+        <LinearLayout
+            android:padding="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nama Barang"
-            android:enabled="false"/>
+            android:orientation="vertical">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:layout_marginTop="16dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:fontFamily="@font/montserrat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Layanan Jemput Barang"
+                android:textAlignment="textStart"
+                android:textSize="18sp"/>
+            <TextView
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/default_text_color"
+                android:fontFamily="@font/montserrat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/description_jemput_barang"
+                android:textAlignment="textStart"
+                android:textSize="14sp"/>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:hint="@string/nama_pemesan"
+                android:layout_height="wrap_content">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputBrandBarang"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Brand / Merk Barang"/>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputSenderName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:enabled="false"/>
 
-    </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:hint="@string/nomor_telepon_pemesan"
+                android:layout_height="wrap_content">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputUkuranBarang"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Ukuran Barang"/>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputSenderPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:enabled="false"/>
 
-    </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <View
+                android:layout_marginVertical="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorAccent"/>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputKerusakan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Kerusakan"
-            android:maxLines="3"/>
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:hint="@string/nama_barang"
+                android:layout_height="wrap_content">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputAlamatPenjemputan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Alamat Penjemputan Barang"
-            android:editable="false"/>
-    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputNamaBarang"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:enabled="false"/>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputLatitude"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Hidden Latitude"
-            android:visibility="gone"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputLongitude"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Hidden Longitude"
-            android:visibility="gone"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/merk"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-    <fragment
-        android:id="@+id/fragmentMap"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginBottom="20dp"/>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputBrandBarang"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
-    <Button
-        android:id="@+id/btnNextOrder"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="NEXT"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-    </LinearLayout>
-</ScrollView>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:hint="@string/ukuran"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputUkuranBarang"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/jelaskan_kerusakan"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputKerusakan"
+                    android:gravity="top"
+                    android:layout_width="match_parent"
+                    android:lines="5"
+                    android:layout_height="wrap_content"
+                    android:maxLines="6"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:hint="@string/alamat_penjemputan_barang">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputAlamatPenjemputan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:editable="false"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputLatitude"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Hidden Latitude"
+                    android:visibility="gone"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputLongitude"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Hidden Longitude"
+                    android:visibility="gone"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <fragment
+                android:id="@+id/fragmentMap"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:layout_marginBottom="20dp"/>
+
+            <Button
+                android:textAllCaps="false"
+                android:padding="8dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/montserrat"
+                android:background="@drawable/button_oval_primary"
+                android:id="@+id/btnNextOrder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/selanjutnya"/>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

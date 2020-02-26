@@ -31,19 +31,22 @@ import com.ratwareid.sertronik.activity.admin.AddNewCategoryActivity;
 import com.ratwareid.sertronik.activity.login.LoginActivity;
 import com.ratwareid.sertronik.activity.user.profile.UserProfileActivity;
 import com.ratwareid.sertronik.adapter.CategoryAdapter;
+import com.ratwareid.sertronik.adapter.OrderAdapter;
 import com.ratwareid.sertronik.helper.UniversalKey;
 import com.ratwareid.sertronik.model.Category;
+import com.ratwareid.sertronik.model.Order;
 import com.ratwareid.sertronik.model.Userdata;
 
 import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private DatabaseReference databaseImageIcon,databaseCurrentUser;
+    private DatabaseReference databaseImageIcon, databaseCurrentUser, databaseMitradata;
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private RecyclerView recyclerHome,recyclerOrder;
     private GridLayoutManager layoutManager;
+    private LinearLayoutManager layoutManagerOrder;
     private CategoryAdapter adapter;
     private ArrayList<Category> categories;
     private ImageView imageProfile;
@@ -52,6 +55,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private TextView textGreetingMessage;
     private Userdata userdata;
     private String phoneNum;
+
+    private OrderAdapter orderAdapter;
+
+    private ArrayList<Order> orderArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,13 +107,18 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         categories = new ArrayList<>();
         layoutManager = new GridLayoutManager(HomeActivity.this, 3, RecyclerView.VERTICAL, false);
+
+        layoutManagerOrder = new LinearLayoutManager(HomeActivity.this, RecyclerView.HORIZONTAL, false);
+
+        recyclerOrder.setLayoutManager(layoutManagerOrder);
+
         recyclerHome.setLayoutManager(layoutManager);
         recyclerHome.setHasFixedSize(true);
-        recyclerOrder.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        recyclerOrder.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
 
         databaseCurrentUser = FirebaseDatabase.getInstance().getReference(UniversalKey.USERDATA_PATH);
         databaseImageIcon = FirebaseDatabase.getInstance().getReference(UniversalKey.IMAGE_CATEGORY_DATABASE_PATH);
+        databaseMitradata = FirebaseDatabase.getInstance().getReference(UniversalKey.MITRADATA_PATH);
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -120,11 +132,33 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 userdata = dataSnapshot.child(phoneNum).getValue(Userdata.class);
-                textGreetingMessage.setText("Hello "+userdata.getFullName()+",");
+                textGreetingMessage.setText("Hai "+userdata.getFullName()+",");
                 if (userdata.getMitraID() == null){
                     btnJoinMitra.setVisibility(View.VISIBLE);
                     btnJoinMitra.setEnabled(true);
+
                 }else{
+                    orderArrayList = new ArrayList<>();
+
+                    databaseMitradata.child(userdata.getMitraID()).child("listOrder").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                                Order order = snapshot.getValue(Order.class);
+                                order.setKey(snapshot.getKey());
+                                orderArrayList.add(order);
+
+                                orderAdapter = new OrderAdapter(orderArrayList, HomeActivity.this);
+                                recyclerOrder.setAdapter(orderAdapter);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
                     btnJoinMitra.setVisibility(View.GONE);
                     //recyclerHome.setVisibility(View.GONE);
                 }

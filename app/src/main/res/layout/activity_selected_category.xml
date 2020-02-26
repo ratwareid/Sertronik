@@ -148,6 +148,7 @@
 
         <androidx.cardview.widget.CardView
             android:layout_margin="8dp"
+            android:onClick="openCallService"
             app:cardElevation="8dp"
             app:cardBackgroundColor="#f0f0f0"
             android:layout_width="match_parent"

@@ -18,8 +18,10 @@ import com.ratwareid.sertronik.adapter.SelectMitraAdapter;
 import com.ratwareid.sertronik.helper.UniversalHelper;
 import com.ratwareid.sertronik.helper.UniversalKey;
 import com.ratwareid.sertronik.model.Mitradata;
+import com.ratwareid.sertronik.model.Order;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SelectMitraActivity extends AppCompatActivity {
 
@@ -30,6 +32,10 @@ public class SelectMitraActivity extends AppCompatActivity {
     private DatabaseReference reference;
     private ArrayList<Mitradata> mitradataArrayList;
 
+    public String name , brand, size , crash, pickupAddress, latitude, longitude, keyMitraID, senderName , senderPhone;
+
+    public int orderType;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +43,22 @@ public class SelectMitraActivity extends AppCompatActivity {
 
         this.getSupportActionBar().hide();
 
+        this.getDataFromIntent();
+
         this.initWidgets();
+    }
+
+    private void getDataFromIntent() {
+        name = getIntent().getStringExtra("name");
+        brand = getIntent().getStringExtra("brand");
+        size = getIntent().getStringExtra("size");
+        crash = getIntent().getStringExtra("crash");
+        pickupAddress = getIntent().getStringExtra("pickupAddress");
+        latitude = getIntent().getStringExtra("latitude");
+        longitude = getIntent().getStringExtra("longitude");
+        orderType = getIntent().getIntExtra("orderType", 0);
+        senderName = getIntent().getStringExtra("senderName");
+        senderPhone = getIntent().getStringExtra("senderPhone");
     }
 
     private void initWidgets() {
@@ -49,9 +70,15 @@ public class SelectMitraActivity extends AppCompatActivity {
         reference.child(UniversalKey.MITRADATA_PATH).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                List<Order> orders = new ArrayList<>();
+
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Mitradata mitradata = snapshot.getValue(Mitradata.class);
 
+                    orders.add(snapshot.getValue(Order.class));
+
+                    mitradata.setMitraID(snapshot.getKey());
                     mitradataArrayList.add(mitradata);
                     selectMitraAdapter = new SelectMitraAdapter(mitradataArrayList, SelectMitraActivity.this );
                     recyclerSelectMitra.setAdapter(selectMitraAdapter);

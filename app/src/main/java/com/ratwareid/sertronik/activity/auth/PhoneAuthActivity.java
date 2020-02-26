@@ -82,6 +82,8 @@ public class PhoneAuthActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_auth);
 
+        this.getSupportActionBar().hide();
+
         // Restore instance state
         if (savedInstanceState != null) {
             onRestoreInstanceState(savedInstanceState);
@@ -118,6 +120,8 @@ public class PhoneAuthActivity extends AppCompatActivity implements View.OnClick
         mResendButton = findViewById(R.id.buttonResend);
         mLayoutTimer = findViewById(R.id.LLwaiter);
         mFieldCounter = findViewById(R.id.tvCounterTimer);
+
+        mStatusText.setText("Kami telah mengirimkan kode verifikasi ke nomor " + getIntent().getStringExtra("phonenumber"));
 
         // Assign click listeners
         mVerifyButton.setOnClickListener(this);

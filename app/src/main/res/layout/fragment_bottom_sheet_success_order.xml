@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".bottomsheet.BottomSheetSuccessOrder">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_margin="8dp"
+        android:textSize="18sp"
+        android:fontFamily="@font/montserrat"
+        android:textColor="@color/colorPrimaryDark"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Berhasil Pesan" />
+
+    <LinearLayout
+        android:padding="8dp"
+        android:background="#F8F7F7"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="128dp"
+            android:layout_height="156dp"
+            android:src="@drawable/order_success"/>
+
+        <TextView
+            android:padding="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat"
+            android:textSize="16sp"
+            android:layout_gravity="center"
+            android:gravity="start"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="Tunggu Sampai Mitra Mengkonfirmasi Pesanan-mu ya !"/>
+
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonOk"
+        android:textColor="@color/white"
+        android:fontFamily="@font/montserrat"
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Oke"
+        android:background="@drawable/button_primary_rounded"/>
+
+</LinearLayout>

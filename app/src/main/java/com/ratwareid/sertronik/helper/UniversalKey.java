@@ -15,6 +15,14 @@ public class UniversalKey {
     public static final String CATEGORY_CODE_MESIN_CUCI = "WSM";
     public static final String CATEGORY_CODE_RICE_COOKER = "RCK";
 
+    public static final int PICKUP_SERVICE = 633;
+    public static final int CALL_SERVICE = 905;
+
+    public static final int ORDER_ACCEPTED = 143;
+    public static final int WAITING_RESPONSE_ORDER = 431;
+    public static final int CANCEL_ORDER = 665;
+    public static final int ORDER_DECLINED = 206;
+
     public static final int PROXIMITY_RADIUS  = 5000;
 
     public static final String API_KEY = "AIzaSyD2h1qdNbwKJPg3In5Io8RTThO2f5Ngdlo";

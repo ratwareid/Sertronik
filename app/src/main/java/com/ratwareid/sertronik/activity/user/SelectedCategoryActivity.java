@@ -8,7 +8,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.ratwareid.sertronik.R;
-import com.ratwareid.sertronik.activity.user.order.PickupServiceActivity;
+import com.ratwareid.sertronik.activity.user.order.pickup.PickupServiceActivity;
+import com.ratwareid.sertronik.activity.user.order.call.CallServiceActivity;
 import com.ratwareid.sertronik.activity.user.order.nearby.NearbyServiceActivity;
 public class SelectedCategoryActivity extends AppCompatActivity {
 
@@ -36,6 +37,10 @@ public class SelectedCategoryActivity extends AppCompatActivity {
 
     public void openNearbyService(View view){
         startActivity(new Intent(SelectedCategoryActivity.this, NearbyServiceActivity.class).putExtra("categoryName", category));
+    }
+
+    public void openCallService(View view){
+        startActivity(new Intent(SelectedCategoryActivity.this, CallServiceActivity.class).putExtra("categoryName", category));
     }
 
     public void openPickupSerice(View view) {

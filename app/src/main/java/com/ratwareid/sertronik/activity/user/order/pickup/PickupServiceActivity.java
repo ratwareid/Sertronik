@@ -1,4 +1,4 @@
-package com.ratwareid.sertronik.activity.user.order;
+package com.ratwareid.sertronik.activity.user.order.pickup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,6 +13,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.service.autofill.UserData;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -40,21 +41,29 @@ import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.ratwareid.sertronik.R;
 import com.ratwareid.sertronik.activity.home.HomeActivity;
+import com.ratwareid.sertronik.activity.user.order.SelectMitraActivity;
 import com.ratwareid.sertronik.helper.UniversalKey;
+import com.ratwareid.sertronik.model.Userdata;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-public class PickupServiceActivity extends AppCompatActivity implements
+public class  PickupServiceActivity extends AppCompatActivity implements
         View.OnClickListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener, GoogleMap.OnMyLocationButtonClickListener {
 
     private EditText inputNamaBarang,inputBrandBarang,inputUkuranBarang,inputKerusakan,inputAlamatPenjemputan,
-                        inputLatitude,inputLongitude;
+                        inputLatitude,inputLongitude, inputNamaPemesan, inputNomorPemesan;
     private Button btnNext;
     private GoogleApiClient mGoogleApiClient;
     private SupportMapFragment mapFragment;
@@ -64,14 +73,29 @@ public class PickupServiceActivity extends AppCompatActivity implements
     private double longitude;
     private int REQUEST_ALAMAT_JEMPUT = 104;
 
+    private DatabaseReference reference;
+    private Userdata userdata;
+
+    private String phoneNumber;
+
+    private FirebaseAuth auth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        this.getSupportActionBar().hide();
+
         setContentView(R.layout.activity_pickup_service);
+
         initialize();
     }
 
     public void initialize(){
+
+        inputNamaPemesan = findViewById(R.id.inputSenderName);
+        inputNomorPemesan = findViewById(R.id.inputSenderPhone);
+
         inputNamaBarang = findViewById(R.id.inputNamaBarang);
         inputBrandBarang = findViewById(R.id.inputBrandBarang);
         inputUkuranBarang = findViewById(R.id.inputUkuranBarang);
@@ -81,6 +105,29 @@ public class PickupServiceActivity extends AppCompatActivity implements
         inputLatitude = findViewById(R.id.inputLatitude);
         inputLongitude = findViewById(R.id.inputLongitude);
         btnNext = findViewById(R.id.btnNextOrder);
+
+        auth = FirebaseAuth.getInstance();
+
+        phoneNumber = getPhoneNumber(auth.getCurrentUser().getPhoneNumber());
+
+        reference = FirebaseDatabase.getInstance().getReference(UniversalKey.USERDATA_PATH);
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                userdata = dataSnapshot.child(phoneNumber).getValue(Userdata.class);
+
+
+                inputNomorPemesan.setText(userdata.getNoTelephone());
+                inputNamaPemesan.setText(userdata.getFullName());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         btnNext.setOnClickListener(this);
 
         inputNamaBarang.setText(getIntent().getStringExtra("categoryName"));
@@ -88,6 +135,16 @@ public class PickupServiceActivity extends AppCompatActivity implements
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentMap);
         buildGoogleApiClient();
         mapFragment.getMapAsync(this);
+    }
+
+    public String getPhoneNumber(String noTxt){
+        char[] noTlp = noTxt.toCharArray();
+        if (noTlp[0] == '0'){
+            return noTxt;
+        }else if (noTlp[0] == '+'){
+            noTxt = noTxt.replace("+62","0");
+        }
+        return noTxt;
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -102,13 +159,16 @@ public class PickupServiceActivity extends AppCompatActivity implements
     public void onClick(View view) {
         if (view.equals(btnNext)){
             startActivity(new Intent(this, SelectMitraActivity.class)
-                .putExtra("namabarang",inputNamaBarang.getText().toString())
-                .putExtra("brandbarang",inputBrandBarang.getText().toString())
-                .putExtra("ukuranbarang",inputUkuranBarang.getText().toString())
-                .putExtra("kerusakanbarang",inputKerusakan.getText().toString())
-                .putExtra("alamatpickup",inputAlamatPenjemputan.getText().toString())
+                .putExtra("senderName",inputNamaPemesan.getText().toString())
+                .putExtra("senderPhone",inputNomorPemesan.getText().toString())
+                .putExtra("name",inputNamaBarang.getText().toString())
+                .putExtra("brand",inputBrandBarang.getText().toString())
+                .putExtra("size",inputUkuranBarang.getText().toString())
+                .putExtra("crash",inputKerusakan.getText().toString())
+                .putExtra("pickupAddress",inputAlamatPenjemputan.getText().toString())
                 .putExtra("latitude",inputLatitude.getText().toString())
                 .putExtra("longitude",inputLongitude.getText().toString())
+                .putExtra("orderType", UniversalKey.PICKUP_SERVICE)
             );
             finish();
         }

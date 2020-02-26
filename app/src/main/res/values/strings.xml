@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Sertronik</string>
-    <string name="description_servis_panggilan">Dapatkan kemudahan mencari tukang servis disekitar anda!</string>
+    <string name="description_servis_panggilan">Dapatkan Kemudahan Servis tanpa mengantarnya ke tempat servis dan dikerjakan dirumah anda!</string>
     <string name="servis_panggilan">Servis Panggilan</string>
     <string name="jemput_barang">Jemput Barang</string>
     <string name="description_jemput_barang">Dapatkan kemudahan servis barang tanpa mengantarnya ke tempat servis!</string>
@@ -14,10 +14,21 @@
     <string name="status_sign_in_failed">Login Gagal</string>
     <string name="signed_out">Logged out</string>
     <string name="signed_in">logged in</string>
+    <string name="merk">Merk / Brand</string>
+    <string name="nama_barang">Nama Barang</string>
+    <string name="ukuran">Ukuran atau Tipe</string>
+    <string name="jelaskan_kerusakan">Jelaskan Kerusakan</string>
+    <string name="alamat_penjemputan_barang">Alamat Penjemputan Barang</string>
+    <string name="selanjutnya">Selanjutnya</string>
+    <string name="nama_pemesan">Nama Pemesan</string>
+    <string name="nomor_telepon_pemesan">Nomor Telepon Pemesan</string>
 
     <string-array name="jenis_service">
         <item>Elektronik</item>
         <item>Kendaraan</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

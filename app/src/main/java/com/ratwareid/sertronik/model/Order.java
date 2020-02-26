@@ -10,12 +10,14 @@ public class Order {
 
     public Order(){}
 
-    private String orderID,itemName,itemBrand,itemSize,itemSymptom,senderAddress;
+    private String orderID,itemName,itemBrand,itemSize,itemSymptom,senderAddress, senderName , senderPhone, key;
     private String senderLatitude,senderLongitude,createDate,mitraID;
+    private int orderType, status;
 
-    public Order(String itemName, String itemBrand, String itemSize, String itemSymptom, String senderAddress,
-                 String senderLatitude, String senderLongitude, String createDate, String mitraID){
+    public Order(String senderName,String senderPhone,String itemName, String itemBrand, String itemSize, String itemSymptom, String senderAddress, String senderLatitude, String senderLongitude, String createDate, String mitraID, int orderType, int status) {
         this.itemName = itemName;
+        this.senderName = senderName;
+        this.senderPhone = senderPhone;
         this.itemBrand = itemBrand;
         this.itemSize = itemSize;
         this.itemSymptom = itemSymptom;
@@ -24,6 +26,48 @@ public class Order {
         this.senderLongitude = senderLongitude;
         this.createDate = createDate;
         this.mitraID = mitraID;
+        this.orderType = orderType;
+        this.status = status;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
+    public String getSenderPhone() {
+        return senderPhone;
+    }
+
+    public void setSenderPhone(String senderPhone) {
+        this.senderPhone = senderPhone;
+    }
+
+    public int getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(int orderType) {
+        this.orderType = orderType;
     }
 
     public String getOrderID() {

@@ -1,6 +1,5 @@
 package com.ratwareid.sertronik.adapter;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.ratwareid.sertronik.R;
+import com.ratwareid.sertronik.activity.user.order.SelectMitraActivity;
 import com.ratwareid.sertronik.activity.user.order.pickup.DetailPickupActivity;
 import com.ratwareid.sertronik.helper.UniversalHelper;
 import com.ratwareid.sertronik.model.Mitradata;
@@ -20,16 +20,15 @@ import com.ratwareid.sertronik.model.Mitradata;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
-import java.util.function.ToDoubleFunction;
 
 public class SelectMitraAdapter extends RecyclerView.Adapter<SelectMitraAdapter.ViewHolder> {
 
 
     private ArrayList<Mitradata> mitradataArrayList;
-    private Activity activity;
+    private SelectMitraActivity activity;
 
 
-    public SelectMitraAdapter(ArrayList<Mitradata> mitradataArrayList, Activity activity) {
+    public SelectMitraAdapter(ArrayList<Mitradata> mitradataArrayList, SelectMitraActivity activity) {
         this.mitradataArrayList = mitradataArrayList;
         this.activity = activity;
     }
@@ -56,10 +55,21 @@ public class SelectMitraAdapter extends RecyclerView.Adapter<SelectMitraAdapter.
             public void onClick(View v) {
                 activity.startActivity(
                         new Intent(activity, DetailPickupActivity.class)
+                                .putExtra("mitraID", mitradata.getMitraID())
                                 .putExtra("mitraName" , mitradata.getNamaToko())
                                 .putExtra("mitraLocation", mitradata.getAlamatToko())
                                 .putExtra("mitraPhoneNumber", mitradata.getNoTlp())
                                 .putExtra("mitraSpecialist", mitradata.getSpecialist())
+                                .putExtra("orderCategory", activity.name)
+                                .putExtra("orderBrand", activity.brand)
+                                .putExtra("orderSize", activity.size)
+                                .putExtra("orderCrash", activity.crash)
+                                .putExtra("orderPickupAddress", activity.pickupAddress)
+                                .putExtra("orderLatitude", activity.latitude)
+                                .putExtra("orderLongitude", activity.longitude)
+                                .putExtra("orderType", activity.orderType)
+                                .putExtra("senderName",activity.senderName)
+                                .putExtra("senderPhone",activity.senderPhone)
                         //TODO::NAMBAHIN PUT EXTRA RATING
                 );
             }

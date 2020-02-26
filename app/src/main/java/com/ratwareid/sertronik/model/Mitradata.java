@@ -16,26 +16,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.ratwareid.sertronik.helper.UniversalKey;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Mitradata {
 
-    {
-        listOrder = new ArrayList<>();
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference(UniversalKey.MITRADATA_PATH);
-        db.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (Object x : dataSnapshot.getChildren()){
-                    Order ord = (Order) x;
-                    listOrder.add(ord);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-    }
     public Mitradata(){}
 
     public Mitradata(String namaToko,String alamatToko,String latitude,String longitude,String noTlp,String specialist,String jenisService){
@@ -46,11 +30,17 @@ public class Mitradata {
         this.noTlp = noTlp;
         this.jenisService = jenisService;
         this.specialist = specialist;
-        this.listOrder = new ArrayList<>();
     }
 
-    private String namaToko,alamatToko,latitude,longitude,noTlp,jenisService,specialist;
-    private ArrayList<Order> listOrder;
+    private String namaToko,alamatToko,latitude,longitude,noTlp,jenisService,specialist, mitraID;
+
+    public String getMitraID() {
+        return mitraID;
+    }
+
+    public void setMitraID(String mitraID) {
+        this.mitraID = mitraID;
+    }
 
     public String getNamaToko() {
         return namaToko;
@@ -108,11 +98,4 @@ public class Mitradata {
         this.jenisService = jenisService;
     }
 
-    public ArrayList<Order> getListOrder() {
-        return listOrder;
-    }
-
-    public void setListOrder(ArrayList<Order> listOrder) {
-        this.listOrder = listOrder;
-    }
 }
