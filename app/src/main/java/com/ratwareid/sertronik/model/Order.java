@@ -12,6 +12,7 @@ public class Order {
 
     private String orderID,itemName,itemBrand,itemSize,itemSymptom,senderAddress, senderName , senderPhone, key;
     private String senderLatitude,senderLongitude,createDate,mitraID;
+    private String notifState;
     private int orderType, status;
 
     public Order(String senderName,String senderPhone,String itemName, String itemBrand, String itemSize, String itemSymptom, String senderAddress, String senderLatitude, String senderLongitude, String createDate, String mitraID, int orderType, int status) {
@@ -148,5 +149,13 @@ public class Order {
 
     public void setMitraID(String mitraID) {
         this.mitraID = mitraID;
+    }
+
+    public String getNotifState() {
+        return notifState;
+    }
+
+    public void setNotifState(String notifState) {
+        this.notifState = notifState;
     }
 }

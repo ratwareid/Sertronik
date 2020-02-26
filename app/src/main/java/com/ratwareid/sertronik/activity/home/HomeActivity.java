@@ -2,11 +2,14 @@ package com.ratwareid.sertronik.activity.home;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -41,7 +44,7 @@ import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private DatabaseReference databaseImageIcon, databaseCurrentUser, databaseMitradata;
+    private DatabaseReference databaseImageIcon,databaseCurrentUser,databaseOrder,databaseMitradata;
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private RecyclerView recyclerHome,recyclerOrder;
@@ -55,20 +58,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private TextView textGreetingMessage;
     private Userdata userdata;
     private String phoneNum;
-
+    private int countnotifID = 0;
     private OrderAdapter orderAdapter;
-
+    private ArrayList<Order> orderNotification;
     private ArrayList<Order> orderArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
         getSupportActionBar().hide();
-
         initWidgets();
-
         getDataFromFirebase();
     }
 
@@ -160,6 +160,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     });
 
                     btnJoinMitra.setVisibility(View.GONE);
+                    databaseOrder = FirebaseDatabase.getInstance().getReference(UniversalKey.MITRADATA_PATH).child(userdata.getMitraID()).child("listOrder");
+                    checkIncomingOrder();
                     //recyclerHome.setVisibility(View.GONE);
                 }
             }
@@ -231,4 +233,52 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
         mBackPressed = System.currentTimeMillis();
     }
+
+    private void checkIncomingOrder() {
+        databaseOrder.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                orderNotification = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Order ord = snapshot.getValue(Order.class);
+                    if (ord.getStatus() == UniversalKey.WAITING_RESPONSE_ORDER) {
+                        if (ord.getNotifState() == null) {
+                            countnotifID++;
+                            checkAndShowNotification(ord.getMitraID(),countnotifID);
+                            ord.setNotifState(UniversalKey.STATE_ISSHOW);
+                            databaseOrder.child(snapshot.getKey()).setValue(ord);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void checkAndShowNotification(String channelID,int notificationId){
+        // Create an explicit intent for an Activity in your app
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelID)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Sertronik Apps")
+                .setContentText("Ada order masuk untukmu ! \n Segera ambil sebelum 5 menit.")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                // Set the intent that will fire when the user taps the notification
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        // notificationId is a unique int for each notification that you must define
+        notificationManager.notify(notificationId, builder.build());
+
+    }
+
 }

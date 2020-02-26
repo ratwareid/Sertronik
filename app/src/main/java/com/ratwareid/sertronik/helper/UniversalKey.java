@@ -15,6 +15,8 @@ public class UniversalKey {
     public static final String CATEGORY_CODE_MESIN_CUCI = "WSM";
     public static final String CATEGORY_CODE_RICE_COOKER = "RCK";
 
+    public static final String STATE_ISSHOW = "1";
+
     public static final int PICKUP_SERVICE = 633;
     public static final int CALL_SERVICE = 905;
 
@@ -30,4 +32,5 @@ public class UniversalKey {
 
     public static final int RC_SIGN_IN = 9001;
     public static final int TIME_INTERVAL = 2000;
+
 }
