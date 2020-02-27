@@ -293,7 +293,7 @@ public class MitraActivity extends AppCompatActivity implements OnMapReadyCallba
     private void daftarMitra(){
         Mitradata mitra = new Mitradata(inputNamaToko.getText().toString(),inputAlamatToko.getText().toString(),
                 inputLatitude.getText().toString(),inputLongitude.getText().toString(),currentUser.getCurrentUser().getPhoneNumber(),getSpecialist(),spnJenis.getSelectedItem().toString());
-        String mitraID = databaseMitra.push().getKey();
+        String mitraID = currentUser.getUid();
         databaseUser.child(prevPhone).child("mitraID").setValue(mitraID);
         databaseMitra.child(mitraID).setValue(mitra);
         finish();

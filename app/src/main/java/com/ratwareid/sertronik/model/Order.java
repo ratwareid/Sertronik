@@ -12,10 +12,11 @@ public class Order {
 
     private String orderID,itemName,itemBrand,itemSize,itemSymptom,senderAddress, senderName , senderPhone, key;
     private String senderLatitude,senderLongitude,createDate,mitraID;
-    private String notifState;
-    private int orderType, status;
+    private int orderType, status,notifState;
 
-    public Order(String senderName,String senderPhone,String itemName, String itemBrand, String itemSize, String itemSymptom, String senderAddress, String senderLatitude, String senderLongitude, String createDate, String mitraID, int orderType, int status) {
+    public Order(String senderName,String senderPhone,String itemName, String itemBrand, String itemSize, String itemSymptom,
+                 String senderAddress, String senderLatitude, String senderLongitude, String createDate, String mitraID,
+                 int orderType, int status,int notifState) {
         this.itemName = itemName;
         this.senderName = senderName;
         this.senderPhone = senderPhone;
@@ -29,6 +30,7 @@ public class Order {
         this.mitraID = mitraID;
         this.orderType = orderType;
         this.status = status;
+        this.notifState = notifState;
     }
 
     public String getKey() {
@@ -151,11 +153,11 @@ public class Order {
         this.mitraID = mitraID;
     }
 
-    public String getNotifState() {
+    public int getNotifState() {
         return notifState;
     }
 
-    public void setNotifState(String notifState) {
+    public void setNotifState(int notifState) {
         this.notifState = notifState;
     }
 }

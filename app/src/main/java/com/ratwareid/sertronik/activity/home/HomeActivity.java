@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,7 +43,7 @@ import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private DatabaseReference databaseImageIcon,databaseCurrentUser,databaseOrder,databaseMitradata;
+    private DatabaseReference databaseImageIcon,databaseCurrentUser, databaseMitraOrder,databaseUserOrder,databaseMitradata;
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private RecyclerView recyclerHome,recyclerOrder;
@@ -128,18 +127,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         mAuth = FirebaseAuth.getInstance();
         phoneNum = getPhoneNumber(mAuth.getCurrentUser().getPhoneNumber());
-        databaseCurrentUser.addValueEventListener(new ValueEventListener() {
+        databaseCurrentUser.child(phoneNum).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                userdata = dataSnapshot.child(phoneNum).getValue(Userdata.class);
+                userdata = dataSnapshot.getValue(Userdata.class);
                 textGreetingMessage.setText("Hai "+userdata.getFullName()+",");
                 if (userdata.getMitraID() == null){
                     btnJoinMitra.setVisibility(View.VISIBLE);
                     btnJoinMitra.setEnabled(true);
-
                 }else{
                     orderArrayList = new ArrayList<>();
-
                     databaseMitradata.child(userdata.getMitraID()).child("listOrder").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -160,9 +157,52 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     });
 
                     btnJoinMitra.setVisibility(View.GONE);
-                    databaseOrder = FirebaseDatabase.getInstance().getReference(UniversalKey.MITRADATA_PATH).child(userdata.getMitraID()).child("listOrder");
-                    checkIncomingOrder();
-                    //recyclerHome.setVisibility(View.GONE);
+                    recyclerHome.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        databaseMitraOrder = FirebaseDatabase.getInstance().getReference(UniversalKey.MITRADATA_PATH).child(mAuth.getCurrentUser().getUid()).child("listOrder");
+        databaseMitraOrder.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                orderNotification = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Order ord = snapshot.getValue(Order.class);
+                    if (ord.getNotifState() == UniversalKey.NOTIF_STATE_NEW) {
+                        if (ord.getStatus() == UniversalKey.WAITING_RESPONSE_ORDER) {
+                            countnotifID++;
+                            checkAndShowNotification(ord.getMitraID(), countnotifID, "NEWORDER");
+                            databaseMitraOrder.child(snapshot.getKey()).child("notifState").setValue(UniversalKey.NOTIF_STATE_SHOW);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        databaseUserOrder = FirebaseDatabase.getInstance().getReference(UniversalKey.USERDATA_PATH).child(getPhoneNumber(mAuth.getCurrentUser().getPhoneNumber())).child("orderList");
+        databaseUserOrder.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                orderNotification = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Order ord = snapshot.getValue(Order.class);
+                    if (ord.getNotifState() == UniversalKey.NOTIF_STATE_NEW) {
+                        if (ord.getStatus() == UniversalKey.ORDER_ACCEPTED || ord.getStatus() == UniversalKey.ORDER_DECLINED) {
+                            countnotifID++;
+                            checkAndShowNotification(ord.getMitraID(), countnotifID, "ORDERACC");
+                            databaseUserOrder.child(snapshot.getKey()).child("notifState").setValue(UniversalKey.NOTIF_STATE_SHOW);
+                        }
+                    }
                 }
             }
 
@@ -234,19 +274,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         mBackPressed = System.currentTimeMillis();
     }
 
-    private void checkIncomingOrder() {
-        databaseOrder.addValueEventListener(new ValueEventListener() {
+    private void checkUserOrder(String noTlp) {
+        databaseUserOrder = FirebaseDatabase.getInstance().getReference(UniversalKey.USERDATA_PATH).child(noTlp).child("orderList");
+        databaseUserOrder.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 orderNotification = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Order ord = snapshot.getValue(Order.class);
-                    if (ord.getStatus() == UniversalKey.WAITING_RESPONSE_ORDER) {
-                        if (ord.getNotifState() == null) {
+                    if (ord.getNotifState() == UniversalKey.NOTIF_STATE_NEW) {
+                        if (ord.getStatus() == UniversalKey.ORDER_ACCEPTED || ord.getStatus() == UniversalKey.ORDER_DECLINED) {
                             countnotifID++;
-                            checkAndShowNotification(ord.getMitraID(),countnotifID);
-                            ord.setNotifState(UniversalKey.STATE_ISSHOW);
-                            databaseOrder.child(snapshot.getKey()).setValue(ord);
+                            checkAndShowNotification(ord.getMitraID(), countnotifID, "ORDERACC");
+                            databaseUserOrder.child(snapshot.getKey()).child("notifState").setValue(UniversalKey.NOTIF_STATE_SHOW);
                         }
                     }
                 }
@@ -259,26 +299,60 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    private void checkAndShowNotification(String channelID,int notificationId){
+    private void checkIncomingOrder(String mitraID) {
+        databaseMitraOrder = FirebaseDatabase.getInstance().getReference(UniversalKey.MITRADATA_PATH).child(mitraID).child("listOrder");
+        databaseMitraOrder.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                orderNotification = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Order ord = snapshot.getValue(Order.class);
+                    if (ord.getNotifState() == UniversalKey.NOTIF_STATE_NEW) {
+                        if (ord.getStatus() == UniversalKey.WAITING_RESPONSE_ORDER) {
+                            countnotifID++;
+                            checkAndShowNotification(ord.getMitraID(), countnotifID, "NEWORDER");
+                            databaseMitraOrder.child(snapshot.getKey()).child("notifState").setValue(UniversalKey.NOTIF_STATE_SHOW);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void checkAndShowNotification(String channelID,int notificationId,String state){
         // Create an explicit intent for an Activity in your app
-        Intent intent = new Intent(this, HomeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        String message = null;
+        if (state.equals("NEWORDER")) {
+            message = "Ada order baru untukmu ! Segera cek disini.";
+        }else if (state.equals("ORDERACC")){
+            message = "Hore,order kamu sudah diterima oleh teknisi.";
+        }else if (state.equals("ORDERDEC")){
+            message = "Ops,order kamu ditolak oleh teknisi.";
+        }
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelID)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Sertronik Apps")
-                .setContentText("Ada order masuk untukmu ! \n Segera ambil sebelum 5 menit.")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                // Set the intent that will fire when the user taps the notification
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true);
+        if (message != null) {
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelID)
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentTitle("Sertronik Apps")
+                    .setContentText(message)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    // Set the intent that will fire when the user taps the notification
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true);
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
-        // notificationId is a unique int for each notification that you must define
-        notificationManager.notify(notificationId, builder.build());
-
+            // notificationId is a unique int for each notification that you must define
+            notificationManager.notify(notificationId, builder.build());
+        }
     }
 
 }

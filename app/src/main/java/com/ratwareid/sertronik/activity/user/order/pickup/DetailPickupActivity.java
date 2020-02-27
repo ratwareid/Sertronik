@@ -114,10 +114,12 @@ public class DetailPickupActivity extends AppCompatActivity {
     public void sendOrderTask(View view) {
 
         String mitraId = getIntent().getStringExtra("mitraID");
-
+        Order order = new Order(senderName,senderPhone,orderCategory, orderBrand, orderSize, orderCrash,
+                orderPickupAddress, orderLatitude, orderLongitude, String.valueOf(new Date().getTime()),
+                mitraId, orderType, UniversalKey.WAITING_RESPONSE_ORDER,UniversalKey.NOTIF_STATE_NEW);
         reference.child(UniversalKey.MITRADATA_PATH).child(mitraId).child("listOrder")
                 .push()
-                .setValue(new Order(senderName,senderPhone,orderCategory, orderBrand, orderSize, orderCrash, orderPickupAddress, orderLatitude, orderLongitude, String.valueOf(new Date().getTime()), mitraId, orderType, UniversalKey.WAITING_RESPONSE_ORDER))
+                .setValue(order)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -130,5 +132,6 @@ public class DetailPickupActivity extends AppCompatActivity {
                         }
                     }
                 });
+        reference.child(UniversalKey.USERDATA_PATH).child(senderPhone).child("orderList").push().setValue(order);
     }
 }
