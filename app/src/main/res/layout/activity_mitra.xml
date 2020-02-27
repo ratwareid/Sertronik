@@ -170,6 +170,24 @@
                     android:layout_height="wrap_content"
                     android:text="Oven"/>
 
+                <CheckBox
+                    android:id="@+id/spPonsel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ponsel"/>
+
+                <CheckBox
+                    android:id="@+id/spRadio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Radio"/>
+
+                <CheckBox
+                    android:id="@+id/spAC"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="AC"/>
+
             </LinearLayout>
 
         </LinearLayout>

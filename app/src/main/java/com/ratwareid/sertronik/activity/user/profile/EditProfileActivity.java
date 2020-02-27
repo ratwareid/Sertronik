@@ -28,7 +28,8 @@ import com.ratwareid.sertronik.model.Userdata;
 public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText inputFullname,inputEmail,inputNoTlp,inputMitraID,inputNamaBengkel,inputAlamatBengkel;
-    private CheckBox spTV,spKulkas,spMesinCuci,spKipas,spPenanakNasi,spKamera,spOven,spMotor,spMobil,spSepeda;
+    private CheckBox spTV,spKulkas,spMesinCuci,spKipas,spPenanakNasi,spKamera,spOven,spPonsel,spRadio,spAC,
+                    spMotor,spMobil,spSepeda;
     private LinearLayout layoutElektronik,layoutKendaraan;
     private String prevFullname,prevEmail,prevNoTlp,prevMitraID,prevNamaBengkel,prevAlamatMitra,prevJenis,prevSpecialist;
     private Button btnSimpan;
@@ -59,6 +60,9 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         spPenanakNasi = findViewById(R.id.spPenanakNasi);
         spKamera = findViewById(R.id.spKamera);
         spOven = findViewById(R.id.spOven);
+        spPonsel = findViewById(R.id.spPonsel);
+        spRadio = findViewById(R.id.spRadio);
+        spAC = findViewById(R.id.spAC);
         spMotor = findViewById(R.id.spMotor);
         spMobil = findViewById(R.id.spMobil);
         spSepeda = findViewById(R.id.spSepeda);
@@ -144,6 +148,9 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                 if (a.equalsIgnoreCase("Penanak Nasi")){ spPenanakNasi.setChecked(true); }
                 if (a.equalsIgnoreCase("Kamera")){ spKamera.setChecked(true); }
                 if (a.equalsIgnoreCase("Oven")){ spOven.setChecked(true); }
+                if (a.equalsIgnoreCase("Ponsel")) spPonsel.setChecked(true);
+                if (a.equalsIgnoreCase("Radio")) spRadio.setChecked(true);
+                if (a.equalsIgnoreCase("AC")) spAC.setChecked(true);
                 if (a.equalsIgnoreCase("Motor")){ spMotor.setChecked(true); }
                 if (a.equalsIgnoreCase("Mobil")){ spMobil.setChecked(true); }
                 if (a.equalsIgnoreCase("Sepeda")){ spSepeda.setChecked(true); }
@@ -161,6 +168,9 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             if (spPenanakNasi.isChecked()) sp.append("Penanak Nasi,");
             if (spKamera.isChecked()) sp.append("Kamera,");
             if (spOven.isChecked()) sp.append("Oven,");
+            if (spPonsel.isChecked()) sp.append("Ponsel,");
+            if (spRadio.isChecked()) sp.append("Radio,");
+            if (spAC.isChecked()) sp.append("AC,");
         }
         if (prevJenis.equalsIgnoreCase("Kendaraan")){
             if (spMotor.isChecked()) sp.append("Motor,");

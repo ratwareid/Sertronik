@@ -197,9 +197,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Order ord = snapshot.getValue(Order.class);
                     if (ord.getNotifState() == UniversalKey.NOTIF_STATE_NEW) {
-                        if (ord.getStatus() == UniversalKey.ORDER_ACCEPTED || ord.getStatus() == UniversalKey.ORDER_DECLINED) {
+                        if (ord.getStatus() == UniversalKey.ORDER_ACCEPTED) {
                             countnotifID++;
                             checkAndShowNotification(ord.getMitraID(), countnotifID, "ORDERACC");
+                            databaseUserOrder.child(snapshot.getKey()).child("notifState").setValue(UniversalKey.NOTIF_STATE_SHOW);
+                        }else if (ord.getStatus() == UniversalKey.ORDER_DECLINED) {
+                            countnotifID++;
+                            checkAndShowNotification(ord.getMitraID(), countnotifID, "ORDERDEC");
                             databaseUserOrder.child(snapshot.getKey()).child("notifState").setValue(UniversalKey.NOTIF_STATE_SHOW);
                         }
                     }
@@ -272,56 +276,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(getBaseContext(), "Tekan Back Sekali lagi untuk Keluar", Toast.LENGTH_SHORT).show();
         }
         mBackPressed = System.currentTimeMillis();
-    }
-
-    private void checkUserOrder(String noTlp) {
-        databaseUserOrder = FirebaseDatabase.getInstance().getReference(UniversalKey.USERDATA_PATH).child(noTlp).child("orderList");
-        databaseUserOrder.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                orderNotification = new ArrayList<>();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    Order ord = snapshot.getValue(Order.class);
-                    if (ord.getNotifState() == UniversalKey.NOTIF_STATE_NEW) {
-                        if (ord.getStatus() == UniversalKey.ORDER_ACCEPTED || ord.getStatus() == UniversalKey.ORDER_DECLINED) {
-                            countnotifID++;
-                            checkAndShowNotification(ord.getMitraID(), countnotifID, "ORDERACC");
-                            databaseUserOrder.child(snapshot.getKey()).child("notifState").setValue(UniversalKey.NOTIF_STATE_SHOW);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void checkIncomingOrder(String mitraID) {
-        databaseMitraOrder = FirebaseDatabase.getInstance().getReference(UniversalKey.MITRADATA_PATH).child(mitraID).child("listOrder");
-        databaseMitraOrder.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                orderNotification = new ArrayList<>();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    Order ord = snapshot.getValue(Order.class);
-                    if (ord.getNotifState() == UniversalKey.NOTIF_STATE_NEW) {
-                        if (ord.getStatus() == UniversalKey.WAITING_RESPONSE_ORDER) {
-                            countnotifID++;
-                            checkAndShowNotification(ord.getMitraID(), countnotifID, "NEWORDER");
-                            databaseMitraOrder.child(snapshot.getKey()).child("notifState").setValue(UniversalKey.NOTIF_STATE_SHOW);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
     }
 
     private void checkAndShowNotification(String channelID,int notificationId,String state){

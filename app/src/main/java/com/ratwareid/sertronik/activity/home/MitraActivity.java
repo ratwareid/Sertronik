@@ -84,7 +84,8 @@ public class MitraActivity extends AppCompatActivity implements OnMapReadyCallba
     private DatabaseReference databaseMitra;
     private DatabaseReference databaseUser;
     private FirebaseAuth currentUser;
-    private CheckBox spTV,spKulkas,spMesinCuci,spKipas,spPenanakNasi,spKamera,spOven,spMotor,spMobil,spSepeda;
+    private CheckBox spTV,spKulkas,spMesinCuci,spKipas,spPenanakNasi,spKamera,spOven,spPonsel,spRadio,spAC,
+                    spMotor,spMobil,spSepeda;
     private Spinner spnJenis;
     private LinearLayout formSPElektronik,formSPKendaraan;
 
@@ -117,6 +118,9 @@ public class MitraActivity extends AppCompatActivity implements OnMapReadyCallba
         spPenanakNasi = findViewById(R.id.spPenanakNasi);
         spKamera = findViewById(R.id.spKamera);
         spOven = findViewById(R.id.spOven);
+        spPonsel = findViewById(R.id.spPonsel);
+        spRadio = findViewById(R.id.spRadio);
+        spAC = findViewById(R.id.spAC);
         spMotor = findViewById(R.id.spMotor);
         spMobil = findViewById(R.id.spMobil);
         spSepeda = findViewById(R.id.spSepeda);
@@ -310,6 +314,9 @@ public class MitraActivity extends AppCompatActivity implements OnMapReadyCallba
             if (spPenanakNasi.isChecked()) sp.append("Penanak Nasi,");
             if (spKamera.isChecked()) sp.append("Kamera,");
             if (spOven.isChecked()) sp.append("Oven,");
+            if (spPonsel.isChecked()) sp.append("Ponsel,");
+            if (spRadio.isChecked()) sp.append("Radio,");
+            if (spAC.isChecked()) sp.append("AC,");
         }
         if (jenis.equalsIgnoreCase("Kendaraan")){
             if (spMotor.isChecked()) sp.append("Motor,");
