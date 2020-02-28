@@ -21,13 +21,13 @@
                 android:layout_height="196dp" />
 
             <TextView
-                android:layout_margin="8dp"
-                android:textColor="@color/colorPrimaryDark"
                 android:id="@+id/textMitraName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:fontFamily="@font/montserrat"
                 android:text="Toko Jaya Faisal"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="18sp" />
 
 
@@ -52,9 +52,9 @@
 
                 <TextView
                     android:id="@+id/textSpesialis"
-                    android:layout_marginTop="4dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
                     android:drawablePadding="8dp"
                     android:fontFamily="@font/montserrat"
                     android:gravity="center|start"
@@ -84,9 +84,9 @@
 
                 <TextView
                     android:id="@+id/textLocation"
-                    android:layout_marginTop="4dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
                     android:drawablePadding="8dp"
                     android:fontFamily="@font/montserrat"
                     android:gravity="center|start"
@@ -116,9 +116,9 @@
 
                 <TextView
                     android:id="@+id/textTestimony"
-                    android:layout_marginTop="4dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
                     android:drawablePadding="8dp"
                     android:fontFamily="@font/montserrat"
                     android:gravity="center|start"
@@ -166,13 +166,13 @@
 
             <TextView
                 android:id="@+id/textReport"
-                android:layout_marginTop="8dp"
-                android:layout_marginHorizontal="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Laporkan Mitra ini"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/montserrat"
-                android:textColor="#EF5350"/>
+                android:text="Laporkan Mitra ini"
+                android:textColor="#EF5350" />
 
         </LinearLayout>
 

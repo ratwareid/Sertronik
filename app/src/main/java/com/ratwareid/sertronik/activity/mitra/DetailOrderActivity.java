@@ -69,6 +69,7 @@ public class DetailOrderActivity extends AppCompatActivity implements View.OnCli
                     databaseOrder.child(userdata.getMitraID()).child("listOrder").child(key).setValue(order).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
+                            databaseUser.child(userdata.getNoTelephone()).child("orderList").child(key).setValue(order);
                             if (task.isSuccessful()){
                                 Toast.makeText(DetailOrderActivity.this, "Berhasil!", Toast.LENGTH_SHORT).show();
                             }

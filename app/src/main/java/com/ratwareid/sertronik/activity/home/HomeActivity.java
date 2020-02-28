@@ -130,6 +130,25 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 if (userdata.getMitraID() == null){
                     linearJoinMitra.setVisibility(View.VISIBLE);
                 }else{
+                    databaseMitradata.child(mAuth.getCurrentUser().getUid()).child("activeState").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Integer activeState = dataSnapshot.getValue(Integer.class);
+                            if (activeState == 0){
+                                mitraNotif.setVisibility(View.VISIBLE);
+                                recyclerOrder.setVisibility(View.GONE);
+                            }else{
+                                mitraNotif.setVisibility(View.GONE);
+                                recyclerOrder.setVisibility(View.VISIBLE);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
                     orderArrayList = new ArrayList<>();
                     databaseMitradata.child(userdata.getMitraID()).child("listOrder").addValueEventListener(new ValueEventListener() {
                         @Override
@@ -151,26 +170,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     });
 
                     linearJoinMitra.setVisibility(View.GONE);
-                    recyclerHome.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        databaseMitradata.child(mAuth.getCurrentUser().getUid()).child("activeState").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Integer activeState = dataSnapshot.getValue(Integer.class);
-                if (activeState == 0){
-                    mitraNotif.setVisibility(View.VISIBLE);
-                    recyclerOrder.setVisibility(View.GONE);
-                }else{
-                    mitraNotif.setVisibility(View.GONE);
-                    recyclerOrder.setVisibility(View.VISIBLE);
+                    //recyclerHome.setVisibility(View.GONE);
                 }
             }
 
@@ -188,13 +188,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 orderNotification = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Order ord = snapshot.getValue(Order.class);
-                    if (ord.getNotifState() == UniversalKey.NOTIF_STATE_NEW) {
+                    //if (ord.getNotifState() == UniversalKey.NOTIF_STATE_NEW) {
                         if (ord.getStatus() == UniversalKey.WAITING_RESPONSE_ORDER) {
                             countnotifID++;
                             checkAndShowNotification(ord.getMitraID(), countnotifID, "NEWORDER");
-                            databaseMitraOrder.child(snapshot.getKey()).child("notifState").setValue(UniversalKey.NOTIF_STATE_SHOW);
+                            //databaseMitraOrder.child(snapshot.getKey()).child("notifState").setValue(UniversalKey.NOTIF_STATE_SHOW);
                         }
-                    }
+                    //}
                 }
             }
 
@@ -211,17 +211,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 orderNotification = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Order ord = snapshot.getValue(Order.class);
-                    if (ord.getNotifState() == UniversalKey.NOTIF_STATE_NEW) {
+                    //if (ord.getNotifState() == UniversalKey.NOTIF_STATE_NEW) {
                         if (ord.getStatus() == UniversalKey.ORDER_ACCEPTED) {
                             countnotifID++;
                             checkAndShowNotification(ord.getMitraID(), countnotifID, "ORDERACC");
-                            databaseUserOrder.child(snapshot.getKey()).child("notifState").setValue(UniversalKey.NOTIF_STATE_SHOW);
+                            //databaseUserOrder.child(snapshot.getKey()).child("notifState").setValue(UniversalKey.NOTIF_STATE_SHOW);
                         }else if (ord.getStatus() == UniversalKey.ORDER_DECLINED) {
                             countnotifID++;
                             checkAndShowNotification(ord.getMitraID(), countnotifID, "ORDERDEC");
-                            databaseUserOrder.child(snapshot.getKey()).child("notifState").setValue(UniversalKey.NOTIF_STATE_SHOW);
+                            //databaseUserOrder.child(snapshot.getKey()).child("notifState").setValue(UniversalKey.NOTIF_STATE_SHOW);
                         }
-                    }
+                    //}
                 }
             }
 
