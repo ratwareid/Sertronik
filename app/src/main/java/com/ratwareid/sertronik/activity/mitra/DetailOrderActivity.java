@@ -57,31 +57,13 @@ public class DetailOrderActivity extends AppCompatActivity implements View.OnCli
 
     private void queryFirebase() {
 
-        phoneNumber = getPhoneNumber(auth.getCurrentUser().getPhoneNumber());
-
-        databaseUser.addValueEventListener(new ValueEventListener() {
+        databaseOrder.child(mitraId).child("listOrder").child(key).setValue(order).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                userdata = dataSnapshot.child(phoneNumber).getValue(Userdata.class);
-
-                if (userdata.getMitraID() != null) {
-
-                    databaseOrder.child(userdata.getMitraID()).child("listOrder").child(key).setValue(order).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            databaseUser.child(userdata.getNoTelephone()).child("orderList").child(key).setValue(order);
-                            if (task.isSuccessful()){
-                                Toast.makeText(DetailOrderActivity.this, "Berhasil!", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-
+            public void onComplete(@NonNull Task<Void> task) {
+                databaseUser.child(senderPhone).child("orderList").child(key).setValue(order);
+                if (task.isSuccessful()){
+                    Toast.makeText(DetailOrderActivity.this, "Berhasil!", Toast.LENGTH_SHORT).show();
                 }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
     }
