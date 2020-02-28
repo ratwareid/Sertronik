@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.ratwareid.sertronik.R;
 import com.ratwareid.sertronik.activity.home.HomeActivity;
+import com.ratwareid.sertronik.activity.report.ReportUserActivity;
 import com.ratwareid.sertronik.bottomsheet.BottomSheetSuccessOrder;
 import com.ratwareid.sertronik.helper.UniversalHelper;
 import com.ratwareid.sertronik.helper.UniversalKey;
@@ -30,9 +31,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
 
-public class DetailPickupActivity extends AppCompatActivity {
+public class DetailPickupActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private TextView textMitraName, textSpecialist, textMitraPhoneNumber, textMitraRating, textMitraLocation;
+    private TextView textMitraName, textSpecialist, textMitraPhoneNumber, textMitraRating, textMitraLocation, textReport;
     private ImageView imageThumbnail;
     private FloatingActionButton fabOrder;
 
@@ -81,6 +82,7 @@ public class DetailPickupActivity extends AppCompatActivity {
         textMitraPhoneNumber = findViewById(R.id.textPhoneNumber);
         textMitraRating = findViewById(R.id.textRating);
         imageThumbnail = findViewById(R.id.imageThumbnail);
+        textReport = findViewById(R.id.textReport);
         fabOrder = findViewById(R.id.fabOrder);
 
         auth = FirebaseAuth.getInstance();
@@ -109,6 +111,8 @@ public class DetailPickupActivity extends AppCompatActivity {
         }else{
             fabOrder.setImageResource(R.drawable.ic_pick_up_white);
         }
+
+        textReport.setOnClickListener(this);
     }
 
     public void sendOrderTask(View view) {
@@ -133,5 +137,17 @@ public class DetailPickupActivity extends AppCompatActivity {
                     }
                 });
         reference.child(UniversalKey.USERDATA_PATH).child(senderPhone).child("orderList").push().setValue(order);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.equals(textReport)){
+            moveToReportActivity();
+        }
+    }
+
+    private void moveToReportActivity() {
+        startActivity(new Intent(DetailPickupActivity.this, ReportUserActivity.class));
+        finish();
     }
 }

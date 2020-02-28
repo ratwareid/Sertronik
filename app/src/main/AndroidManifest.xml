@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.mitra.DetailOrderActivity"></activity>
+        <activity android:name=".activity.report.ReportUserActivity"></activity>
+        <activity android:name=".activity.mitra.DetailOrderActivity" />
         <activity android:name=".activity.user.order.call.CallServiceActivity" />
         <activity android:name=".activity.user.profile.EditProfileActivity" />
         <activity android:name=".activity.user.profile.UserProfileActivity" />
