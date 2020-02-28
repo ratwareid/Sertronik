@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,7 +53,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private CategoryAdapter adapter;
     private ArrayList<Category> categories;
     private ImageView imageProfile;
-    private Button btnLogout,btnJoinMitra;
+    private Button btnLogout, btnJoinMitra;
+    private LinearLayout linearJoinMitra;
     private long mBackPressed;
     private TextView textGreetingMessage;
     private Userdata userdata;
@@ -67,7 +69,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         getSupportActionBar().hide();
+
         initWidgets();
+
         getDataFromFirebase();
     }
 
@@ -96,6 +100,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private void initWidgets() {
         textGreetingMessage = findViewById(R.id.textGreetingMessage);
         btnJoinMitra = findViewById(R.id.btnJoinMitra);
+        linearJoinMitra = findViewById(R.id.linearJoinMitra);
         btnJoinMitra.setOnClickListener(this);
         recyclerHome = findViewById(R.id.recyclerHome);
         recyclerOrder = findViewById(R.id.recyclerOrder);
@@ -133,8 +138,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 userdata = dataSnapshot.getValue(Userdata.class);
                 textGreetingMessage.setText("Hai "+userdata.getFullName()+",");
                 if (userdata.getMitraID() == null){
-                    btnJoinMitra.setVisibility(View.VISIBLE);
-                    btnJoinMitra.setEnabled(true);
+                    linearJoinMitra.setVisibility(View.VISIBLE);
                 }else{
                     orderArrayList = new ArrayList<>();
                     databaseMitradata.child(userdata.getMitraID()).child("listOrder").addValueEventListener(new ValueEventListener() {
@@ -156,7 +160,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     });
 
-                    btnJoinMitra.setVisibility(View.GONE);
+                    linearJoinMitra.setVisibility(View.GONE);
                     recyclerHome.setVisibility(View.GONE);
                 }
             }

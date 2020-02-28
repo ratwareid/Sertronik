@@ -18,13 +18,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.ratwareid.sertronik.R;
 import com.ratwareid.sertronik.helper.UniversalKey;
 import com.ratwareid.sertronik.model.Mitradata;
-import com.ratwareid.sertronik.model.Userdata;
 
 public class UserProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView namaUser,email,noTlp,mitraID,namaBengkel,alamatMitra,specialist;
     private DatabaseReference databaseMitra;
-    private Button btnUbah;
+    private TextView textEditProfile;
+    private Button buttonLogout;
     private LinearLayout layoutMitra;
     private String jenisService;
 
@@ -45,6 +45,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         alamatMitra = findViewById(R.id.viewAlamatMitra);
         specialist = findViewById(R.id.viewSpecialist);
         layoutMitra = findViewById(R.id.layoutMitra);
+        buttonLogout = findViewById(R.id.buttonLogout);
         databaseMitra = FirebaseDatabase.getInstance().getReference(UniversalKey.MITRADATA_PATH);
     }
 
@@ -79,13 +80,15 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         }else{
             layoutMitra.setVisibility(View.GONE);
         }
-        btnUbah = findViewById(R.id.btnEdit);
-        btnUbah.setOnClickListener(this);
+        textEditProfile = findViewById(R.id.textEditProfile);
+        textEditProfile.setOnClickListener(this);
+
+        buttonLogout.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-        if (view.equals(btnUbah)){
+        if (view.equals(textEditProfile)){
             startActivity(new Intent(this,EditProfileActivity.class)
                     .putExtra("fullname",namaUser.getText().toString())
                     .putExtra("email",email.getText().toString())
@@ -97,6 +100,12 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                     .putExtra("specialist",specialist.getText().toString())
             );
             finish();
+        }else if (view.equals(buttonLogout)){
+            logoutMethod();
         }
+    }
+
+    private void logoutMethod() {
+
     }
 }

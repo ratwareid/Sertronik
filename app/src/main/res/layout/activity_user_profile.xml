@@ -1,181 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.user.profile.UserProfileActivity">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:background="@color/colorPrimaryDark">
-            <ImageView
-                android:layout_width="130dp"
-                android:layout_height="130dp"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentBottom="true"
-                android:src="@drawable/profilemale"
-                android:scaleType="centerCrop"
-                android:background="@color/white"
-                android:elevation="2dp"
-                android:layout_marginBottom="10dp"/>
-        </RelativeLayout>
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginVertical="10dp">
+                android:layout_height="180dp"
+                android:background="@drawable/gradient_primary">
 
                 <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_account"
-                    android:padding="8dp"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/happy_monkey"
-                        android:padding="5dp"
-                        android:text="Full Name"
-                        android:textStyle="bold"
-                        android:textSize="14dp" />
-
-                    <TextView
-                        android:id="@+id/viewFullName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/happy_monkey"
-                        android:paddingHorizontal="5dp"
-                        android:text="Full Name"
-                        android:textSize="20dp"
-                        android:textStyle="bold"
-                        android:maxLines="1"
-                        android:lines="1"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
+                    android:layout_width="128dp"
+                    android:layout_height="128dp"
+                    android:layout_centerInParent="true"
+                    android:background="@color/white"
+                    android:elevation="2dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/profilemale" />
+            </RelativeLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginVertical="10dp">
-
-                <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_mail"
-                    android:padding="8dp"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/happy_monkey"
-                        android:padding="5dp"
-                        android:text="Email"
-                        android:textStyle="bold"
-                        android:textSize="14dp" />
-
-                    <TextView
-                        android:id="@+id/viewEmail"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/happy_monkey"
-                        android:paddingHorizontal="5dp"
-                        android:text="example@gmail.com"
-                        android:textSize="20dp"
-                        android:textStyle="bold"
-                        android:maxLines="1"
-                        android:lines="1"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginVertical="10dp">
-
-                <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_phone"
-                    android:padding="8dp"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/happy_monkey"
-                        android:padding="5dp"
-                        android:text="Phone"
-                        android:textSize="14dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/viewPhone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/happy_monkey"
-                        android:paddingHorizontal="5dp"
-                        android:text="+6289912345678"
-                        android:textSize="20dp"
-                        android:textStyle="bold"
-                        android:maxLines="1"
-                        android:lines="1"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layoutMitra"
+                android:padding="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/textEditProfile"
+                    android:layout_gravity="end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ubah Profile"
+                    android:fontFamily="@font/montserrat"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp"
+                    android:drawableStart="@drawable/ic_create"
+                    android:drawablePadding="8dp"
+                    android:padding="8dp"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginVertical="10dp">
+                    android:layout_marginVertical="10dp"
+                    android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="100dp"
+                        android:layout_width="48dp"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ic_mitra"
-                        android:padding="8dp"/>
+                        android:padding="8dp"
+                        android:src="@drawable/ic_account" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -187,21 +69,21 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/happy_monkey"
                             android:padding="5dp"
-                            android:text="Mitra ID"
-                            android:textStyle="bold"
-                            android:textSize="14dp" />
+                            android:text="Full Name"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/viewMitraid"
+                            android:id="@+id/viewFullName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/happy_monkey"
-                            android:paddingHorizontal="5dp"
-                            android:text="JD00123456"
-                            android:textSize="20dp"
-                            android:textStyle="bold"
+                            android:lines="1"
                             android:maxLines="1"
-                            android:lines="1"/>
+                            android:paddingHorizontal="5dp"
+                            android:text="Full Name"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
@@ -210,14 +92,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginVertical="10dp">
+                    android:layout_marginVertical="10dp"
+                    android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="100dp"
+                        android:layout_width="48dp"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ic_house"
-                        android:padding="8dp"/>
+                        android:padding="8dp"
+                        android:src="@drawable/ic_mail" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -229,21 +111,21 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/happy_monkey"
                             android:padding="5dp"
-                            android:text="Nama Bengkel"
-                            android:textStyle="bold"
-                            android:textSize="14dp" />
+                            android:text="Email"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/viewNamaBengkel"
+                            android:id="@+id/viewEmail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/happy_monkey"
-                            android:paddingHorizontal="5dp"
-                            android:text="MAJU JAYA"
-                            android:textSize="20dp"
-                            android:textStyle="bold"
+                            android:lines="1"
                             android:maxLines="1"
-                            android:lines="1"/>
+                            android:paddingHorizontal="5dp"
+                            android:text="example@gmail.com"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
@@ -252,14 +134,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginVertical="10dp">
+                    android:layout_marginVertical="10dp"
+                    android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="100dp"
+                        android:layout_width="48dp"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ic_marker"
-                        android:padding="8dp"/>
+                        android:padding="8dp"
+                        android:src="@drawable/ic_phone" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -271,93 +153,228 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/happy_monkey"
                             android:padding="5dp"
-                            android:text="Alamat Mitra"
-                            android:textStyle="bold"
-                            android:textSize="14dp" />
+                            android:text="Phone"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/viewAlamatMitra"
+                            android:id="@+id/viewPhone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/happy_monkey"
+                            android:lines="1"
+                            android:maxLines="1"
                             android:paddingHorizontal="5dp"
-                            android:text="Jl.Kebembem Raya Timur"
-                            android:textSize="16dp"
-                            android:textStyle="bold"
-                            android:maxLines="3"
-                            android:lines="1"/>
+                            android:text="+6289912345678"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/layoutMitra"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginVertical="10dp">
-
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/ic_build"
-                        android:padding="8dp"/>
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_marginVertical="10dp"
+                        android:orientation="horizontal">
 
-                        <TextView
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="match_parent"
+                            android:padding="8dp"
+                            android:src="@drawable/ic_mitra" />
+
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/happy_monkey"
-                            android:padding="5dp"
-                            android:text="Specialist"
-                            android:textStyle="bold"
-                            android:textSize="14dp" />
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/viewSpecialist"
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/happy_monkey"
+                                android:padding="5dp"
+                                android:text="Mitra ID"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/viewMitraid"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/happy_monkey"
+                                android:lines="1"
+                                android:maxLines="1"
+                                android:paddingHorizontal="5dp"
+                                android:text="JD00123456"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="10dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="match_parent"
+                            android:padding="8dp"
+                            android:src="@drawable/ic_house" />
+
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/happy_monkey"
-                            android:paddingHorizontal="5dp"
-                            android:text="TV,Kulkas,MesinCuci,Kipas Angin"
-                            android:textSize="16dp"
-                            android:textStyle="bold"
-                            android:maxLines="3"
-                            android:lines="1"/>
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/happy_monkey"
+                                android:padding="5dp"
+                                android:text="Nama Bengkel"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/viewNamaBengkel"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/happy_monkey"
+                                android:lines="1"
+                                android:maxLines="1"
+                                android:paddingHorizontal="5dp"
+                                android:text="MAJU JAYA"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="10dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="match_parent"
+                            android:padding="8dp"
+                            android:src="@drawable/ic_marker" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/happy_monkey"
+                                android:padding="5dp"
+                                android:text="Alamat Mitra"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/viewAlamatMitra"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/happy_monkey"
+                                android:lines="1"
+                                android:maxLines="3"
+                                android:paddingHorizontal="5dp"
+                                android:text="Jl.Kebembem Raya Timur"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="10dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="match_parent"
+                            android:padding="8dp"
+                            android:src="@drawable/ic_build" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/happy_monkey"
+                                android:padding="5dp"
+                                android:text="Specialist"
+                                android:textSize="14dp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/viewSpecialist"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/happy_monkey"
+                                android:lines="1"
+                                android:maxLines="3"
+                                android:paddingHorizontal="5dp"
+                                android:text="TV,Kulkas,MesinCuci,Kipas Angin"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
                 </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="20dp">
+
+                    <Button
+                        android:padding="8dp"
+                        android:id="@+id/buttonLogout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginHorizontal="12dp"
+                        android:layout_marginVertical="10dp"
+                        android:background="@drawable/button_primary_decline"
+                        android:drawablePadding="8dp"
+                        android:paddingRight="12dp"
+                        android:text="Keluar"
+                        android:textColor="@color/white" />
+
+                </RelativeLayout>
 
             </LinearLayout>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="20dp">
-
-                <Button
-                    android:id="@+id/btnEdit"
-                    android:layout_marginHorizontal="12dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:paddingRight="12dp"
-                    android:drawablePadding="8dp"
-                    android:drawableLeft="@drawable/ic_create"
-                    android:text="UBAH"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/button_oval"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="10dp"/>
-
-            </RelativeLayout>
-
         </LinearLayout>
 
-    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-</ScrollView>
+
+</RelativeLayout>

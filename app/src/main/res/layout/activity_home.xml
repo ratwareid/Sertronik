@@ -57,16 +57,29 @@
             </LinearLayout>
 
 
-            <Button
-                android:id="@+id/btnJoinMitra"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_margin="10dp"
-                android:background="@drawable/button_oval"
-                android:enabled="false"
-                android:text="Gabung sebagai Mitra"
-                android:visibility="gone" />
+            <LinearLayout
+                android:id="@+id/linearJoinMitra"
+                android:background="@drawable/gradient_primary"
+                android:gravity="end"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btnJoinMitra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:fontFamily="@font/montserrat"
+                    android:padding="8dp"
+                    android:background="@drawable/rounded"
+                    android:enabled="false"
+                    android:text="Gabung sebagai Mitra" />
+
+
+            </LinearLayout>
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerHome"
