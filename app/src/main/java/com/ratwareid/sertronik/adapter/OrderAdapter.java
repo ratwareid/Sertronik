@@ -30,8 +30,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
 
     public OrderAdapter(ArrayList<Order> orderArrayList, Activity activity) {
         this.orderArrayList = orderArrayList;
-        this.activity = activity;
-    }
+        this.activity = activity; }
 
     @NonNull
     @Override

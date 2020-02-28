@@ -37,7 +37,7 @@ public class DetailPickupActivity extends AppCompatActivity implements View.OnCl
     private ImageView imageThumbnail;
     private FloatingActionButton fabOrder;
 
-    private String mitraName, mitraSpecialist, mitraPhoneNumber, mitraRating, mitraLocation;
+    private String mitraName, mitraSpecialist, mitraPhoneNumber, mitraRating, mitraLocation, mitraID;
     private String orderCategory, orderBrand, orderSize, orderCrash, orderPickupAddress, orderLatitude, orderLongitude, senderName, senderPhone;
 
     private int orderType;
@@ -97,6 +97,7 @@ public class DetailPickupActivity extends AppCompatActivity implements View.OnCl
         mitraPhoneNumber = getIntent().getStringExtra("mitraPhoneNumber");
         senderName = getIntent().getStringExtra("senderName");
         senderPhone = getIntent().getStringExtra("senderPhone");
+        mitraID = getIntent().getStringExtra("mitraID");
 
         orderCategory = getIntent().getStringExtra("orderCategory");
         orderBrand = getIntent().getStringExtra("orderBrand");
@@ -147,7 +148,9 @@ public class DetailPickupActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void moveToReportActivity() {
-        startActivity(new Intent(DetailPickupActivity.this, ReportUserActivity.class));
+        startActivity(new Intent(DetailPickupActivity.this, ReportUserActivity.class)
+            .putExtra("mitraID", mitraID)
+            .putExtra("mitraName", mitraName));
         finish();
     }
 }

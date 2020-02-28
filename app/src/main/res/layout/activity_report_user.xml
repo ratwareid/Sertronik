@@ -76,7 +76,6 @@
                 <EditText
                     android:gravity="start"
                     android:lines="5"
-                    android:enabled="false"
                     android:paddingStart="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

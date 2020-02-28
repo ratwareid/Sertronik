@@ -44,11 +44,12 @@ import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private DatabaseReference databaseImageIcon,databaseCurrentUser, databaseMitraOrder,databaseUserOrder,databaseMitradata;
+    private DatabaseReference databaseImageIcon,databaseCurrentUser, databaseMitraOrder,databaseUserOrder,databaseMitradata, databaseOrderProcessed;
     private FirebaseAuth mAuth;
-    private RecyclerView recyclerHome,recyclerOrder;
+    private RecyclerView recyclerHome,recyclerOrder, recyclerOrderProcess;
     private GridLayoutManager layoutManager;
     private LinearLayoutManager layoutManagerOrder;
+    private LinearLayoutManager layoutManagerOrderProcess;
     private CategoryAdapter adapter;
     private ArrayList<Category> categories;
     private ImageView imageProfile;
@@ -60,8 +61,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private String phoneNum;
     private int countnotifID = 0;
     private OrderAdapter orderAdapter;
+
     private ArrayList<Order> orderNotification;
     private ArrayList<Order> orderArrayList;
+    private ArrayList<Order> orderProcessed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +106,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         btnJoinMitra.setOnClickListener(this);
         recyclerHome = findViewById(R.id.recyclerHome);
         recyclerOrder = findViewById(R.id.recyclerOrder);
+        recyclerOrderProcess = findViewById(R.id.recyclerOrderProcess);
         imageProfile = findViewById(R.id.imageProfile);
         imageProfile.setOnClickListener(this);
         mitraNotif = findViewById(R.id.mitraNotif);
@@ -111,7 +115,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         layoutManager = new GridLayoutManager(HomeActivity.this, 3, RecyclerView.VERTICAL, false);
 
         layoutManagerOrder = new LinearLayoutManager(HomeActivity.this, RecyclerView.HORIZONTAL, false);
+        layoutManagerOrderProcess = new LinearLayoutManager(HomeActivity.this, RecyclerView.HORIZONTAL, false);
 
+        recyclerOrderProcess.setLayoutManager(layoutManagerOrderProcess);
         recyclerOrder.setLayoutManager(layoutManagerOrder);
 
         recyclerHome.setLayoutManager(layoutManager);
@@ -120,6 +126,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         databaseCurrentUser = FirebaseDatabase.getInstance().getReference(UniversalKey.USERDATA_PATH);
         databaseImageIcon = FirebaseDatabase.getInstance().getReference(UniversalKey.IMAGE_CATEGORY_DATABASE_PATH);
         databaseMitradata = FirebaseDatabase.getInstance().getReference(UniversalKey.MITRADATA_PATH);
+        databaseOrderProcessed = FirebaseDatabase.getInstance().getReference(UniversalKey.MITRADATA_PATH);
+
         mAuth = FirebaseAuth.getInstance();
         phoneNum = getPhoneNumber(mAuth.getCurrentUser().getPhoneNumber());
         databaseCurrentUser.child(phoneNum).addValueEventListener(new ValueEventListener() {
@@ -130,25 +138,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 if (userdata.getMitraID() == null){
                     linearJoinMitra.setVisibility(View.VISIBLE);
                 }else{
-                    databaseMitradata.child(mAuth.getCurrentUser().getUid()).child("activeState").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            Integer activeState = dataSnapshot.getValue(Integer.class);
-                            if (activeState == 0){
-                                mitraNotif.setVisibility(View.VISIBLE);
-                                recyclerOrder.setVisibility(View.GONE);
-                            }else{
-                                mitraNotif.setVisibility(View.GONE);
-                                recyclerOrder.setVisibility(View.VISIBLE);
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-
                     orderArrayList = new ArrayList<>();
                     databaseMitradata.child(userdata.getMitraID()).child("listOrder").addValueEventListener(new ValueEventListener() {
                         @Override
@@ -169,8 +158,48 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     });
 
+                    databaseMitradata.child(mAuth.getCurrentUser().getUid()).child("activeState").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Integer activeState = dataSnapshot.getValue(Integer.class);
+                            if (activeState == 0){
+                                mitraNotif.setVisibility(View.VISIBLE);
+                                recyclerOrder.setVisibility(View.GONE);
+                            }else{
+                                mitraNotif.setVisibility(View.GONE);
+                                recyclerOrder.setVisibility(View.VISIBLE);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    databaseOrderProcessed.child(userdata.getMitraID()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            orderProcessed = new ArrayList<>();
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                                Order order = snapshot.getValue(Order.class);
+
+                                if (order.getStatus() == UniversalKey.ORDER_ACCEPTED){
+                                    orderProcessed.add(order);
+                                    orderAdapter = new OrderAdapter(orderProcessed, HomeActivity.this);
+                                    recyclerOrderProcess.setAdapter(orderAdapter);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
                     linearJoinMitra.setVisibility(View.GONE);
-                    //recyclerHome.setVisibility(View.GONE);
+                    recyclerHome.setVisibility(View.GONE);
                 }
             }
 
@@ -180,7 +209,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-
         databaseMitraOrder = FirebaseDatabase.getInstance().getReference(UniversalKey.MITRADATA_PATH).child(mAuth.getCurrentUser().getUid()).child("listOrder");
         databaseMitraOrder.addValueEventListener(new ValueEventListener() {
             @Override
@@ -188,13 +216,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 orderNotification = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Order ord = snapshot.getValue(Order.class);
-                    //if (ord.getNotifState() == UniversalKey.NOTIF_STATE_NEW) {
+                    if (ord.getNotifState() == UniversalKey.NOTIF_STATE_NEW) {
                         if (ord.getStatus() == UniversalKey.WAITING_RESPONSE_ORDER) {
                             countnotifID++;
                             checkAndShowNotification(ord.getMitraID(), countnotifID, "NEWORDER");
-                            //databaseMitraOrder.child(snapshot.getKey()).child("notifState").setValue(UniversalKey.NOTIF_STATE_SHOW);
+                            databaseMitraOrder.child(snapshot.getKey()).child("notifState").setValue(UniversalKey.NOTIF_STATE_SHOW);
                         }
-                    //}
+                    }
                 }
             }
 
@@ -211,17 +239,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 orderNotification = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Order ord = snapshot.getValue(Order.class);
-                    //if (ord.getNotifState() == UniversalKey.NOTIF_STATE_NEW) {
+                    if (ord.getNotifState() == UniversalKey.NOTIF_STATE_NEW) {
                         if (ord.getStatus() == UniversalKey.ORDER_ACCEPTED) {
                             countnotifID++;
                             checkAndShowNotification(ord.getMitraID(), countnotifID, "ORDERACC");
-                            //databaseUserOrder.child(snapshot.getKey()).child("notifState").setValue(UniversalKey.NOTIF_STATE_SHOW);
+                            databaseUserOrder.child(snapshot.getKey()).child("notifState").setValue(UniversalKey.NOTIF_STATE_SHOW);
                         }else if (ord.getStatus() == UniversalKey.ORDER_DECLINED) {
                             countnotifID++;
                             checkAndShowNotification(ord.getMitraID(), countnotifID, "ORDERDEC");
-                            //databaseUserOrder.child(snapshot.getKey()).child("notifState").setValue(UniversalKey.NOTIF_STATE_SHOW);
+                            databaseUserOrder.child(snapshot.getKey()).child("notifState").setValue(UniversalKey.NOTIF_STATE_SHOW);
                         }
-                    //}
+                    }
                 }
             }
 
@@ -279,7 +307,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         mBackPressed = System.currentTimeMillis();
     }
 
-    private void checkAndShowNotification(String channelID,int notificationId,String state){
+    private void checkAndShowNotification(String channelID, int notificationId,String state){
         // Create an explicit intent for an Activity in your app
         String message = null;
         if (state.equals("NEWORDER")) {

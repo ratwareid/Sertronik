@@ -28,7 +28,7 @@ public class SelectMitraAdapter extends RecyclerView.Adapter<SelectMitraAdapter.
     private SelectMitraActivity activity;
 
 
-    public SelectMitraAdapter(ArrayList<Mitradata> mitradataArrayList, SelectMitraActivity activity) {
+    public  SelectMitraAdapter(ArrayList<Mitradata> mitradataArrayList, SelectMitraActivity activity) {
         this.mitradataArrayList = mitradataArrayList;
         this.activity = activity;
     }
