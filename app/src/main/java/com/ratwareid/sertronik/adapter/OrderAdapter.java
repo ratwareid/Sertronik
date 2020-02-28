@@ -73,6 +73,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
                         .putExtra("senderLocation", order.getSenderAddress())
                         .putExtra("itemCrash", order.getItemSymptom())
                         .putExtra("itemBrand", order.getItemBrand())
+                        .putExtra("status", order.getStatus())
                         .putExtra("key", order.getKey())
                 );
             }

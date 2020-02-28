@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,12 +33,13 @@ public class DetailOrderActivity extends AppCompatActivity implements View.OnCli
 
     private String senderName, senderPhone, itemName, itemBrand, itemSize, itemCrash, senderLocation, phoneNumber, key , mitraId;
     private String senderLatitude, senderLongitude, createDate;
-    private int orderType;
+    private int orderType,status;
+    private LinearLayout layoutButton;
 
     private TextView textSenderName, textSenderLocation, textItemName, textItemBrand, textItemSize, textItemCrash;
     private ImageView imageThumbnail;
-    private ImageButton buttonAccept;
-
+    private ImageButton buttonAccept,buttonReject;
+    private Button buttonFinOrder;
     private DatabaseReference databaseUser, databaseOrder;
     private FirebaseAuth auth;
     private Userdata userdata;
@@ -92,6 +95,7 @@ public class DetailOrderActivity extends AppCompatActivity implements View.OnCli
         senderLatitude = getIntent().getStringExtra("senderLatitude");
         senderLongitude = getIntent().getStringExtra("senderLongitude");
         createDate = getIntent().getStringExtra("createDate");
+        status = getIntent().getIntExtra("status",0);
 
         textSenderName = findViewById(R.id.textSenderName);
         textSenderLocation = findViewById(R.id.textLocation);
@@ -101,6 +105,9 @@ public class DetailOrderActivity extends AppCompatActivity implements View.OnCli
         textItemCrash = findViewById(R.id.textItemCrash);
         imageThumbnail = findViewById(R.id.imageThumbnail);
         buttonAccept = findViewById(R.id.buttonAccept);
+        buttonReject = findViewById(R.id.buttonReject);
+        layoutButton = findViewById(R.id.layoutButton);
+        buttonFinOrder = findViewById(R.id.buttonFinOrder);
 
         auth = FirebaseAuth.getInstance();
 
@@ -118,16 +125,33 @@ public class DetailOrderActivity extends AppCompatActivity implements View.OnCli
         textSenderLocation.setText(senderLocation);
 
         buttonAccept.setOnClickListener(this);
+        buttonReject.setOnClickListener(this);
+        buttonFinOrder.setOnClickListener(this);
+
+        if (status == UniversalKey.WAITING_RESPONSE_ORDER){
+            layoutButton.setVisibility(View.VISIBLE);
+            buttonFinOrder.setVisibility(View.GONE);
+        }else if(status == UniversalKey.ORDER_ACCEPTED){
+            layoutButton.setVisibility(View.GONE);
+            buttonFinOrder.setVisibility(View.VISIBLE);
+        }else{
+            layoutButton.setVisibility(View.GONE);
+            buttonFinOrder.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void onClick(View v) {
         if (v.equals(buttonAccept)) {
-            orderAccepted();
+            sendFeedbackOrder(UniversalKey.ORDER_ACCEPTED);
+        }if (v.equals(buttonReject)) {
+            sendFeedbackOrder(UniversalKey.ORDER_DECLINED);
+        }if (v.equals(buttonFinOrder)) {
+            sendFeedbackOrder(UniversalKey.ORDER_FINISH);
         }
     }
 
-    private void orderAccepted() {
+    private void sendFeedbackOrder(int stateOrder) {
 
         order = new Order();
 
@@ -143,9 +167,10 @@ public class DetailOrderActivity extends AppCompatActivity implements View.OnCli
         order.setSenderPhone(senderPhone);
         order.setSenderLatitude(senderLatitude);
         order.setSenderLongitude(senderLongitude);
-        order.setStatus(UniversalKey.ORDER_ACCEPTED);
+        order.setStatus(stateOrder);
+        order.setNotifState(0);
 
         this.queryFirebase();
-
+        finish();
     }
 }

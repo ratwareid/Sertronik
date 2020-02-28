@@ -39,7 +39,7 @@ public class DetailPickupActivity extends AppCompatActivity implements View.OnCl
 
     private String mitraName, mitraSpecialist, mitraPhoneNumber, mitraRating, mitraLocation, mitraID;
     private String orderCategory, orderBrand, orderSize, orderCrash, orderPickupAddress, orderLatitude, orderLongitude, senderName, senderPhone;
-
+    private String mode;
     private int orderType;
 
     private FirebaseDatabase firebaseDatabase;
@@ -106,6 +106,7 @@ public class DetailPickupActivity extends AppCompatActivity implements View.OnCl
         orderPickupAddress = getIntent().getStringExtra("orderPickupAddress");
         orderLatitude = getIntent().getStringExtra("orderLatitude");
         orderLongitude = getIntent().getStringExtra("orderLongitude");
+        mode = getIntent().getStringExtra("mode");
 
         if (orderType == UniversalKey.CALL_SERVICE){
             fabOrder.setImageResource(R.drawable.ic_call_white);
@@ -113,6 +114,12 @@ public class DetailPickupActivity extends AppCompatActivity implements View.OnCl
             fabOrder.setImageResource(R.drawable.ic_pick_up_white);
         }
 
+        if (mode.equalsIgnoreCase(UniversalKey.view_mitra)){
+            fabOrder.hide();
+        }
+        if (mode.equalsIgnoreCase(UniversalKey.order_mitra)){
+            fabOrder.show();
+        }
         textReport.setOnClickListener(this);
     }
 

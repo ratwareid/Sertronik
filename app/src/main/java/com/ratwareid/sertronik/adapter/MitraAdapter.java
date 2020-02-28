@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.ratwareid.sertronik.R;
+import com.ratwareid.sertronik.activity.home.HomeActivity;
 import com.ratwareid.sertronik.activity.user.order.SelectMitraActivity;
 import com.ratwareid.sertronik.activity.user.order.pickup.DetailPickupActivity;
 import com.ratwareid.sertronik.helper.UniversalHelper;
@@ -22,21 +23,21 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 
-public class SelectMitraAdapter extends RecyclerView.Adapter<SelectMitraAdapter.ViewHolder> {
+public class MitraAdapter extends RecyclerView.Adapter<MitraAdapter.ViewHolder> {
 
 
     private ArrayList<Mitradata> mitradataArrayList;
-    private SelectMitraActivity activity;
+    private HomeActivity activity;
 
 
-    public  SelectMitraAdapter(ArrayList<Mitradata> mitradataArrayList, SelectMitraActivity activity) {
+    public MitraAdapter(ArrayList<Mitradata> mitradataArrayList, HomeActivity activity) {
         this.mitradataArrayList = mitradataArrayList;
         this.activity = activity;
     }
 
     @NonNull
     @Override
-    public SelectMitraAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MitraAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recycler_mitra, parent, false);
 
@@ -44,7 +45,7 @@ public class SelectMitraAdapter extends RecyclerView.Adapter<SelectMitraAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SelectMitraAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MitraAdapter.ViewHolder holder, int position) {
         final Mitradata mitradata = mitradataArrayList.get(position);
 
         holder.imageThumbnail.setImageDrawable(TextDrawable.builder().buildRect(StringUtils.upperCase(UniversalHelper.textAvatar(mitradata.getNamaToko())), activity.getResources().getColor(R.color.colorPrimaryDark)));
@@ -61,18 +62,7 @@ public class SelectMitraAdapter extends RecyclerView.Adapter<SelectMitraAdapter.
                                 .putExtra("mitraLocation", mitradata.getAlamatToko())
                                 .putExtra("mitraPhoneNumber", mitradata.getNoTlp())
                                 .putExtra("mitraSpecialist", mitradata.getSpecialist())
-                                .putExtra("orderCategory", activity.name)
-                                .putExtra("orderBrand", activity.brand)
-                                .putExtra("orderSize", activity.size)
-                                .putExtra("orderCrash", activity.crash)
-                                .putExtra("orderPickupAddress", activity.pickupAddress)
-                                .putExtra("orderLatitude", activity.latitude)
-                                .putExtra("orderLongitude", activity.longitude)
-                                .putExtra("orderType", activity.orderType)
-                                .putExtra("senderName",activity.senderName)
-                                .putExtra("senderPhone",activity.senderPhone)
-                                .putExtra("mode", UniversalKey.order_mitra)
-                        //TODO::NAMBAHIN PUT EXTRA RATING
+                                .putExtra("mode", UniversalKey.view_mitra)
                 );
             }
         });

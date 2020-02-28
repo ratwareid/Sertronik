@@ -22,6 +22,7 @@ public class UniversalKey {
     public static final int WAITING_RESPONSE_ORDER = 431;
     public static final int CANCEL_ORDER = 665;
     public static final int ORDER_DECLINED = 206;
+    public static final int ORDER_FINISH = 808;
 
     public static final int PROXIMITY_RADIUS  = 5000;
 
@@ -33,4 +34,12 @@ public class UniversalKey {
 
     public static final int NOTIF_STATE_NEW = 0;
     public static final int NOTIF_STATE_SHOW = 1;
+    public static final int STATE_MITRA_NEW = 0;
+    public static final int STATE_MITRA_ACTIVE = 1;
+
+
+
+    public static final String NOTIFICATION_CHANNEL = "SENTRONIKCHANNEL";
+    public static final String view_mitra = "VIEW";
+    public static final String order_mitra = "ORDER";
 }

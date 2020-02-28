@@ -75,15 +75,14 @@ public class SelectMitraActivity extends AppCompatActivity {
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Mitradata mitradata = snapshot.getValue(Mitradata.class);
-
-                    orders.add(snapshot.getValue(Order.class));
-
-                    mitradata.setMitraID(snapshot.getKey());
-                    mitradataArrayList.add(mitradata);
-                    selectMitraAdapter = new SelectMitraAdapter(mitradataArrayList, SelectMitraActivity.this );
-                    recyclerSelectMitra.setAdapter(selectMitraAdapter);
-
+                    if (mitradata.getActiveState() == UniversalKey.STATE_MITRA_ACTIVE) {
+                        orders.add(snapshot.getValue(Order.class));
+                        mitradata.setMitraID(snapshot.getKey());
+                        mitradataArrayList.add(mitradata);
+                    }
                 }
+                selectMitraAdapter = new SelectMitraAdapter(mitradataArrayList, SelectMitraActivity.this );
+                recyclerSelectMitra.setAdapter(selectMitraAdapter);
             }
 
             @Override

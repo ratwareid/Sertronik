@@ -14,12 +14,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginBottom="100dp">
 
             <ImageView
                 android:id="@+id/imageThumbnail"
                 android:layout_width="match_parent"
-                android:layout_height="196dp" />
+                android:layout_height="160dp" />
 
             <TextView
                 android:id="@+id/textSenderName"
@@ -156,6 +157,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
+        android:id="@+id/layoutButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -174,6 +176,7 @@
             android:textColor="@color/white" />
 
         <ImageButton
+            android:id="@+id/buttonReject"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginHorizontal="4dp"
@@ -198,5 +201,15 @@
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/buttonFinOrder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Order Selesai"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/black"
+        android:visibility="gone"/>
 
 </RelativeLayout>
