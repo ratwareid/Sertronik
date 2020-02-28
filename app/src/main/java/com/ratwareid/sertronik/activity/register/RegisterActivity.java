@@ -163,11 +163,10 @@ public class RegisterActivity extends AppCompatActivity{
     }
 
     public void submitRegister(View view) {
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.child(inputPhoneNumber.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String phoneNum = inputPhoneNumber.getText().toString();
-                Userdata data = dataSnapshot.child(phoneNum).getValue(Userdata.class);
+                Userdata data = dataSnapshot.getValue(Userdata.class);
                 if (data == null){
                     startActivity(new Intent(RegisterActivity.this, PhoneAuthActivity.class)
                             .putExtra("phonenumber",inputPhoneNumber.getText().toString())

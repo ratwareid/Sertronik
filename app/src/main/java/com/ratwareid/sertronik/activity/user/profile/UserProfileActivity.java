@@ -10,12 +10,17 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ratwareid.sertronik.R;
+import com.ratwareid.sertronik.activity.home.HomeActivity;
+import com.ratwareid.sertronik.activity.login.LoginActivity;
 import com.ratwareid.sertronik.helper.UniversalKey;
 import com.ratwareid.sertronik.model.Mitradata;
 
@@ -27,6 +32,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     private Button buttonLogout;
     private LinearLayout layoutMitra;
     private String jenisService;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +53,9 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         layoutMitra = findViewById(R.id.layoutMitra);
         buttonLogout = findViewById(R.id.buttonLogout);
         databaseMitra = FirebaseDatabase.getInstance().getReference(UniversalKey.MITRADATA_PATH);
+        buttonLogout = findViewById(R.id.buttonLogout);
+        buttonLogout.setOnClickListener(this);
+        mAuth = FirebaseAuth.getInstance();
     }
 
     private void loadUI(){
@@ -101,11 +110,11 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             );
             finish();
         }else if (view.equals(buttonLogout)){
-            logoutMethod();
+            mAuth.signOut();
+            startActivity(new Intent(UserProfileActivity.this, LoginActivity.class)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                    finish();
         }
     }
 
-    private void logoutMethod() {
-
-    }
 }

@@ -22,7 +22,7 @@ public class Mitradata {
 
     public Mitradata(){}
 
-    public Mitradata(String namaToko,String alamatToko,String latitude,String longitude,String noTlp,String specialist,String jenisService){
+    public Mitradata(String namaToko,String alamatToko,String latitude,String longitude,String noTlp,String specialist,String jenisService,int activeState){
         this.namaToko = namaToko;
         this.alamatToko = alamatToko;
         this.latitude = latitude;
@@ -30,9 +30,11 @@ public class Mitradata {
         this.noTlp = noTlp;
         this.jenisService = jenisService;
         this.specialist = specialist;
+        this.activeState = activeState;
     }
 
     private String namaToko,alamatToko,latitude,longitude,noTlp,jenisService,specialist, mitraID;
+    private int activeState;
 
     public String getMitraID() {
         return mitraID;
@@ -98,4 +100,11 @@ public class Mitradata {
         this.jenisService = jenisService;
     }
 
+    public int getActiveState() {
+        return activeState;
+    }
+
+    public void setActiveState(int activeState) {
+        this.activeState = activeState;
+    }
 }

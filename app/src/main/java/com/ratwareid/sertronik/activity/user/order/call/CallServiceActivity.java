@@ -153,22 +153,57 @@ public class CallServiceActivity extends AppCompatActivity implements
                 .build();
     }
 
+    public boolean validasidatakosong() {
+        boolean valid = true;
+        if (inputNamaPemesan.getText().toString().equals("")) {
+            inputNamaPemesan.setError("Mohon mengisi nama anda");
+            valid = false;
+        }
+        if (inputNomorPemesan.getText().toString().equals("")) {
+            inputNomorPemesan.setError("Mohon mengisi nomor anda");
+            valid = false;
+        }
+        if (inputNamaBarang.getText().toString().equals("")) {
+            inputNamaBarang.setError("Mohon mengisi nama barang");
+            valid = false;
+        }
+        if (inputBrandBarang.getText().toString().equals("")) {
+            inputBrandBarang.setError("Mohon mengisi brand barang");
+            valid = false;
+        }
+        if (inputUkuranBarang.getText().toString().equals("")) {
+            inputUkuranBarang.setError("Mohon mengisi ukuran barang");
+            valid = false;
+        }
+        if (inputKerusakan.getText().toString().equals("")) {
+            inputKerusakan.setError("Mohon mengisi kerusakan");
+            valid = false;
+        }
+        if (inputAlamatPenjemputan.getText().toString().equals("")) {
+            inputAlamatPenjemputan.setError("Mohon mengisi alamat pengambilan");
+            valid = false;
+        }
+        return valid;
+    }
+
     @Override
     public void onClick(View view) {
         if (view.equals(btnNext)){
-            startActivity(new Intent(this, SelectMitraActivity.class)
-                    .putExtra("senderName",inputNamaPemesan.getText().toString())
-                    .putExtra("senderPhone",inputNomorPemesan.getText().toString())
-                    .putExtra("name",inputNamaBarang.getText().toString())
-                    .putExtra("brand",inputBrandBarang.getText().toString())
-                    .putExtra("size",inputUkuranBarang.getText().toString())
-                    .putExtra("crash",inputKerusakan.getText().toString())
-                    .putExtra("pickupAddress",inputAlamatPenjemputan.getText().toString())
-                    .putExtra("latitude",inputLatitude.getText().toString())
-                    .putExtra("longitude",inputLongitude.getText().toString())
-                    .putExtra("orderType" , UniversalKey.CALL_SERVICE)
-            );
-            finish();
+            if (validasidatakosong()) {
+                startActivity(new Intent(this, SelectMitraActivity.class)
+                        .putExtra("senderName", inputNamaPemesan.getText().toString())
+                        .putExtra("senderPhone", inputNomorPemesan.getText().toString())
+                        .putExtra("name", inputNamaBarang.getText().toString())
+                        .putExtra("brand", inputBrandBarang.getText().toString())
+                        .putExtra("size", inputUkuranBarang.getText().toString())
+                        .putExtra("crash", inputKerusakan.getText().toString())
+                        .putExtra("pickupAddress", inputAlamatPenjemputan.getText().toString())
+                        .putExtra("latitude", inputLatitude.getText().toString())
+                        .putExtra("longitude", inputLongitude.getText().toString())
+                        .putExtra("orderType", UniversalKey.CALL_SERVICE)
+                );
+                finish();
+            }
         }
         if (view.equals(inputAlamatPenjemputan)){
             showPlaceAutoComplete(REQUEST_ALAMAT_JEMPUT);

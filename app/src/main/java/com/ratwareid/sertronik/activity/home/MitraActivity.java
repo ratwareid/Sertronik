@@ -236,13 +236,36 @@ public class MitraActivity extends AppCompatActivity implements OnMapReadyCallba
         }
     }
 
+    private boolean validasidatakosong(){
+        boolean valid = true;
+        if (inputNamaToko.getText().toString().equals("")){
+            inputNamaToko.setError("Mohon mengisi nama toko");
+            valid = false;
+        }
+        if (inputAlamatToko.getText().toString().equals("")){
+            inputAlamatToko.setError("Mohon mengisi alamat toko");
+            valid = false;
+        }
+        if (inputEmail.getText().toString().equals("")){
+            inputEmail.setError("Mohon mengisi alamat email");
+            valid = false;
+        }
+        if (getSpecialist().equals("")){
+            Toast.makeText(this, "Mohon memilih specialist", Toast.LENGTH_SHORT).show();
+            valid = false;
+        }
+        return valid;
+    }
+
     @Override
     public void onClick(View view) {
         if (view.equals(inputAlamatToko)){
             showPlaceAutoComplete(REQUEST_ALAMAT);
         }
         if (view.equals(btnSimpan)){
-            daftarMitra();
+            if(validasidatakosong()) {
+                daftarMitra();
+            }
         }
     }
 
@@ -296,7 +319,8 @@ public class MitraActivity extends AppCompatActivity implements OnMapReadyCallba
 
     private void daftarMitra(){
         Mitradata mitra = new Mitradata(inputNamaToko.getText().toString(),inputAlamatToko.getText().toString(),
-                inputLatitude.getText().toString(),inputLongitude.getText().toString(),currentUser.getCurrentUser().getPhoneNumber(),getSpecialist(),spnJenis.getSelectedItem().toString());
+                inputLatitude.getText().toString(),inputLongitude.getText().toString(),currentUser.getCurrentUser().getPhoneNumber(),
+                getSpecialist(),spnJenis.getSelectedItem().toString(),0);
         String mitraID = currentUser.getUid();
         databaseUser.child(prevPhone).child("mitraID").setValue(mitraID);
         databaseMitra.child(mitraID).setValue(mitra);

@@ -233,7 +233,9 @@ public class PhoneAuthActivity extends AppCompatActivity implements View.OnClick
                         Userdata userdata = new Userdata(prevName, prevPhoneNumber, null, prevPassword,null,"USER");
                         databaseReference.child(prevPhoneNumber).setValue(userdata);
                     }
-                    startActivity(new Intent(PhoneAuthActivity.this, HomeActivity.class));
+                    mVerificationInProgress = false;
+                    startActivity(new Intent(PhoneAuthActivity.this, HomeActivity.class)
+                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
                     finish();
                 }
             }

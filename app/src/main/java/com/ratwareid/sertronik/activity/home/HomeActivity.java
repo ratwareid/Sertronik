@@ -46,17 +46,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private DatabaseReference databaseImageIcon,databaseCurrentUser, databaseMitraOrder,databaseUserOrder,databaseMitradata;
     private FirebaseAuth mAuth;
-    private GoogleSignInClient mGoogleSignInClient;
     private RecyclerView recyclerHome,recyclerOrder;
     private GridLayoutManager layoutManager;
     private LinearLayoutManager layoutManagerOrder;
     private CategoryAdapter adapter;
     private ArrayList<Category> categories;
     private ImageView imageProfile;
-    private Button btnLogout, btnJoinMitra;
+    private Button btnJoinMitra;
     private LinearLayout linearJoinMitra;
     private long mBackPressed;
-    private TextView textGreetingMessage;
+    private TextView textGreetingMessage,mitraNotif;
     private Userdata userdata;
     private String phoneNum;
     private int countnotifID = 0;
@@ -106,8 +105,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         recyclerOrder = findViewById(R.id.recyclerOrder);
         imageProfile = findViewById(R.id.imageProfile);
         imageProfile.setOnClickListener(this);
-        btnLogout = findViewById(R.id.btnLogout);
-        btnLogout.setOnClickListener(this);
+        mitraNotif = findViewById(R.id.mitraNotif);
 
         categories = new ArrayList<>();
         layoutManager = new GridLayoutManager(HomeActivity.this, 3, RecyclerView.VERTICAL, false);
@@ -122,14 +120,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         databaseCurrentUser = FirebaseDatabase.getInstance().getReference(UniversalKey.USERDATA_PATH);
         databaseImageIcon = FirebaseDatabase.getInstance().getReference(UniversalKey.IMAGE_CATEGORY_DATABASE_PATH);
         databaseMitradata = FirebaseDatabase.getInstance().getReference(UniversalKey.MITRADATA_PATH);
-
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        // [END config_signin]
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         mAuth = FirebaseAuth.getInstance();
         phoneNum = getPhoneNumber(mAuth.getCurrentUser().getPhoneNumber());
         databaseCurrentUser.child(phoneNum).addValueEventListener(new ValueEventListener() {
@@ -170,6 +160,27 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         });
+
+        databaseMitradata.child(mAuth.getCurrentUser().getUid()).child("activeState").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Integer activeState = dataSnapshot.getValue(Integer.class);
+                if (activeState == 0){
+                    mitraNotif.setVisibility(View.VISIBLE);
+                    recyclerOrder.setVisibility(View.GONE);
+                }else{
+                    mitraNotif.setVisibility(View.GONE);
+                    recyclerOrder.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
         databaseMitraOrder = FirebaseDatabase.getInstance().getReference(UniversalKey.MITRADATA_PATH).child(mAuth.getCurrentUser().getUid()).child("listOrder");
         databaseMitraOrder.addValueEventListener(new ValueEventListener() {
             @Override
@@ -247,20 +258,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     );
                 }
             }
-        }
-        if (view.equals(btnLogout)){
-            // Firebase sign out
-            mAuth.signOut();
-
-            // Google sign out
-            mGoogleSignInClient.signOut().addOnCompleteListener(this,
-                new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        startActivity(new Intent(HomeActivity.this, LoginActivity.class));
-                        finish();
-                    }
-                });
         }
         if (view.equals(btnJoinMitra)){
             startActivity(new Intent(HomeActivity.this, MitraActivity.class)

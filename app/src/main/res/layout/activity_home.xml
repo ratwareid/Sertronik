@@ -81,6 +81,18 @@
             </LinearLayout>
 
 
+            <TextView
+                android:id="@+id/mitraNotif"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Akun Anda Belum Diverifikasi oleh Admin"
+                android:background="@drawable/button_oval_primary"
+                android:padding="10dp"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:shadowColor="@color/black"
+                android:visibility="gone"/>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_marginTop="8dp"
                 android:id="@+id/recyclerHome"
@@ -140,16 +152,6 @@
                     android:layout_marginHorizontal="8dp" />
 
             </LinearLayout>
-
-            <Button
-                android:id="@+id/btnLogout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/button_oval_primary"
-                android:fontFamily="@font/raleway_semibold"
-                android:text="Logout"
-                android:textColor="@color/white" />
 
 
         </LinearLayout>
