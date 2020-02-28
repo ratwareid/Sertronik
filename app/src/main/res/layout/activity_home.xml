@@ -65,6 +65,7 @@
                 android:layout_height="wrap_content">
 
                 <Button
+                    android:foreground="?attr/selectableItemBackground"
                     android:id="@+id/btnJoinMitra"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -74,7 +75,6 @@
                     android:fontFamily="@font/montserrat"
                     android:padding="8dp"
                     android:background="@drawable/rounded"
-                    android:enabled="false"
                     android:text="Gabung sebagai Mitra" />
 
 

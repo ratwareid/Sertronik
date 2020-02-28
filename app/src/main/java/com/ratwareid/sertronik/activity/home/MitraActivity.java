@@ -324,6 +324,8 @@ public class MitraActivity extends AppCompatActivity implements OnMapReadyCallba
         String mitraID = currentUser.getUid();
         databaseUser.child(prevPhone).child("mitraID").setValue(mitraID);
         databaseMitra.child(mitraID).setValue(mitra);
+
+        startActivity(new Intent(MitraActivity.this, HomeActivity.class));
         finish();
     }
 
