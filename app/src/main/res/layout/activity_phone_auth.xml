@@ -60,6 +60,7 @@
             android:padding="16dp"/>
 
         <Button
+            android:foreground="?attr/selectableItemBackground"
             android:padding="8dp"
             android:background="@drawable/button_oval"
             android:id="@+id/buttonVerifyPhone"

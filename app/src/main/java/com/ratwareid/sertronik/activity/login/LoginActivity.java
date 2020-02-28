@@ -139,14 +139,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             inputPassword.setError("Password yang anda masukkan salah !");
                             Toast.makeText(LoginActivity.this, "Login Gagal", Toast.LENGTH_SHORT).show();
                         }else {
-//                            startActivity(new Intent(LoginActivity.this, PhoneAuthActivity.class)
-//                                    .putExtra("phonenumber",inputPhoneNumber.getText().toString())
-//                                    .putExtra("password",inputPassword.getText().toString())
-//                                    .putExtra("mode","LOGIN")
-//                            );
+                            startActivity(new Intent(LoginActivity.this, PhoneAuthActivity.class)
+                                    .putExtra("phonenumber",inputPhoneNumber.getText().toString())
+                                    .putExtra("password",inputPassword.getText().toString())
+                                    .putExtra("mode","LOGIN")
+                            );
 
-                            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-                            finish();
                         }
                     }
                 }

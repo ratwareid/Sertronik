@@ -16,6 +16,10 @@ import android.widget.Toast;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.firebase.ui.auth.data.model.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,6 +40,7 @@ public class RegisterActivity extends AppCompatActivity{
     private Button buttonSignup;
     private LinearLayout linearPhoneNumber, linearName, linearPassword, linearPasswordAgain;
     private long mBackPressed;
+    private FirebaseAuth auth;
     private DatabaseReference databaseReference;
 
     @Override
@@ -155,6 +160,7 @@ public class RegisterActivity extends AppCompatActivity{
 
         buttonSignup = findViewById(R.id.buttonSignup);
         databaseReference = FirebaseDatabase.getInstance().getReference(UniversalKey.USERDATA_PATH);
+        auth = FirebaseAuth.getInstance();
     }
 
     public void openLoginPage(View v){
@@ -163,29 +169,35 @@ public class RegisterActivity extends AppCompatActivity{
     }
 
     public void submitRegister(View view) {
-        databaseReference.addValueEventListener(new ValueEventListener() {
+
+        auth.createUserWithEmailAndPassword(inputPhoneNumber.getText().toString(), inputPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String phoneNum = inputPhoneNumber.getText().toString();
-                Userdata data = dataSnapshot.child(phoneNum).getValue(Userdata.class);
-                if (data == null){
-                    startActivity(new Intent(RegisterActivity.this, PhoneAuthActivity.class)
-                            .putExtra("phonenumber",inputPhoneNumber.getText().toString())
-                            .putExtra("username",inputName.getText().toString())
-                            .putExtra("password",inputPassword.getText().toString())
-                            .putExtra("mode","REGISTER")
-                    );
-                    finish();
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()){
+                    successRegister();
                 }else{
-                    inputPhoneNumber.setError("This Phone Number Already Used");
+                    failedRegister(task);
                 }
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(RegisterActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-            }
         });
+    }
+
+    private void successRegister() {
+        Userdata userdata = new Userdata(inputName.getText().toString(), inputPhoneNumber.getText().toString(), null, inputPassword.getText().toString(), null, "USER");
+
+        databaseReference.child(inputPhoneNumber.getText().toString()).setValue(userdata);
+
+        startActivity(new Intent(RegisterActivity.this, PhoneAuthActivity.class)
+                .putExtra("phonenumber",inputPhoneNumber.getText().toString())
+                .putExtra("username",inputName.getText().toString())
+                .putExtra("password",inputPassword.getText().toString())
+                .putExtra("mode","REGISTER")
+        );
+        finish();
+    }
+
+    private void failedRegister(Task<AuthResult> task) {
+        Toast.makeText(this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
