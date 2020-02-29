@@ -3,6 +3,8 @@ package com.ratwareid.sertronik.activity.mitra;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -40,7 +42,7 @@ public class DetailOrderActivity extends AppCompatActivity implements View.OnCli
 
     private TextView textSenderName, textSenderLocation, textItemName, textItemBrand, textItemSize, textItemCrash,textItemStatus;
     private ImageView imageThumbnail;
-    private ImageButton buttonAccept,buttonReject;
+    private ImageButton buttonAccept,buttonReject,buttonCall;
     private Button buttonFinOrder;
     private DatabaseReference databaseUser, databaseOrder;
     private FirebaseAuth auth;
@@ -111,6 +113,7 @@ public class DetailOrderActivity extends AppCompatActivity implements View.OnCli
         imageThumbnail = findViewById(R.id.imageThumbnail);
         buttonAccept = findViewById(R.id.buttonAccept);
         buttonReject = findViewById(R.id.buttonReject);
+        buttonCall = findViewById(R.id.buttonCall);
         layoutButton = findViewById(R.id.layoutButton);
         layoutStatusOrder = findViewById(R.id.layoutStatusOrder);
         buttonFinOrder = findViewById(R.id.buttonFinOrder);
@@ -134,6 +137,7 @@ public class DetailOrderActivity extends AppCompatActivity implements View.OnCli
         buttonAccept.setOnClickListener(this);
         buttonReject.setOnClickListener(this);
         buttonFinOrder.setOnClickListener(this);
+        buttonCall.setOnClickListener(this);
 
         if (mode.equalsIgnoreCase(UniversalKey.useroder)){
             layoutButton.setVisibility(View.GONE);
@@ -162,6 +166,8 @@ public class DetailOrderActivity extends AppCompatActivity implements View.OnCli
             sendFeedbackOrder(UniversalKey.ORDER_DECLINED);
         }if (v.equals(buttonFinOrder)) {
             sendFeedbackOrder(UniversalKey.ORDER_FINISH);
+        }if (v.equals(buttonCall)){
+            startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel",senderPhone, "null" )));
         }
     }
 

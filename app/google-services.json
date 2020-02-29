@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "502846312656-ihj4nogce1dchso4tteoen037i4jh06r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ratwareid.sertronik",
+            "certificate_hash": "f0db63a9748f38ac766d3c6e5cd1303dfe6cfa64"
+          }
+        },
+        {
+          "client_id": "502846312656-ml870mao4q48ijqmppmunkakcfafqog1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ratwareid.sertronik",
+            "certificate_hash": "3f40f29a73fd4f1c3644efe8717a5d046961b718"
+          }
+        },
+        {
           "client_id": "502846312656-ljissvfmf3vu3k3ceuine7mlot5m3ej6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
