@@ -186,11 +186,12 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         if (view.equals(btnSimpan)){
             currentuser.setFullName(inputFullname.getText().toString());
             currentuser.setGoogleMail(inputEmail.getText().toString());
-            currentmitra.setNamaToko(inputNamaBengkel.getText().toString());
-            currentmitra.setSpecialist(getSpecialist());
-
+            if (currentuser.getMitraID() != null && !currentuser.getMitraID().equals("")) {
+                currentmitra.setNamaToko(inputNamaBengkel.getText().toString());
+                currentmitra.setSpecialist(getSpecialist());
+                databaseMitra.child(prevMitraID).setValue(currentmitra);
+            }
             databaseUser.child(prevNoTlp).setValue(currentuser);
-            databaseMitra.child(prevMitraID).setValue(currentmitra);
             Toast.makeText(this, "Berhasil Menyimpan Data", Toast.LENGTH_SHORT).show();
             onBackPressed();
         }

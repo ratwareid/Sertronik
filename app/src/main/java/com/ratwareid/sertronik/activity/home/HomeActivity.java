@@ -48,26 +48,29 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private DatabaseReference databaseImageIcon,databaseCurrentUser, databaseMitraOrder,databaseUserOrder,databaseMitradata;
     private FirebaseAuth mAuth;
-    private RecyclerView recyclerHome,recyclerOrder,recyclerOrderProcess,recyclerOrderCanceled,recyclerOrderFinish;
+    private RecyclerView recyclerHome,recyclerOrder,recyclerOrderProcess,recyclerOrderCanceled,recyclerOrderFinish,recyclerOrderUser;
+    private RecyclerView recyclerUnverifiedMitra;
     private GridLayoutManager layoutManager;
-    private LinearLayoutManager layoutManagerOrder1,layoutManagerOrder2,layoutManagerOrder3,layoutManagerOrder4;
+    private LinearLayoutManager layoutManagerOrder1,layoutManagerOrder2,layoutManagerOrder3,layoutManagerOrder4,
+                                layoutManagerOrder5,layoutManagerOrder6;
     private CategoryAdapter adapter;
     private ArrayList<Category> categories;
     private ImageView imageProfile;
-    private Button btnJoinMitra;
+    private Button btnJoinMitra,btnAddCategory;
     private LinearLayout linearJoinMitra;
     private long mBackPressed;
     private TextView textGreetingMessage,mitraNotif;
     private Userdata userdata;
     private String phoneNum;
     private int countnotifID = 0;
-    private OrderAdapter orderAdapter1,orderAdapter2,orderAdapter3,orderAdapter4;
+    private OrderAdapter orderAdapter1,orderAdapter2,orderAdapter3,orderAdapter4,orderAdapter5;
     private MitraAdapter mitraAdapter;
     private ArrayList<Order> orderNotification;
-    private ArrayList<Order> orderListPending,orderListAccept,orderListDecline,orderListFinish;
+    private ArrayList<Order> orderListPending,orderListAccept,orderListDecline,orderListFinish,orderListUser;
     private ArrayList<Mitradata> listUnverifiedMitra;
     private LinearLayout linearMitra;
     private LinearLayout linearAdmin;
+    private LinearLayout linearUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,18 +108,23 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private void initWidgets() {
         textGreetingMessage = findViewById(R.id.textGreetingMessage);
         btnJoinMitra = findViewById(R.id.btnJoinMitra);
+        btnAddCategory = findViewById(R.id.btnAddCategory);
         linearJoinMitra = findViewById(R.id.linearJoinMitra);
         btnJoinMitra.setOnClickListener(this);
+        btnAddCategory.setOnClickListener(this);
         recyclerHome = findViewById(R.id.recyclerHome);
         recyclerOrder = findViewById(R.id.recyclerOrder);
         recyclerOrderProcess = findViewById(R.id.recyclerOrderProcess);
         recyclerOrderCanceled = findViewById(R.id.recyclerOrderCanceled);
         recyclerOrderFinish = findViewById(R.id.recyclerOrderFinish);
+        recyclerUnverifiedMitra = findViewById(R.id.recyclerUnverifiedMitra);
+        recyclerOrderUser = findViewById(R.id.recyclerOrderUser);
         imageProfile = findViewById(R.id.imageProfile);
         imageProfile.setOnClickListener(this);
         mitraNotif = findViewById(R.id.mitraNotif);
         linearMitra = findViewById(R.id.linearMitra);
         linearAdmin = findViewById(R.id.linearAdmin);
+        linearUser = findViewById(R.id.linearUser);
 
         categories = new ArrayList<>();
         layoutManager = new GridLayoutManager(HomeActivity.this, 3, RecyclerView.VERTICAL, false);
@@ -124,11 +132,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         layoutManagerOrder2 = new LinearLayoutManager(HomeActivity.this, RecyclerView.HORIZONTAL, false);
         layoutManagerOrder3 = new LinearLayoutManager(HomeActivity.this, RecyclerView.HORIZONTAL, false);
         layoutManagerOrder4 = new LinearLayoutManager(HomeActivity.this, RecyclerView.HORIZONTAL, false);
+        layoutManagerOrder5 = new LinearLayoutManager(HomeActivity.this, RecyclerView.HORIZONTAL, false);
+        layoutManagerOrder6 = new LinearLayoutManager(HomeActivity.this, RecyclerView.HORIZONTAL, false);
 
         recyclerOrder.setLayoutManager(layoutManagerOrder1);
         recyclerOrderProcess.setLayoutManager(layoutManagerOrder2);
         recyclerOrderCanceled.setLayoutManager(layoutManagerOrder3);
         recyclerOrderFinish.setLayoutManager(layoutManagerOrder4);
+        recyclerUnverifiedMitra.setLayoutManager(layoutManagerOrder5);
+        recyclerOrderUser.setLayoutManager(layoutManagerOrder6);
 
         recyclerHome.setLayoutManager(layoutManager);
         recyclerHome.setHasFixedSize(true);
@@ -148,6 +160,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         linearJoinMitra.setVisibility(View.VISIBLE);
                         linearMitra.setVisibility(View.GONE);
                         linearAdmin.setVisibility(View.GONE);
+                        linearUser.setVisibility(View.VISIBLE);
                     } else {
                         databaseMitradata.child(mAuth.getCurrentUser().getUid()).child("activeState").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -157,14 +170,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                                     mitraNotif.setVisibility(View.VISIBLE);
                                     linearMitra.setVisibility(View.GONE);
                                     linearAdmin.setVisibility(View.GONE);
+                                    linearUser.setVisibility(View.GONE);
                                 } else if (activeState == UniversalKey.STATE_MITRA_ACTIVE) {
                                     mitraNotif.setVisibility(View.GONE);
                                     linearMitra.setVisibility(View.VISIBLE);
                                     linearAdmin.setVisibility(View.GONE);
+                                    linearUser.setVisibility(View.GONE);
                                 } else {
                                     mitraNotif.setVisibility(View.GONE);
                                     linearMitra.setVisibility(View.GONE);
                                     linearAdmin.setVisibility(View.GONE);
+                                    linearUser.setVisibility(View.GONE);
                                 }
                             }
 
@@ -193,10 +209,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                                     else if (order.getStatus() == UniversalKey.ORDER_FINISH)
                                         orderListFinish.add(order);
                                 }
-                                orderAdapter1 = new OrderAdapter(orderListPending, HomeActivity.this);
-                                orderAdapter2 = new OrderAdapter(orderListAccept, HomeActivity.this);
-                                orderAdapter3 = new OrderAdapter(orderListDecline, HomeActivity.this);
-                                orderAdapter4 = new OrderAdapter(orderListFinish, HomeActivity.this);
+                                orderAdapter1 = new OrderAdapter(orderListPending, HomeActivity.this,UniversalKey.mitraorder);
+                                orderAdapter2 = new OrderAdapter(orderListAccept, HomeActivity.this,UniversalKey.mitraorder);
+                                orderAdapter3 = new OrderAdapter(orderListDecline, HomeActivity.this,UniversalKey.mitraorder);
+                                orderAdapter4 = new OrderAdapter(orderListFinish, HomeActivity.this,UniversalKey.mitraorder);
                                 recyclerOrder.setAdapter(orderAdapter1);
                                 recyclerOrderProcess.setAdapter(orderAdapter2);
                                 recyclerOrderCanceled.setAdapter(orderAdapter3);
@@ -217,6 +233,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     mitraNotif.setVisibility(View.GONE);
                     linearMitra.setVisibility(View.GONE);
                     linearAdmin.setVisibility(View.VISIBLE);
+                    btnAddCategory.setVisibility(View.VISIBLE);
 
                     databaseMitradata.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -230,7 +247,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                                 }
                             }
                             mitraAdapter = new MitraAdapter(listUnverifiedMitra, HomeActivity.this);
-                            recyclerOrder.setAdapter(mitraAdapter);
+                            recyclerUnverifiedMitra.setAdapter(mitraAdapter);
                         }
 
                         @Override
@@ -275,8 +292,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 orderNotification = new ArrayList<>();
+                orderListUser = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Order ord = snapshot.getValue(Order.class);
+                    ord.setKey(snapshot.getKey());
                     if (ord.getNotifState() == UniversalKey.NOTIF_STATE_NEW) {
                         if (ord.getStatus() == UniversalKey.ORDER_ACCEPTED) {
                             countnotifID++;
@@ -292,7 +311,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                             databaseUserOrder.child(snapshot.getKey()).child("notifState").setValue(UniversalKey.NOTIF_STATE_SHOW);
                         }
                     }
+                    if (ord.getStatus() == UniversalKey.WAITING_RESPONSE_ORDER || ord.getStatus() == UniversalKey.ORDER_ACCEPTED ||
+                            ord.getStatus() == UniversalKey.ORDER_DECLINED || ord.getStatus() == UniversalKey.ORDER_FINISH){
+                        orderListUser.add(ord);
+                    }
                 }
+                orderAdapter5 = new OrderAdapter(orderListUser, HomeActivity.this,UniversalKey.useroder);
+                recyclerOrderUser.setAdapter(orderAdapter5);
             }
 
             @Override
@@ -316,18 +341,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         if (view.equals(imageProfile)){
             if (userdata.getRoleAkses() != null) {
-                if (userdata.getRoleAkses().equalsIgnoreCase("ADMIN")) {
-                    startActivity(new Intent(HomeActivity.this, AddNewCategoryActivity.class));
-                }
-                if (userdata.getRoleAkses().equalsIgnoreCase("USER")){
-                    startActivity(new Intent(HomeActivity.this, UserProfileActivity.class)
-                            .putExtra("phonenumber",userdata.getNoTelephone())
-                            .putExtra("fullname",userdata.getFullName())
-                            .putExtra("email",userdata.getGoogleMail())
-                            .putExtra("mitraID",userdata.getMitraID())
-                    );
-                }
+                startActivity(new Intent(HomeActivity.this, UserProfileActivity.class)
+                        .putExtra("phonenumber",userdata.getNoTelephone())
+                        .putExtra("fullname",userdata.getFullName())
+                        .putExtra("email",userdata.getGoogleMail())
+                        .putExtra("mitraID",userdata.getMitraID())
+                );
+
             }
+        }
+        if (view.equals(btnAddCategory)){
+            startActivity(new Intent(HomeActivity.this, AddNewCategoryActivity.class));
         }
         if (view.equals(btnJoinMitra)){
             startActivity(new Intent(HomeActivity.this, MitraActivity.class)
@@ -389,6 +413,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     .setContentTitle("Sertronik Apps")
                     .setContentText(message)
                     .setOngoing(true)
+                    .setAutoCancel(true)
                     .setContentInfo("Info");
 
             Intent notificationIntent = new Intent(getApplicationContext(), HomeActivity.class);

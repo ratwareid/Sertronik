@@ -224,11 +224,20 @@
             android:layout_width="match_parent"
             android:layout_height="300dp" />
 
-        <Button
-            android:id="@+id/btnSimpan"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Simpan" />
+            android:layout_margin="30dp">
+        <Button
+            android:id="@+id/btnSimpan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="50dp"
+            android:background="@drawable/button_oval_primary"
+            android:text="MENDAFTAR"
+            android:textColor="@color/white"
+            android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
 
     </LinearLayout>
 

@@ -14,11 +14,14 @@
         android:layout_height="match_parent" />
 
     <Button
-        android:text="Cari Dah"
+        android:text="Cari Teknisi"
         android:layout_margin="12dp"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btnSearchMitra"/>
+        android:id="@+id/btnSearchMitra"
+        android:background="@drawable/button_oval_primary"
+        android:paddingHorizontal="20dp"
+        android:textColor="@color/white"/>
 
     <!-- include bottom sheet -->
     <include layout="@layout/bottom_order_nearby"/>

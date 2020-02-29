@@ -84,4 +84,13 @@ public class UniversalHelper {
 
         return result.toString();
     }
+
+    public static String getOrderStatus(int statusCode){
+        String itemStatus = "-";
+        if (statusCode == UniversalKey.WAITING_RESPONSE_ORDER) itemStatus = "Menunggu Response Teknisi";
+        if (statusCode == UniversalKey.ORDER_ACCEPTED) itemStatus = "Sedang diproses teknisi";
+        if (statusCode == UniversalKey.ORDER_DECLINED) itemStatus = "Ditolak oleh teknisi";
+        if (statusCode == UniversalKey.ORDER_FINISH) itemStatus = "Sudah diselesaikan teknisi";
+        return itemStatus;
+    }
 }

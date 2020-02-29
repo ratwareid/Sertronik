@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.ratwareid.sertronik.R;
+import com.ratwareid.sertronik.activity.admin.AktivasiMitraActivity;
 import com.ratwareid.sertronik.activity.home.HomeActivity;
 import com.ratwareid.sertronik.activity.user.order.SelectMitraActivity;
 import com.ratwareid.sertronik.activity.user.order.pickup.DetailPickupActivity;
@@ -39,7 +40,7 @@ public class MitraAdapter extends RecyclerView.Adapter<MitraAdapter.ViewHolder> 
     @Override
     public MitraAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recycler_mitra, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recycler_mitra_unverif, parent, false);
 
         return new ViewHolder(view);
     }
@@ -56,13 +57,12 @@ public class MitraAdapter extends RecyclerView.Adapter<MitraAdapter.ViewHolder> 
             @Override
             public void onClick(View v) {
                 activity.startActivity(
-                        new Intent(activity, DetailPickupActivity.class)
+                        new Intent(activity, AktivasiMitraActivity.class)
                                 .putExtra("mitraID", mitradata.getMitraID())
                                 .putExtra("mitraName" , mitradata.getNamaToko())
                                 .putExtra("mitraLocation", mitradata.getAlamatToko())
                                 .putExtra("mitraPhoneNumber", mitradata.getNoTlp())
                                 .putExtra("mitraSpecialist", mitradata.getSpecialist())
-                                .putExtra("mode", UniversalKey.view_mitra)
                 );
             }
         });

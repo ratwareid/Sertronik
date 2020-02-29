@@ -127,17 +127,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (validatePhoneNumber(inputPhoneNumber.getText().toString(),inputPassword.getText().toString())){
             final String notlp = inputPhoneNumber.getText().toString();
             final String password = inputPassword.getText().toString();
-            databaseReference.addValueEventListener(new ValueEventListener() {
+            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Userdata data = dataSnapshot.child(notlp).getValue(Userdata.class);
                     if (data == null){
                         inputPhoneNumber.setError("Nomor Telephone tidak ditemukan !");
-                        Toast.makeText(LoginActivity.this, "Login Gagal", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(LoginActivity.this, "Login Gagal", Toast.LENGTH_SHORT).show();
                     }else{
                         if (!data.getPassword().equals(password)){
                             inputPassword.setError("Password yang anda masukkan salah !");
-                            Toast.makeText(LoginActivity.this, "Login Gagal", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(LoginActivity.this, "Login Gagal", Toast.LENGTH_SHORT).show();
                         }else {
                             startActivity(new Intent(LoginActivity.this, PhoneAuthActivity.class)
                                     .putExtra("phonenumber",inputPhoneNumber.getText().toString())

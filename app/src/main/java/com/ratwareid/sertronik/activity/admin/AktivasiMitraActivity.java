@@ -1,7 +1,4 @@
-package com.ratwareid.sertronik.activity.user.order.pickup;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+package com.ratwareid.sertronik.activity.admin;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +7,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,7 +21,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.ratwareid.sertronik.R;
-import com.ratwareid.sertronik.activity.home.HomeActivity;
 import com.ratwareid.sertronik.activity.report.ReportUserActivity;
 import com.ratwareid.sertronik.bottomsheet.BottomSheetSuccessOrder;
 import com.ratwareid.sertronik.helper.UniversalHelper;
@@ -32,11 +31,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
 
-public class DetailPickupActivity extends AppCompatActivity implements View.OnClickListener {
+public class AktivasiMitraActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private TextView textMitraName, textSpecialist, textMitraPhoneNumber, textMitraRating, textMitraLocation, textReport;
+    private TextView textMitraName, textSpecialist, textMitraPhoneNumber, textMitraRating, textMitraLocation;
     private ImageView imageThumbnail;
-    private FloatingActionButton fabOrder;
+    private Button buttonAktivasi;
     private String mitraName, mitraSpecialist, mitraPhoneNumber, mitraRating, mitraLocation, mitraID;
     private String orderCategory, orderBrand, orderSize, orderCrash, orderPickupAddress, orderLatitude, orderLongitude, senderName, senderPhone;
     private String mode;
@@ -50,7 +49,7 @@ public class DetailPickupActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail_pickup);
+        setContentView(R.layout.activity_aktivasi_mitra);
 
         this.getSupportActionBar().hide();
 
@@ -82,8 +81,8 @@ public class DetailPickupActivity extends AppCompatActivity implements View.OnCl
         textMitraPhoneNumber = findViewById(R.id.textPhoneNumber);
         textMitraRating = findViewById(R.id.textRating);
         imageThumbnail = findViewById(R.id.imageThumbnail);
-        textReport = findViewById(R.id.textReport);
-        fabOrder = findViewById(R.id.fabOrder);
+        buttonAktivasi = findViewById(R.id.buttonAktivasi);
+        buttonAktivasi.setOnClickListener(this);
 
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
@@ -106,13 +105,6 @@ public class DetailPickupActivity extends AppCompatActivity implements View.OnCl
         orderPickupAddress = getIntent().getStringExtra("orderPickupAddress");
         orderLatitude = getIntent().getStringExtra("orderLatitude");
         orderLongitude = getIntent().getStringExtra("orderLongitude");
-
-        if (orderType == UniversalKey.CALL_SERVICE){
-            fabOrder.setImageResource(R.drawable.ic_call_white);
-        }else{
-            fabOrder.setImageResource(R.drawable.ic_pick_up_white);
-        }
-        textReport.setOnClickListener(this);
     }
 
     public void sendOrderTask(View view) {
@@ -121,9 +113,8 @@ public class DetailPickupActivity extends AppCompatActivity implements View.OnCl
         Order order = new Order(senderName,senderPhone,orderCategory, orderBrand, orderSize, orderCrash,
                 orderPickupAddress, orderLatitude, orderLongitude, String.valueOf(new Date().getTime()),
                 mitraId, orderType, UniversalKey.WAITING_RESPONSE_ORDER,UniversalKey.NOTIF_STATE_NEW);
-        String orderID = reference.child(UniversalKey.MITRADATA_PATH).child(mitraId).child("listOrder").push().getKey();
-        reference.child(UniversalKey.MITRADATA_PATH).child(mitraId).child("listOrder").child(orderID)
-                .setValue(order)
+        String orderid = reference.child(UniversalKey.MITRADATA_PATH).child(mitraId).child("listOrder").push().getKey();
+        reference.child(UniversalKey.MITRADATA_PATH).child(mitraId).child("listOrder").child(orderid).setValue(order)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -132,22 +123,24 @@ public class DetailPickupActivity extends AppCompatActivity implements View.OnCl
                             bottomSheetDialogFragment.setCancelable(false);
                             bottomSheetDialogFragment.show(getSupportFragmentManager(), "OpenWhenSuccessOrder");
                         }else{
-                            Toast.makeText(DetailPickupActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AktivasiMitraActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-        reference.child(UniversalKey.USERDATA_PATH).child(senderPhone).child("orderList").child(orderID).setValue(order);
+        reference.child(UniversalKey.USERDATA_PATH).child(senderPhone).child("orderList").child(orderid).setValue(order);
     }
 
     @Override
     public void onClick(View v) {
-        if (v.equals(textReport)){
-            moveToReportActivity();
+        if (v.equals(buttonAktivasi)){
+            reference.child(UniversalKey.MITRADATA_PATH).child(mitraID).child("activeState").setValue(UniversalKey.STATE_MITRA_ACTIVE);
+            Toast.makeText(this, "Berhasil Aktivasi Mitra !", Toast.LENGTH_SHORT).show();
+            finish();
         }
     }
 
     private void moveToReportActivity() {
-        startActivity(new Intent(DetailPickupActivity.this, ReportUserActivity.class)
+        startActivity(new Intent(AktivasiMitraActivity.this, ReportUserActivity.class)
             .putExtra("mitraID", mitraID)
             .putExtra("mitraName", mitraName));
         finish();

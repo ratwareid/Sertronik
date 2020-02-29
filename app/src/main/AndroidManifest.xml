@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.report.ReportUserActivity"></activity>
+        <activity android:name=".activity.home.RatingActivity"></activity>
+        <activity android:name=".activity.report.ReportUserActivity" />
         <activity android:name=".activity.mitra.DetailOrderActivity" />
         <activity android:name=".activity.user.order.call.CallServiceActivity" />
         <activity android:name=".activity.user.profile.EditProfileActivity" />
@@ -41,6 +42,7 @@
 
         <activity android:name=".activity.user.SelectedCategoryActivity" />
         <activity android:name=".activity.admin.AddNewCategoryActivity" />
+        <activity android:name=".activity.admin.AktivasiMitraActivity" />
         <activity android:name=".activity.home.HomeActivity" />
         <activity android:name=".activity.auth.PhoneAuthActivity" />
 

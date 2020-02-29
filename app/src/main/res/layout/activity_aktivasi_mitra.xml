@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.mitra.DetailOrderActivity">
-
+    tools:context=".activity.user.order.pickup.DetailPickupActivity">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -14,16 +13,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginBottom="100dp">
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/imageThumbnail"
                 android:layout_width="match_parent"
-                android:layout_height="160dp" />
+                android:layout_height="196dp" />
 
             <TextView
-                android:id="@+id/textSenderName"
+                android:id="@+id/textMitraName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
@@ -42,37 +40,25 @@
                 android:padding="8dp">
 
                 <TextView
-                    android:id="@+id/textItemName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_star"
                     android:drawablePadding="8dp"
                     android:fontFamily="@font/montserrat"
                     android:gravity="center|start"
-                    android:text="Servis Televisi"
+                    android:text="Spesialis"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/textItemBrand"
+                    android:id="@+id/textSpesialis"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:drawablePadding="8dp"
                     android:fontFamily="@font/montserrat"
                     android:gravity="center|start"
-                    android:text="Merk Sharp"
-                    android:textColor="@color/default_text_color"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/textItemType"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:drawablePadding="8dp"
-                    android:fontFamily="@font/montserrat"
-                    android:gravity="center|start"
-                    android:text="Tipe atau Ukuran : A2001"
+                    android:text="Televisi"
                     android:textColor="@color/default_text_color"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -92,7 +78,7 @@
                     android:drawablePadding="8dp"
                     android:fontFamily="@font/montserrat"
                     android:gravity="center|start"
-                    android:text="Lokasi Pemesan"
+                    android:text="Lokasi Mitra"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -104,7 +90,7 @@
                     android:drawablePadding="8dp"
                     android:fontFamily="@font/montserrat"
                     android:gravity="center|start"
-                    android:text="Lokasi"
+                    android:text="Televisi"
                     android:textColor="@color/default_text_color"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -115,21 +101,22 @@
                 android:layout_margin="8dp"
                 android:background="@drawable/border"
                 android:orientation="vertical"
-                android:padding="8dp">
+                android:padding="8dp"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_build"
+                    android:drawableStart="@drawable/ic_location"
                     android:drawablePadding="8dp"
                     android:fontFamily="@font/montserrat"
                     android:gravity="center|start"
-                    android:text="Kerusakan"
+                    android:text="Testimoni"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/textItemCrash"
+                    android:id="@+id/textTestimony"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -143,7 +130,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/layoutStatusOrder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
@@ -154,97 +140,37 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_autorenew"
+                    android:drawableStart="@drawable/ic_call_normal_primary"
                     android:drawablePadding="8dp"
                     android:fontFamily="@font/montserrat"
                     android:gravity="center|start"
-                    android:text="Status Order"
+                    android:text="Phone Number"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/textItemStatus"
+                    android:id="@+id/textPhoneNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:drawablePadding="8dp"
+                    android:layout_weight="1"
+                    android:drawablePadding="20dp"
                     android:fontFamily="@font/montserrat"
                     android:gravity="center|start"
-                    android:text="-"
-                    android:textColor="@color/default_text_color"
+                    android:text="081287616776"
                     android:textSize="14sp" />
 
             </LinearLayout>
 
 
-            <TextView
+            <Button
+                android:id="@+id/buttonAktivasi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/montserrat"
-                android:text="Laporkan Pesanan ini"
-                android:textColor="#EF5350"
-                android:visibility="invisible"/>
-
+                android:background="@drawable/button_oval_primary"
+                android:textColor="@color/white"
+                android:layout_margin="30dp"
+                android:text="AKTIVASI MITRA INI" />
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
-
-    <LinearLayout
-        android:id="@+id/layoutButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="8dp"
-        android:orientation="horizontal">
-
-
-        <ImageButton
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginHorizontal="4dp"
-            android:layout_weight="1"
-            android:src="@drawable/ic_call_normal_white"
-            android:background="@drawable/button_direction_rounded"
-            android:fontFamily="@font/montserrat"
-            android:textColor="@color/white" />
-
-        <ImageButton
-            android:id="@+id/buttonReject"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginHorizontal="4dp"
-            android:layout_weight="1"
-            android:background="@drawable/button_primary_decline"
-            android:fontFamily="@font/montserrat"
-            android:src="@drawable/ic_close"
-            android:textColor="@color/white" />
-
-        <ImageButton
-            android:id="@+id/buttonAccept"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginHorizontal="4dp"
-            android:layout_weight="1"
-            android:background="@drawable/button_call_rounded"
-            android:fontFamily="@font/montserrat"
-            android:src="@drawable/ic_done"
-            android:textColor="@color/white" />
-
-
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/buttonFinOrder"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Order Selesai"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="10dp"
-        android:background="@color/colorPrimary"
-        android:textColor="@color/black"
-        android:visibility="gone"/>
-
 </RelativeLayout>

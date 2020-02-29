@@ -31,12 +31,14 @@ import org.apache.commons.lang3.StringUtils;
 
 public class DetailOrderActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private String senderName, senderPhone, itemName, itemBrand, itemSize, itemCrash, senderLocation, phoneNumber, key , mitraId;
+    private String senderName, senderPhone, itemName, itemBrand, itemSize, itemCrash,itemStatus,
+                    senderLocation, phoneNumber, key , mitraId, mode;
     private String senderLatitude, senderLongitude, createDate;
     private int orderType,status;
     private LinearLayout layoutButton;
+    private LinearLayout layoutStatusOrder;
 
-    private TextView textSenderName, textSenderLocation, textItemName, textItemBrand, textItemSize, textItemCrash;
+    private TextView textSenderName, textSenderLocation, textItemName, textItemBrand, textItemSize, textItemCrash,textItemStatus;
     private ImageView imageThumbnail;
     private ImageButton buttonAccept,buttonReject;
     private Button buttonFinOrder;
@@ -89,6 +91,7 @@ public class DetailOrderActivity extends AppCompatActivity implements View.OnCli
         itemBrand = getIntent().getStringExtra("itemBrand");
         itemSize = getIntent().getStringExtra("itemSize");
         itemCrash = getIntent().getStringExtra("itemCrash");
+        itemStatus = getIntent().getStringExtra("itemStatus");
         key = getIntent().getStringExtra("key");
         mitraId = getIntent().getStringExtra("mitraID");
         orderType = getIntent().getIntExtra("orderType", 0);
@@ -96,6 +99,7 @@ public class DetailOrderActivity extends AppCompatActivity implements View.OnCli
         senderLongitude = getIntent().getStringExtra("senderLongitude");
         createDate = getIntent().getStringExtra("createDate");
         status = getIntent().getIntExtra("status",0);
+        mode = getIntent().getStringExtra("mode");
 
         textSenderName = findViewById(R.id.textSenderName);
         textSenderLocation = findViewById(R.id.textLocation);
@@ -103,10 +107,12 @@ public class DetailOrderActivity extends AppCompatActivity implements View.OnCli
         textItemSize = findViewById(R.id.textItemType);
         textItemName = findViewById(R.id.textItemName);
         textItemCrash = findViewById(R.id.textItemCrash);
+        textItemStatus = findViewById(R.id.textItemStatus);
         imageThumbnail = findViewById(R.id.imageThumbnail);
         buttonAccept = findViewById(R.id.buttonAccept);
         buttonReject = findViewById(R.id.buttonReject);
         layoutButton = findViewById(R.id.layoutButton);
+        layoutStatusOrder = findViewById(R.id.layoutStatusOrder);
         buttonFinOrder = findViewById(R.id.buttonFinOrder);
 
         auth = FirebaseAuth.getInstance();
@@ -118,6 +124,7 @@ public class DetailOrderActivity extends AppCompatActivity implements View.OnCli
 
         textItemName.setText(itemName);
         textItemCrash.setText(itemCrash);
+        textItemStatus.setText(itemStatus);
         textItemSize.setText("Tipe " + itemSize);
         textItemBrand.setText("Merk " + itemBrand);
 
@@ -128,15 +135,22 @@ public class DetailOrderActivity extends AppCompatActivity implements View.OnCli
         buttonReject.setOnClickListener(this);
         buttonFinOrder.setOnClickListener(this);
 
-        if (status == UniversalKey.WAITING_RESPONSE_ORDER){
-            layoutButton.setVisibility(View.VISIBLE);
-            buttonFinOrder.setVisibility(View.GONE);
-        }else if(status == UniversalKey.ORDER_ACCEPTED){
-            layoutButton.setVisibility(View.GONE);
-            buttonFinOrder.setVisibility(View.VISIBLE);
-        }else{
+        if (mode.equalsIgnoreCase(UniversalKey.useroder)){
             layoutButton.setVisibility(View.GONE);
             buttonFinOrder.setVisibility(View.GONE);
+            layoutStatusOrder.setVisibility(View.VISIBLE);
+        }else {
+            layoutStatusOrder.setVisibility(View.GONE);
+            if (status == UniversalKey.WAITING_RESPONSE_ORDER) {
+                layoutButton.setVisibility(View.VISIBLE);
+                buttonFinOrder.setVisibility(View.GONE);
+            } else if (status == UniversalKey.ORDER_ACCEPTED) {
+                layoutButton.setVisibility(View.GONE);
+                buttonFinOrder.setVisibility(View.VISIBLE);
+            } else {
+                layoutButton.setVisibility(View.GONE);
+                buttonFinOrder.setVisibility(View.GONE);
+            }
         }
     }
 

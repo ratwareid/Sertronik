@@ -43,39 +43,6 @@
                     android:layout_margin="8dp"
                     android:layout_alignParentTop="true"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/textHapus"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_delete"
-                        android:text="Hapus"
-                        android:layout_margin="10dp"
-                        android:visibility="gone"/>
-
-                    <TextView
-                        android:id="@+id/textBatalkan"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_cancel"
-                        android:text="Batalkan"
-                        android:layout_margin="10dp"
-                        android:visibility="gone"/>
-
-                    <TextView
-                        android:id="@+id/textRating"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_rating"
-                        android:text="Beri Rating"
-                        android:layout_margin="10dp"
-                        android:visibility="gone"/>
-                </LinearLayout>
-
 
             </RelativeLayout>
 

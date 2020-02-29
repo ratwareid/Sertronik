@@ -13,7 +13,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginBottom="80px">
 
             <ImageView
                 android:id="@+id/imageThumbnail"
@@ -145,7 +146,7 @@
                     android:drawablePadding="8dp"
                     android:fontFamily="@font/montserrat"
                     android:gravity="center|start"
-                    android:text="4,3/5"
+                    android:text="0/5"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 

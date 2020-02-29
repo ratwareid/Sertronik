@@ -71,7 +71,6 @@ public class SelectMitraAdapter extends RecyclerView.Adapter<SelectMitraAdapter.
                                 .putExtra("orderType", activity.orderType)
                                 .putExtra("senderName",activity.senderName)
                                 .putExtra("senderPhone",activity.senderPhone)
-                                .putExtra("mode", UniversalKey.order_mitra)
                         //TODO::NAMBAHIN PUT EXTRA RATING
                 );
             }
