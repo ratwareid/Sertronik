@@ -26,7 +26,7 @@ public class UniversalKey {
 
     public static final int PROXIMITY_RADIUS  = 5000;
 
-    public static final String API_KEY = "AIzaSyD2h1qdNbwKJPg3In5Io8RTThO2f5Ngdlo";
+    public static final String API_KEY = "YOUR_GOOGLE_APIKEY";
     public static final String BASE_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/";
 
     public static final int RC_SIGN_IN = 9001;
